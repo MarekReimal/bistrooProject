@@ -1,0 +1,28 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+    <div>
+    <table>
+        <thead>
+            <tr>
+                <th>Kategooria</th>
+                <th>Jnr</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                <td>{{ category.category_name }}</td>
+                <td>{{ category.category_sort_id }}</td>
+                <td><a href="{% url "bi" pk=country.id %}" class="text-danger">Delete</a></td>
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <p></p>
+        <a href="{% url "bistrooapp_admin:category_create" %}">Lisa kategooria</a>
+    </div>
+
+{% endblock %}
