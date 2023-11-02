@@ -1,0 +1,15 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<h1>Menüü koostamine</h1>
+    <h1>Menu Categories</h1>
+    <ul>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Teema' %}">Add Sub Line</a> - Teema</li>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Soovitaja' %}">Add Sub Line</a> - Soovitaja</li>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Valmistaja' %}">Add Sub Line</a> - Valmistaja</li>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Supp' %}">Add Sub Line</a> - Supp</li>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Praad' %}">Add Sub Line</a> - Praad</li>
+        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Kaste' %}">Add Sub Line</a> - Kaste</li>
+    </ul>
+
+{% endblock %}

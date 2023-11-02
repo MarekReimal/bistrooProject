@@ -1,0 +1,26 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+    <h2>Lisa toit</h2>
+   <h2>Add Sub Line for {{ category }}</h2>
+    <form method="POST" action="{% url 'bistrooapp_admin:save_subline' %}">
+        {% csrf_token %}
+        <label for="menu_date">Kuupäev:</label>
+        <input type="date" name="menu_date" id="menu_date" required>
+        <br>
+        <input type="hidden" name="category_name" value="{{ category }}">
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description" required>
+        <br>
+        <label for="price_full">Price (Full):</label>
+        <input type="number" name="price_full" id="price_full" step="0.01" required>
+        <br>
+        <label for="price_half">Price (Half):</label>
+        <input type="number" name="price_half" id="price_half" step="0.01" required>
+        <br>
+        <input type="submit" value="Add">
+    </form>
+    <p></p>
+    <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+
+{% endblock %}

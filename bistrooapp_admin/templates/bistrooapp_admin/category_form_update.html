@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+    {# Vaatel saab muuta kategooriat #}
+	<div>
+        <h3>Muuda kategooria <span class="fw-bold">{{ category.category_name }}</span></h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }} {# vormindab vaate #}
+            <input type="submit" value="Muuda   " class="btn btn-success mt-2"> {# sisestus nupp #}
+            </form>
+    </div>
+
+{% endblock %}
