@@ -1,14 +1,18 @@
 {% extends "base_admin.html" %}
 
 {% block content %}
-    <h2>Lisa toit</h2>
-   <h2>Add Sub Line for {{ category }}</h2>
+    <h2>Lisa {{ categoryus }}</h2>
+
     <form method="POST" action="{% url 'bistrooapp_admin:save_subline' %}">
         {% csrf_token %}
         <label for="menu_date">Kuupäev:</label>
         <input type="date" name="menu_date" id="menu_date" required>
         <br>
-        <input type="hidden" name="category_name" value="{{ category }}">
+
+        <input type="hidden" name="category_name" value="{{ categoryus }}">
+        {# kategooria väli on peidetud, kuid väärtus antakse kaasa,  #}
+        {# categoryus väärtus tuleb view add_subline #}
+
         <label for="description">Description:</label>
         <input type="text" name="description" id="description" required>
         <br>
@@ -22,5 +26,19 @@
     </form>
     <p></p>
     <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+
+
+    <script>
+    $(document).ready(function () {
+        // Get the stored picked date from localStorage
+        var pickedDate = sessionStorage.getItem('pickedDate');
+
+        // Set the picked date as the value for the hidden field
+        $('#menu_date').val(pickedDate);
+
+        // Clear the stored picked date in localStorage
+        //sessionStorage.removeItem('pickedDate');
+    });
+</script>
 
 {% endblock %}

@@ -1,15 +1,146 @@
 {% extends "base_admin.html" %}
 
+{# https://dev.to/anuragrana/for-loops-in-django-2jdi kuidas if kasutada #}
 {% block content %}
-<h1>Menüü koostamine</h1>
-    <h1>Menu Categories</h1>
-    <ul>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Teema' %}">Add Sub Line</a> - Teema</li>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Soovitaja' %}">Add Sub Line</a> - Soovitaja</li>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Valmistaja' %}">Add Sub Line</a> - Valmistaja</li>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Supp' %}">Add Sub Line</a> - Supp</li>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Praad' %}">Add Sub Line</a> - Praad</li>
-        <li><a href="{% url 'bistrooapp_admin:menuu_create' category='Kaste' %}">Add Sub Line</a> - Kaste</li>
-    </ul>
+
+    {% load my_template_tag %} {# laeb custom tag vt fail my_template_tag.py #}
+    {# vt fail opetus.txt #}
+
+    <div class="mt-2">
+        <h3>Menüü koostamine</h3>
+    </div>
+
+    {# loob vasakusse äärde linkide tabeli #}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-2">
+            <form action="" method="post" id="kuupaevaForm">
+                    {% csrf_token %}
+                    {{ formike }} {# vt view def menuu_list, sealt tuleb #}
+                    {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
+                </form>
+            <p></p>
+                <!-- Left column for links -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="head_text">Kategooriad</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for category in categories %}
+                        <tr>
+                        <td>
+                            <li>
+                                <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}">Lisa {{ category.category_name }} </a>
+                                {# link annab kaasa toidu kategooria, et seda ei uuesti valima, toidu kategooriaks saab see kategooria  #}
+                            </li>
+                        </td>
+                    {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            {# loob paremasse osasse menüü read mis sisesestatud #}
+            <div class="col-md-10">
+
+                {% if menuu_items %} {# kui valitud kuupäeval on menüü DB's siis näita menüüd, else teade "Menüü puudub" #}
+                    <div style="text-align: center">
+                    <h4>{{ formatted_date }} Menüü</h4>
+                    </div>
+                    <table class="table table-bordered">
+
+                        {# abimuutuja isBreak on tehtud if lausetes kasutamiseks #}
+                        {% setval "False" as isBreak %}
+                        {% for category in categories %} {# loendab kategooriaid #}
+
+                            {% for menuu_item in menuu_items %} {# loendab menüü kirjeid #}
+                                {# kui true, siis loop ei tee, kui false siis teeb loop #}
+                                {% if isBreak == "True" %}
+                                    {# Do nothing -  kui true siis loop ei tee #}
+                                {% else %}
+                                    {# kui false siis loop kirjutab kategooria alamread ehk toidud selles kategoorias #}
+                                    {% if category.category_name == menuu_item.category_name.category_name %}
+                                        <thead>
+                                        <tr>
+                                            <td class="head_text">{{ category.category_name }}</td>
+                                            <td class="head_text">Hind</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for menuu_item in menuu_items %}
+                                            {% if menuu_item.category_name.category_name == category.category_name %}
+
+                                                <tr>
+                                                    <td>{{ menuu_item.description }}</td>
+                                                    {# toidu nimetus #}
+                                                    {# hinna töötlus #}
+                                                    {% if menuu_item.price_full and menuu_item.price_half == None %}
+                                                        <td>{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
+                                                    {% elif menuu_item.price_full == 0 and menuu_item.price_half == 0 %}
+                                                        <td>Prae hinnas</td>
+                                                        {# kui mõlemad hinnad 0 siis on prae hinnas #}
+                                                    {% else %}
+                                                        {# näitab mõlemat hinda kui mõlemad olemas #}
+                                                        <td>{{ menuu_item.price_full }}
+                                                            / {{ menuu_item.price_half }}</td>
+                                                    {% endif %}
+                                                </tr>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                        {% setval "True" as isBreak %}
+                                        {# kategooria kirjutas ära, et ei kordaks siis on Break #}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% setval "False" as isBreak %}
+                            {# järgmise kategooriaga on Break false ja kirjutab toidud kui on #}
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <div style="text-align: center">
+                        <h4 class="head_text">{{ formatted_date }} Menüü puudub</h4>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Get the date picker input element
+            var datePicker = $('#id_valitud_kp');
+
+            // Check if a date is stored in localStorage
+            var storedDate = sessionStorage.getItem('pickedDate');
+
+            // Kui sessionStorage on kuupäev olemas siis sea datePicer sellele kuupäevale
+           // if (storedDate) {
+             //   datePicker.val(storedDate);
+            //} else { // kui valitud kp ei ole siis kirjutab sessStorage vaikimisi tänase kuupäeva, see tuleb forms.py
+              //  sessionStorage.setItem('pickedDate', datePicker.val())
+            //}
+
+            // Attach an event listener to the date picker input
+            datePicker.change(function () {
+                // Get the selected date
+                var pickedDate = datePicker.val();
+
+                // Store the picked date in localStorage
+                sessionStorage.setItem('pickedDate', pickedDate);
+
+                var form = $('#kuupaevaForm'); // võtab formi
+                form.submit() // teeb submit kui kuupäev muudetakse
+
+
+            });
+        });
+    </script>
 
 {% endblock %}
+
