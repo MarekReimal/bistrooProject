@@ -10,17 +10,39 @@
         <h3>Menüü koostamine</h3>
     </div>
 
-    {# loob vasakusse äärde linkide tabeli #}
+    {# loob vasakusse äärde valikute osa #}
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-2">
+
+            {# loob kuupäeva vormi #}
             <form action="" method="post" id="kuupaevaForm">
                     {% csrf_token %}
                     {{ formike }} {# vt view def menuu_list, sealt tuleb #}
                     {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
-                </form>
+            </form>
             <p></p>
-                <!-- Left column for links -->
+
+            {# Joonistab pealkirjade lingid vasakusse äärde #}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="head_text">Pealkirjad</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>
+                            <li>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa pealkirjad </a>
+                                {# link pealkirjade sisestamiseks  #}
+                            </li>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                {# Joonistab töölingid vasakusse äärde #}
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -44,12 +66,20 @@
             </div>
 
 
-            {# loob paremasse osasse menüü read mis sisesestatud #}
+            {# joonistab paremasse osasse menüü tabeli #}
             <div class="col-md-10">
 
                 {% if menuu_items %} {# kui valitud kuupäeval on menüü DB's siis näita menüüd, else teade "Menüü puudub" #}
                     <div style="text-align: center">
                     <h4>{{ formatted_date }} Menüü</h4>
+                    </div>
+                    <div>
+                    hjdrtrsd
+                    {% if themes %}
+                        {{ themes.theme }}
+
+                    {% endif %}
+
                     </div>
                     <table class="table table-bordered">
 
@@ -111,13 +141,14 @@
         </div>
     </div>
 
+
     <script>
         $(document).ready(function () {
             // Get the date picker input element
             var datePicker = $('#id_valitud_kp');
 
             // Check if a date is stored in localStorage
-            var storedDate = sessionStorage.getItem('pickedDate');
+            //var storedDate = sessionStorage.getItem('pickedDate');
 
             // Kui sessionStorage on kuupäev olemas siis sea datePicer sellele kuupäevale
            // if (storedDate) {
@@ -129,10 +160,10 @@
             // Attach an event listener to the date picker input
             datePicker.change(function () {
                 // Get the selected date
-                var pickedDate = datePicker.val();
+                //var pickedDate = datePicker.val();
 
                 // Store the picked date in localStorage
-                sessionStorage.setItem('pickedDate', pickedDate);
+                //sessionStorage.setItem('pickedDate', pickedDate);
 
                 var form = $('#kuupaevaForm'); // võtab formi
                 form.submit() // teeb submit kui kuupäev muudetakse

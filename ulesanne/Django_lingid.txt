@@ -1,0 +1,85 @@
+https://stackoverflow.com/questions/6142025/dynamically-add-field-to-a-form
+
+https://www.letscodemore.com/blog/django-inline-formset-factory-with-examples/
+
+NEXT IS GOOD STEP BY STEP
+VAATA SEDA https://www.youtube.com/watch?v=OduVfuv44K8 Kõik on üks vorm, mis pole väga hea aga CBV ~2h
+https://www.youtube.com/watch?v=bHxfSAtlfB4 CSS stiilid formile
+SIIT SAAB MINGI VIHJE	https://github.com/veryacademy/YT_Inline_Formset_CBV_Ex1
+
+https://www.youtube.com/watch?v=JIvJL1HizP4 Part 1 of 2. views on funktsioonid. 
+https://www.youtube.com/watch?v=lWV177es1bE Part 2 of 2.
+	https://github.com/PrettyPrinted/youtube_video_code/tree/master/2019/01/01/Using%20the%20Inline%20Form%20Set%20Factory%20in%20Django%20(Part%201%20of%202)
+
+https://www.youtube.com/watch?v=KVq_DjIfnBo views on funktsioonid. Sisaldab HTMX ja TAILWIND CSS. ADMIN simple!!
+	https://github.com/justdjango/django_htmx_dynamic_forms	
+	https://justdjango.com/blog/dynamic-forms-in-django-htmx
+
+Django 1.0! https://www.b-list.org/weblog/2008/nov/09/dynamic-forms/
+
+
+Pühapäeval:
+
+https://simpleit.rocks/python/django/forms/using-formsets-with-django-cbv-generic-views/ --> 4 Jul, 2019
+https://medium.com/all-about-django/adding-forms-dynamically-to-a-django-formset-375f1090c2b0 --> Jul 11, 2017
+
+
+https://kevindias.com/writing/django-class-based-views-multiple-inline-formsets/ --> 08 July 2013
+
+
+https://www.youtube.com/watch?v=Tg6Ft_ZV19M formset.js fail PIKK! Kahe formi muutmine samaaegselt
+	https://github.com/shitalluitel/formset DJANGO On 1.0
+
+LUGEDA: clean_<field>()
+https://sayari3.com/articles/12-understand-clean-and-clean_fieldname-in-django/
+
+https://stackoverflow.com/questions/31691041/how-do-you-make-django-decimal-field-widgets-numberinput-increment-differently
+
+https://www.letscodemore.com/blog/how-to-add-custom-form-with-validations-in-django-inline-admin/
+
+https://stackoverflow.com/questions/75151581/how-to-place-inline-formsets-form-fields-manually-in-django-templates-and-i-want
+
+VÕIKS AIDATA: VAATA SEDA https://vegibit.com/django-forms-and-formsets/
+https://medium.com/all-about-django/adding-forms-dynamically-to-a-django-formset-375f1090c2b0
+https://dev.to/zxenia/django-inline-formsets-with-class-based-views-and-crispy-forms-14o6
+
+HTMX ja formset https://www.youtube.com/watch?app=desktop&v=KVq_DjIfnBo
+
+
+https://github.com/adandan01/mybook
+
+
+HELPFULL https://stackoverflow.com/questions/66876449/how-do-i-properly-implement-django-formsets-with-a-createview-class-based-view --> 30.03.2021
+https://romanvm.pythonanywhere.com/post/formsets-django-class-based-views-35/
+
+
+TEOORIA kontot vaja: https://python.plainenglish.io/mastering-djangos-class-based-views-a-guide-for-the-experienced-developer-1fcd321d2d70
+LIHTNE TEOORIA: https://websitehurdles.com/connect-forms-models-django/
+
+https://micropyramid.com/blog/how-to-use-nested-formsets-in-django --> 2022-07-25
+??? https://github.com/mchesler613/django_adventures/blob/main/multi-modelforms_in_template.md  --> 07.11.2012
+For loop numbri väljad klassis https://stackoverflow.com/questions/65870482/multiple-models-in-django-form --> 25.01.2021
+
+https://techincent.com/explained-django-inline-formset-factory-with-example/ --> 08/06/2021
+
+Võib aidata https://github.com/philgyford/django-nested-inline-formsets-example 16.02.2023
+
+https://stackoverflow.com/questions/501719/dynamically-adding-a-form-to-a-django-formset  2009
+
+TEOORIA https://www.ericsdevblog.com/posts/working-with-django-forms/
+
+empty_form https://stackoverflow.com/questions/53205577/add-forms-in-formset-with-django-and-js
+empty_form https://simpleit.rocks/python/django/dynamic-add-form-with-add-button-in-django-modelformset-template/#overview
+
+
+On ka video https://blog.benoitblanchon.fr/django-htmx-toasts/
+
+
+
+
+
+
+
+
+How to Deploy a Django Project
+https://www.ericsdevblog.com/posts/how-to-deploy-a-django-project/

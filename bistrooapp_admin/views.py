@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
-from bistrooapp_admin.models import Category, Menuu
+from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -60,23 +60,36 @@ class CategoryUpdateView(UpdateView):
 
 
 def menuu_list(request):
+    # tegeleb töölaua kuvamisega
+
     # Loob muutujad andmete saatmiseks html-le mõlemast mudelist
     categories = Category.objects.all()
-    menuu_items = Menuu.objects.all()
+    theme = Theme.objects.all()
+    # menuu_items = Menuu.objects.all() ei kasuta
 
-    if request.session.get('menu_date'):
-        valitud_kp = request.session.get('menu_date')
-        del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
-    elif request.method == "POST":
+    if request.method == "POST":
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
         valitud_kp = request.POST.get("valitud_kp")
-        #print("MINU KUUPÄEV ", valitud_kp)  # testimiseks
+        # print("MINU KUUPÄEV ", valitud_kp)  # testimiseks
+        request.session['menu_date'] = valitud_kp # kirjutab kuupäeva mällu
+        print("KUUPÄEV POST")
+    elif request.session.get("menu_date"):
+        valitud_kp = request.session.get('menu_date')
+        # del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
+        print("KUUPÄEV SESSION")
     else:
         valitud_kp = datetime.today()
+        request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu
+        print("KUUPÄEV ELSE")
+
+    #if request.session.get("menu_date"):
+    # print("SESSIOONI KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
 
     # teeb päringu DB, võtab menüü valitud kuupäeva järgi
-    q_result = Menuu.objects.filter(menu_date=valitud_kp)
-    # print("Q_RESULT ", q_result)  # testimiseks
+    q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
+    q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
+    print("Q_RESULT_MENUU ", q_result_menuu)  # testimiseks
+    print("Q_RESULT_THEME ", q_result_theme)  # testimiseks
 
     if isinstance(valitud_kp, str):  # kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
@@ -84,10 +97,10 @@ def menuu_list(request):
         kp_obj = datetime.strptime(valitud_kp, "%Y-%m-%d")
         # Format the date as desired (14.11.2023)
         formatted_date = kp_obj.strftime("%d.%m")
-        default_date = kp_obj.strftime("%Y-%m-%d")
+        default_date = kp_obj.strftime("%Y-%m-%d") #  "%Y-%m-%d"
     else:
         formatted_date = valitud_kp.strftime("%d.%m")
-        default_date = valitud_kp.strftime("%Y-%m-%d")
+        default_date = valitud_kp.strftime("%Y-%m-%d") # "%Y-%m-%d"
 
     # loob obj form.py loodud kuupäeva vormile, vt form.py
     datePicker = CurrentDate(initial={"valitud_kp": default_date})  # määrab vaikimisi värtuse
@@ -95,7 +108,8 @@ def menuu_list(request):
     # Create a context dictionary with the data, andmed saadetakse html lehele
     context = {
         'categories': categories,
-        'menuu_items': q_result,
+        'menuu_items': q_result_menuu,
+        'themes': q_result_theme,
         'formike': datePicker, # form'i nimetus määratud, form loodud forms.py
         'formatted_date':  formatted_date
     }
@@ -103,12 +117,25 @@ def menuu_list(request):
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 
 
-def add_subline(request, category):
-    # funkts parameetri category kaudu võetakse vastu category väärtus, saadetakse formile key categoryus, vt menuu_create.html
-    return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category})
+def add_subline(request, category): #
+    # töötleb menuu_create.html
+    # vaade toidu sisestamiseks
+    valitud_kp = request.session.get('menu_date')
 
+    # funkts parameetri category kaudu võetakse vastu category väärtus, saadetakse formile key categoryus, vt menuu_create.html
+    return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category, 'valitud_kpius': valitud_kp})
+
+def add_theme(request):
+    # vaade pealkirjade sisestamiseks
+    # vaade theme_create.html
+    valitud_kp = request.session.get("menu_date")
+    return render(request, 'bistrooapp_admin/theme_create.html', {'valitud_kpius': valitud_kp})
 
 def save_subline(request):
+    # tegeleb vormilt toitude salvestamisega mudelisse
+    # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
+    # ehk siis see on abi funktsioon andmete salvestamiseks
+
     if request.method == 'POST':
         menu_date = request.POST.get("menu_date")
         cat = request.POST.get('category_name')
@@ -131,5 +158,56 @@ def save_subline(request):
 
         # salvestab vormiga saadetud kp sessiooni mällu, nii saab seda kuupäeva kasutada menuu_list
         request.session['menu_date']=menu_date
+
+    return redirect('bistrooapp_admin:menuu_list')
+
+def save_theme(request):
+    # tegeleb vormilt toitude salvestamisega mudelisse
+    # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
+    # ehk siis see on abi funktsioon andmete salvestamiseks
+
+    if request.method == "POST":
+        menu_date = request.POST.get("menu_date")
+        theme = request.POST.get("theme")
+        recommenders = request.POST.get("recommenders")
+        author = request.POST.get("author")
+
+    # andmete DB kirjutamine
+    theme_instance, created = Theme.objects.get_or_create(
+        # kontrollib kas kuupäev on tabelis
+        menu_date=menu_date,
+        # kui kuupäev ei ole tabelis siis kirjutab andmed DB
+        defaults={"theme": theme, "recommenders": recommenders, "author": author})
+    # kontroll, kui created=False siis kirjutab andmed üle. created=False on siis kui andmed olid olemas ja uut ei lisatud
+    if not created:
+        theme_instance.theme = theme
+        theme_instance.recommenders = recommenders
+        theme_instance.author = author
+        theme_instance.save()
+
+    """
+    ChatGPT
+    The get_or_create method in Django returns a tuple of two values: the object retrieved or
+     created (theme_instance in this case) and a boolean value (created) indicating whether the
+      object was created (True) or retrieved from the database (False).
+
+    theme_instance: This variable holds the retrieved or newly created object from the database. 
+    If an object with the specified parameters (in this case, menu_date) already exists, 
+    theme_instance will contain that object. If not, it will hold the newly created object.
+    
+    created: This boolean variable indicates whether the object was newly created (True) or already 
+    existed in the database (False). It helps differentiate between the creation and retrieval of the object 
+    based on the provided parameters.
+    """
+
+    return redirect("bistrooapp_admin:menuu_list")
+
+def lahtesta(request):
+
+    #request.session['menu_date'] = None
+    #print("SESSIOONI lahtesta KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
+
+    if 'menu_date' in request.session:
+        del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
 
     return redirect('bistrooapp_admin:menuu_list')

@@ -6,10 +6,11 @@ from django import forms
 
 class DateInput(forms.DateInput):
     input_type = 'date'
+    format = '%d.%m.%Y'  # Define the desired date format
 
 
 class CurrentDate(forms.Form):
-    valitud_kp = forms.DateField(widget=DateInput, label="Menüü kuupäev")  # , initial=datetime.now()
+    valitud_kp = forms.DateField(widget=DateInput, input_formats=['%d.%m.%Y'], label="Menüü kuupäev")  # , initial=datetime.now()
 
 '''
     def clean_valitud_kp(self):

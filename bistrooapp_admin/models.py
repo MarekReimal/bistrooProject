@@ -25,3 +25,16 @@ class Menuu(models.Model):
 
     def __str__(self):  # et ei näitaks nimesid mitte objekt 1, objekt 2 jne
         return f'{self.description}'  # näitab ühte veergu loetava nimega
+
+class Theme(models.Model):
+    menu_date = models.DateField(unique=True)
+    theme = models.CharField(max_length=255)
+    recommenders = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    class Meta:
+        ordering = ["-menu_date"] # sorteerib kahanevalt
+        #unique_together = "menu_date" # https://www.letscodemore.com/blog/django-get-or-create/
+
+    def __str__(self):
+        return f'{self.theme}'
+

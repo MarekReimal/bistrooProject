@@ -6,7 +6,7 @@
     <form method="POST" action="{% url 'bistrooapp_admin:save_subline' %}">
         {% csrf_token %}
         <label for="menu_date">Kuupäev:</label>
-        <input type="date" name="menu_date" id="menu_date" required>
+        <input type="date" name="menu_date" id="menu_date" value="{{ valitud_kpius }}" required>
         <br>
 
         <input type="hidden" name="category_name" value="{{ categoryus }}">
@@ -27,7 +27,7 @@
     <p></p>
     <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
 
-
+<!--
     <script>
     $(document).ready(function () {
         // Get the stored picked date from localStorage
@@ -40,5 +40,6 @@
         //sessionStorage.removeItem('pickedDate');
     });
 </script>
+    -->
 
 {% endblock %}
