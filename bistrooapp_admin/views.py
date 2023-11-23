@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate
+from .forms import CurrentDate, ThemeForm
 
 
 # Create your views here.
@@ -64,8 +64,6 @@ def menuu_list(request):
 
     # Loob muutujad andmete saatmiseks html-le mõlemast mudelist
     categories = Category.objects.all()
-    theme = Theme.objects.all()
-    # menuu_items = Menuu.objects.all() ei kasuta
 
     if request.method == "POST":
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
@@ -125,7 +123,20 @@ def add_subline(request, category): #
     # funkts parameetri category kaudu võetakse vastu category väärtus, saadetakse formile key categoryus, vt menuu_create.html
     return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category, 'valitud_kpius': valitud_kp})
 
+
 def add_theme(request):
+    # vaade pealkirjade sisestamiseks
+    # vaade theme_create.html
+    valitud_kp = request.session.get("menu_date")
+    theme_formike = ThemeForm(initial={"menu_date":valitud_kp})
+    if request.method == "POST":
+        form = ThemeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("bistrooapp_admin:menuu_list")
+    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike":theme_formike})
+
+def add_theme_ei_kasuta(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
     valitud_kp = request.session.get("menu_date")
@@ -161,7 +172,9 @@ def save_subline(request):
 
     return redirect('bistrooapp_admin:menuu_list')
 
-def save_theme(request):
+
+
+def save_theme_ei_kasuta(request):
     # tegeleb vormilt toitude salvestamisega mudelisse
     # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
     # ehk siis see on abi funktsioon andmete salvestamiseks
@@ -171,6 +184,12 @@ def save_theme(request):
         theme = request.POST.get("theme")
         recommenders = request.POST.get("recommenders")
         author = request.POST.get("author")
+
+        # vormindab suured tähed enne salvestamist
+        theme = theme.upper()
+        recommenders = recommenders.upper()
+        author = author.upper()
+
 
     # andmete DB kirjutamine
     theme_instance, created = Theme.objects.get_or_create(

@@ -1,0 +1,16 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+    <h2>Lisa menüü pealkirjad</h2>
+
+
+    <form method="post" action={% url "bistrooapp_admin:add_theme" %}>
+    {% csrf_token %}
+    {{ theme_formike.as_p }}
+        <input type="submit" value="Add">
+    </form>
+    <p></p>
+    <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+
+
+{% endblock %}

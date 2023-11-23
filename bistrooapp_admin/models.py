@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # Create your models here.
@@ -28,9 +29,9 @@ class Menuu(models.Model):
 
 class Theme(models.Model):
     menu_date = models.DateField(unique=True)
-    theme = models.CharField(max_length=255)
-    recommenders = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
+    theme = models.CharField(max_length=255, blank=True)
+    recommenders = models.CharField(max_length=255, blank=True)
+    author = models.CharField(max_length=255, blank=True)
     class Meta:
         ordering = ["-menu_date"] # sorteerib kahanevalt
         #unique_together = "menu_date" # https://www.letscodemore.com/blog/django-get-or-create/
@@ -38,3 +39,6 @@ class Theme(models.Model):
     def __str__(self):
         return f'{self.theme}'
 
+    def clean(self):
+        if not self.theme or not self.recommenders:
+            raise ValidationError("Üks kahest on puudu")

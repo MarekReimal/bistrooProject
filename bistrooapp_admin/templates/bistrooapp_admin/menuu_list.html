@@ -34,7 +34,7 @@
                         <tr>
                         <td>
                             <li>
-                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa pealkirjad </a>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa / muuda </a>
                                 {# link pealkirjade sisestamiseks  #}
                             </li>
                         </td>
@@ -73,12 +73,38 @@
                     <div style="text-align: center">
                     <h4>{{ formatted_date }} Menüü</h4>
                     </div>
-                    <div>
-                    hjdrtrsd
-                    {% if themes %}
-                        {{ themes.theme }}
 
-                    {% endif %}
+                    {# joonistab pealkirjad #}
+                    <div style="text-align: center">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                {% if themes.0.theme %}
+                                	{{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
+                                    {% else %}
+                                    Teemapäev puudub
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if themes.0.recommenders %}
+                                	{{ themes.0.recommenders }} {#  #}
+                                    {% else %}
+                                    Soovitajad puuduvad
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if themes.0.author %}
+                                	{{ themes.0.author }} {#  #}
+                                    {% else %}
+                                    Autorid puuduvad
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
 
                     </div>
                     <table class="table table-bordered">
@@ -141,7 +167,7 @@
         </div>
     </div>
 
-
+{# script teeb submit, kui kuupäev valitakse #}
     <script>
         $(document).ready(function () {
             // Get the date picker input element
