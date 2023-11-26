@@ -33,8 +33,8 @@ class CategoryCreateView(CreateView):
 
 class CategoryDeleteView(DeleteView):
     def get(self, request, pk):
-        category = Category.objects.get(pk=pk)
-        category.delete()
+        category = Category.objects.get(pk=pk)  # võtab modelist vastava kategooria obj
+        category.delete()  # kustutab elemendi
 
         # Set a success message
         messages.error(request, f"Kustutati kategooria \"{category.category_name}\".")
@@ -127,14 +127,17 @@ def add_subline(request, category): #
 def add_theme(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
+
+    # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
-    theme_formike = ThemeForm(initial={"menu_date":valitud_kp})
+    # loob form obj ja annab kuupäeva väärtuse kaasa
+    theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
     if request.method == "POST":
-        form = ThemeForm(request.POST)
-        if form.is_valid():
-            form.save()
+        theme_formike = ThemeForm(request.POST)
+        if theme_formike.is_valid():
+            theme_formike.save()
             return redirect("bistrooapp_admin:menuu_list")
-    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike":theme_formike})
+    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
 
 def add_theme_ei_kasuta(request):
     # vaade pealkirjade sisestamiseks

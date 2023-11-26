@@ -1,7 +1,31 @@
 {% extends "base_admin.html" %}
 
 {% block content %}
+    <style> {# vormindab error teate, Django paneb errori <ul class="errorlist nonfield"> #}
+    {# display: none; keelab vaikimisi veateate näitamise, töötab ainult all olev if theme_formike.non_field_errors #}
+    ul.errorlist li {
+        display: none;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 8px 12px;
+        border-radius: 4px;
+    }
+
+    </style>
+
     <h2>Lisa menüü pealkirjad</h2>
+
+    {% if theme_formike.non_field_errors %} {# kuvab veateate <p> vormingus, muidu oleks <li> #}
+    <div class="alert alert-danger">
+        <p>Error(s) occurred:</p>
+        {% for error in theme_formike.non_field_errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
 
 
     <form method="post" action={% url "bistrooapp_admin:add_theme" %}>

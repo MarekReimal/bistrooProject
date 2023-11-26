@@ -69,7 +69,7 @@
             {# joonistab paremasse osasse menüü tabeli #}
             <div class="col-md-10">
 
-                {% if menuu_items %} {# kui valitud kuupäeval on menüü DB's siis näita menüüd, else teade "Menüü puudub" #}
+                {% if menuu_items or themes %} {# kui valitud kuupäeval on menüü DB's siis näita menüüd, else teade "Menüü puudub" #}
                     <div style="text-align: center">
                     <h4>{{ formatted_date }} Menüü</h4>
                     </div>
