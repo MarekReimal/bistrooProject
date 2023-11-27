@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 from bistrooapp_admin.models import Category, Menuu, Theme
@@ -124,27 +124,6 @@ def add_subline(request, category): #
     return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category, 'valitud_kpius': valitud_kp})
 
 
-def add_theme(request):
-    # vaade pealkirjade sisestamiseks
-    # vaade theme_create.html
-
-    # võtab jooksva kuupäeva sessiooni mälust
-    valitud_kp = request.session.get("menu_date")
-    # loob form obj ja annab kuupäeva väärtuse kaasa
-    theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
-    if request.method == "POST":
-        theme_formike = ThemeForm(request.POST)
-        if theme_formike.is_valid():
-            theme_formike.save()
-            return redirect("bistrooapp_admin:menuu_list")
-    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
-
-def add_theme_ei_kasuta(request):
-    # vaade pealkirjade sisestamiseks
-    # vaade theme_create.html
-    valitud_kp = request.session.get("menu_date")
-    return render(request, 'bistrooapp_admin/theme_create.html', {'valitud_kpius': valitud_kp})
-
 def save_subline(request):
     # tegeleb vormilt toitude salvestamisega mudelisse
     # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
@@ -175,12 +154,48 @@ def save_subline(request):
 
     return redirect('bistrooapp_admin:menuu_list')
 
+def add_theme(request):
+    # vaade pealkirjade sisestamiseks
+    # vaade theme_create.html
+
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
+    # loob form obj ja annab kuupäeva väärtuse kaasa
+    theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
+    if request.method == "POST":
+        theme_formike = ThemeForm(request.POST)
+        if theme_formike.is_valid():
+            theme_formike.save()
+            return redirect("bistrooapp_admin:menuu_list")
+    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
+
+def update_theme(request, theme_id):
+    theme_instance = get_object_or_404(Theme, theme_id)
+    # kirjuta siia view update jaoks
+
+def lahtesta(request):
+
+    #request.session['menu_date'] = None
+    #print("SESSIOONI lahtesta KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
+
+    if 'menu_date' in request.session:
+        del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
+
+    return redirect('bistrooapp_admin:menuu_list')
+
+
+def add_theme_ei_kasuta(request):
+    # vaade pealkirjade sisestamiseks
+    # vaade theme_create.html
+    valitud_kp = request.session.get("menu_date")
+    return render(request, 'bistrooapp_admin/theme_create.html', {'valitud_kpius': valitud_kp})
 
 
 def save_theme_ei_kasuta(request):
     # tegeleb vormilt toitude salvestamisega mudelisse
     # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
     # ehk siis see on abi funktsioon andmete salvestamiseks
+    # hea lahendus- võimaldab andmed üle kirjutada ja hoiab kuupäeva unikaalsena selliselt
 
     if request.method == "POST":
         menu_date = request.POST.get("menu_date")
@@ -192,7 +207,6 @@ def save_theme_ei_kasuta(request):
         theme = theme.upper()
         recommenders = recommenders.upper()
         author = author.upper()
-
 
     # andmete DB kirjutamine
     theme_instance, created = Theme.objects.get_or_create(
@@ -216,20 +230,10 @@ def save_theme_ei_kasuta(request):
     theme_instance: This variable holds the retrieved or newly created object from the database. 
     If an object with the specified parameters (in this case, menu_date) already exists, 
     theme_instance will contain that object. If not, it will hold the newly created object.
-    
+
     created: This boolean variable indicates whether the object was newly created (True) or already 
     existed in the database (False). It helps differentiate between the creation and retrieval of the object 
     based on the provided parameters.
     """
 
     return redirect("bistrooapp_admin:menuu_list")
-
-def lahtesta(request):
-
-    #request.session['menu_date'] = None
-    #print("SESSIOONI lahtesta KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
-
-    if 'menu_date' in request.session:
-        del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
-
-    return redirect('bistrooapp_admin:menuu_list')

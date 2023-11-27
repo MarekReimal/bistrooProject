@@ -20,7 +20,6 @@
 
     {% if theme_formike.non_field_errors %} {# kuvab veateate <p> vormingus, muidu oleks <li> #}
     <div class="alert alert-danger">
-        <p>Error(s) occurred:</p>
         {% for error in theme_formike.non_field_errors %}
             <p>{{ error }}</p>
         {% endfor %}

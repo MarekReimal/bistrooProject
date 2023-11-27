@@ -36,3 +36,8 @@ class ThemeForm(forms.ModelForm):
             raise ValidationError("mingi jama on")
         return cleaned_data
     """
+
+class ThemeUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Theme
+        fields = ["theme", "recommenders", "author"]
