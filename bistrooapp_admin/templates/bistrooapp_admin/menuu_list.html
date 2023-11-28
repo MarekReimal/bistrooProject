@@ -77,15 +77,23 @@
                     {# joonistab pealkirjad #}
                     <div style="text-align: center">
                     <table class="table table-bordered">
+
                         <tr>
+                        {% if themes.0.theme %}
                             <td>
-                                {% if themes.0.theme %}
-                                	{{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
-                                    {% else %}
-                                    Teemapäev puudub
-                                {% endif %}
+                                {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
+                            <td>
+                            {# URL ei tööta #}
+                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=themes.id %}">Muuda</a>
+                            </td>
+                        {% else %}
+                            <td>
+                            Teemapäev puudubbbbb
+                            </td>
+                        {% endif %}
                         </tr>
+
                         <tr>
                             <td>
                                 {% if themes.0.recommenders %}

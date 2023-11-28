@@ -5,6 +5,8 @@
     {# display: none; keelab vaikimisi veateate näitamise, töötab ainult all olev if theme_formike.non_field_errors #}
     ul.errorlist li {
         display: none;
+
+    {# all olevaid ei kasuta #}
         margin-bottom: 5px;
         font-size: 14px;
         color: #721c24;
@@ -30,7 +32,7 @@
     <form method="post" action={% url "bistrooapp_admin:add_theme" %}>
     {% csrf_token %}
     {{ theme_formike.as_p }}
-        <input type="submit" value="Add">
+        <input type="submit" value="Lisa">
     </form>
     <p></p>
     <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>

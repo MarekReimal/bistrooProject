@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm
+from .forms import CurrentDate, ThemeForm, ThemeUpdateForm
 
 
 # Create your views here.
@@ -170,8 +170,23 @@ def add_theme(request):
     return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
 
 def update_theme(request, theme_id):
+    # 1. meetod võtab modelist obj ja kuvab vormi selle obj andmetega
+    # 2. kui kasutaja sisestab vormi, siis POST ja vormilt andmed salvestatakse
+
+    # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
     theme_instance = get_object_or_404(Theme, theme_id)
-    # kirjuta siia view update jaoks
+    # kui andmeid sisestati siis
+    if request.method == "POST":
+        # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
+        theme_up_form = ThemeUpdateForm(request.POST, instance=theme_instance)
+        if theme_up_form.is_valid():
+            # kui andmed ok siis kirjutab mällu
+            theme_up_form.save()
+            return redirect("bistrooapp_admin:menuu_list")
+    else:
+        theme_up_form = ThemeUpdateForm(instance=theme_instance)
+
+    return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form})
 
 def lahtesta(request):
 

@@ -18,7 +18,7 @@ urlpatterns = [
     path('add_subline/<str:category>/', views.add_subline, name='add_subline'),
     path('save_subline/', views.save_subline, name='save_subline'),
     path('add_theme/', views.add_theme, name='add_theme'),
-    #path('save_theme/', views.save_theme, name='save_theme'),
+    path("update_theme/<int:theme_id>", views.update_theme, name="update_theme"),
 
     path('lahtesta/', views.lahtesta, name='lahtesta'), # kustutab sessioonist kp
 ]
