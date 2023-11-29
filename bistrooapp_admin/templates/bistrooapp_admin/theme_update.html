@@ -4,7 +4,7 @@
 	{# vaatel saab muuta-update menüü pealkirju #}
     <div>
     <h3>Muuda pealkiri</h3>
-        <form method="post" action={% url "bistrooapp_admin:update_theme" %}>
+        <form method="post" action={% url "bistrooapp_admin:update_theme" theme_id=theme_id %}>
             {% csrf_token %}
             {{ theme_up_form.as_p }}
             <input type="submit" value="Muuda">

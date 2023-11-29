@@ -34,7 +34,7 @@
                         <tr>
                         <td>
                             <li>
-                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa / muuda </a>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa </a>
                                 {# link pealkirjade sisestamiseks  #}
                             </li>
                         </td>
@@ -85,7 +85,7 @@
                             </td>
                             <td>
                             {# URL ei tööta #}
-                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=themes.id %}">Muuda</a>
+                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
                             </td>
                         {% else %}
                             <td>

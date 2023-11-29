@@ -89,6 +89,11 @@ def menuu_list(request):
     print("Q_RESULT_MENUU ", q_result_menuu)  # testimiseks
     print("Q_RESULT_THEME ", q_result_theme)  # testimiseks
 
+    theme_id = None
+    if q_result_theme.exists():
+        theme_id = q_result_theme.first().id
+    print("THEME ID", theme_id)
+
     if isinstance(valitud_kp, str):  # kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
         # Convert the string date to a datetime object
@@ -109,7 +114,8 @@ def menuu_list(request):
         'menuu_items': q_result_menuu,
         'themes': q_result_theme,
         'formike': datePicker, # form'i nimetus määratud, form loodud forms.py
-        'formatted_date':  formatted_date
+        'formatted_date':  formatted_date,
+        'theme_id': theme_id
     }
 
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
@@ -174,7 +180,7 @@ def update_theme(request, theme_id):
     # 2. kui kasutaja sisestab vormi, siis POST ja vormilt andmed salvestatakse
 
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
-    theme_instance = get_object_or_404(Theme, theme_id)
+    theme_instance = get_object_or_404(Theme, id=theme_id)
     # kui andmeid sisestati siis
     if request.method == "POST":
         # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
@@ -186,7 +192,9 @@ def update_theme(request, theme_id):
     else:
         theme_up_form = ThemeUpdateForm(instance=theme_instance)
 
-    return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form})
+    print("UPDATE THEME THEME ID", theme_id)
+
+    return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form, "theme_id": theme_id})
 
 def lahtesta(request):
 
