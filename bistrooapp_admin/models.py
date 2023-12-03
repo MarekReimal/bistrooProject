@@ -39,6 +39,13 @@ class Theme(models.Model):
     def __str__(self):
         return f'{self.theme}'
 
-    def clean(self): # ei lase ainult autorit sisestada
-        if not self.theme or not self.recommenders:
+    def clean(self):  # ei lase ainult autorit sisestada
+
+        if (self.theme is not None and self.recommenders is None) or (self.recommenders is not None and self.theme is None):
             raise ValidationError("Üks kahest on puudu")
+
+
+"""
+if (self.theme is not None and self.recommenders is None) or (self.recommenders is not None and self.theme is None):
+ #if not self.theme or not self.recommenders
+"""

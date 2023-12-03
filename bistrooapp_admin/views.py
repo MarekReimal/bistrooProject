@@ -92,7 +92,7 @@ def menuu_list(request):
     theme_id = None
     if q_result_theme.exists():
         theme_id = q_result_theme.first().id
-    print("THEME ID", theme_id)
+    print("THEME ID mnuu_list", theme_id)
 
     if isinstance(valitud_kp, str):  # kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
@@ -163,16 +163,45 @@ def save_subline(request):
 def add_theme(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
+    # on kaks juhtumit
+    # kasutaja tahab lisada ja andme obj selle kuupäevaga veel ei ole, siis sisestatakse uus rida
+    # kasutaja tahab lisada aga selle kuupäevaga rida on juba olemas, selleks kontroll kas kp on
+    # kui kp rida on, siis võtab obj id ja teeb nagu andmete update, kasutajale näidatakse vormi andmetega mis olid olemas
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
-    # loob form obj ja annab kuupäeva väärtuse kaasa
-    theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
+
+    # valik kas kuvada tühi vorm või täidetud vorm
+    if not Theme.objects.filter(menu_date=valitud_kp).exists():  # kas kp obj on olemas
+        # loob form obj ja annab kuupäeva väärtuse kaasa
+        theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
+    else:
+        theme_id = Theme.objects.get(menu_date=valitud_kp).id  # võta kp obj id
+        print("ADD THEME theme_id valitud_kp ", theme_id)
+        # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
+        theme_instance = get_object_or_404(Theme, id=theme_id)
+        theme_formike = ThemeForm(instance=theme_instance)  # loob vormi obj eeltäidetud
+        print("THEME_FORMIKE ", theme_formike)
+
     if request.method == "POST":
-        theme_formike = ThemeForm(request.POST)
-        if theme_formike.is_valid():
-            theme_formike.save()
-            return redirect("bistrooapp_admin:menuu_list")
+        print(request.POST)
+        menu_date = request.POST.get("menu_date")
+        if not Theme.objects.filter(menu_date=menu_date).exists():  # kui rida ei ole DB's
+            theme_formike = ThemeForm(request.POST)
+            if theme_formike.is_valid():
+                print("THEME_FORMIKE IS_VALID ")
+                theme_formike.save()
+                return redirect("bistrooapp_admin:menuu_list")
+        else:
+            # võtab olemas oleva rea id
+            theme_id = Theme.objects.get(menu_date=menu_date).id
+            print("ADD THEME theme_id ", theme_id)
+            theme_instance = get_object_or_404(Theme, id=theme_id)
+            theme_formike = ThemeForm(request.POST, instance=theme_instance)
+            if theme_formike.is_valid():
+                # kui andmed ok siis kirjutab mällu
+                theme_formike.save()
+                return redirect("bistrooapp_admin:menuu_list")
     return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
 
 def update_theme(request, theme_id):
@@ -207,6 +236,7 @@ def lahtesta(request):
     return redirect('bistrooapp_admin:menuu_list')
 
 
+"""
 def add_theme_ei_kasuta(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
@@ -244,7 +274,8 @@ def save_theme_ei_kasuta(request):
         theme_instance.author = author
         theme_instance.save()
 
-    """
+
+    
     ChatGPT
     The get_or_create method in Django returns a tuple of two values: the object retrieved or
      created (theme_instance in this case) and a boolean value (created) indicating whether the
@@ -257,6 +288,7 @@ def save_theme_ei_kasuta(request):
     created: This boolean variable indicates whether the object was newly created (True) or already 
     existed in the database (False). It helps differentiate between the creation and retrieval of the object 
     based on the provided parameters.
-    """
-
+    
     return redirect("bistrooapp_admin:menuu_list")
+    
+    """
