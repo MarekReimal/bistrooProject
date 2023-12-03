@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -49,16 +49,6 @@ class CategoryUpdateView(UpdateView):
     success_url = reverse_lazy("bistrooapp_admin:category")
 
 
-#class MenuuListView(ListView):
- #   template_name = "bistrooapp_admin/menuu_list.html"
-  #  model = Menuu
-
-   # def get_context_data(self, **kwargs):
-    #    context = super().get_context_data(**kwargs)
-     #   context['categories'] = Category.objects.all()  # Retrieve all Category instances
-      #  return context
-
-
 def menuu_list(request):
     # tegeleb töölaua kuvamisega
 
@@ -68,17 +58,13 @@ def menuu_list(request):
     if request.method == "POST":
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
         valitud_kp = request.POST.get("valitud_kp")
-        # print("MINU KUUPÄEV ", valitud_kp)  # testimiseks
         request.session['menu_date'] = valitud_kp # kirjutab kuupäeva mällu
-        print("KUUPÄEV POST")
-    elif request.session.get("menu_date"):
+    elif request.session.get("menu_date"):  # kui kuupäev olemas mälus siis vali see
         valitud_kp = request.session.get('menu_date')
         # del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
-        print("KUUPÄEV SESSION")
-    else:
+    else:  # muul juhul on tänane kuupäev
         valitud_kp = datetime.today()
         request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu
-        print("KUUPÄEV ELSE")
 
     #if request.session.get("menu_date"):
     # print("SESSIOONI KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
@@ -90,9 +76,8 @@ def menuu_list(request):
     print("Q_RESULT_THEME ", q_result_theme)  # testimiseks
 
     theme_id = None
-    if q_result_theme.exists():
+    if q_result_theme.exists():  # võta pealkirja id, vajalik CRUD linkidele
         theme_id = q_result_theme.first().id
-    print("THEME ID mnuu_list", theme_id)
 
     if isinstance(valitud_kp, str):  # kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
@@ -113,7 +98,7 @@ def menuu_list(request):
         'categories': categories,
         'menuu_items': q_result_menuu,
         'themes': q_result_theme,
-        'formike': datePicker, # form'i nimetus määratud, form loodud forms.py
+        'datePicker': datePicker, # form'i nimetus määratud, form loodud forms.py
         'formatted_date':  formatted_date,
         'theme_id': theme_id
     }
@@ -136,7 +121,7 @@ def save_subline(request):
     # ehk siis see on abi funktsioon andmete salvestamiseks
 
     if request.method == 'POST':
-        menu_date = request.POST.get("menu_date")
+        menu_date = request.session.get('menu_date')  #request.POST.get("menu_date")
         cat = request.POST.get('category_name')
         description = request.POST.get('description')
         price_full = request.POST.get('price_full')
@@ -175,29 +160,24 @@ def add_theme(request):
     if not Theme.objects.filter(menu_date=valitud_kp).exists():  # kas kp obj on olemas
         # loob form obj ja annab kuupäeva väärtuse kaasa
         theme_formike = ThemeForm(initial={"menu_date": valitud_kp})
-    else:
+    else:  # Kui andme obj olemas siis kuvab täidetud andmetega
         theme_id = Theme.objects.get(menu_date=valitud_kp).id  # võta kp obj id
-        print("ADD THEME theme_id valitud_kp ", theme_id)
         # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
         theme_instance = get_object_or_404(Theme, id=theme_id)
         theme_formike = ThemeForm(instance=theme_instance)  # loob vormi obj eeltäidetud
-        print("THEME_FORMIKE ", theme_formike)
 
     if request.method == "POST":
-        print(request.POST)
-        menu_date = request.POST.get("menu_date")
+        menu_date = request.POST.get("menu_date")  # võta kp
         if not Theme.objects.filter(menu_date=menu_date).exists():  # kui rida ei ole DB's
             theme_formike = ThemeForm(request.POST)
             if theme_formike.is_valid():
-                print("THEME_FORMIKE IS_VALID ")
-                theme_formike.save()
+                theme_formike.save()  # salvestab andmed POST'ist
                 return redirect("bistrooapp_admin:menuu_list")
-        else:
+        else:  # kui rida on olemas DB's
             # võtab olemas oleva rea id
             theme_id = Theme.objects.get(menu_date=menu_date).id
-            print("ADD THEME theme_id ", theme_id)
-            theme_instance = get_object_or_404(Theme, id=theme_id)
-            theme_formike = ThemeForm(request.POST, instance=theme_instance)
+            theme_instance = get_object_or_404(Theme, id=theme_id)  # võta id-le vastav obj
+            theme_formike = ThemeForm(request.POST, instance=theme_instance)  # init form
             if theme_formike.is_valid():
                 # kui andmed ok siis kirjutab mällu
                 theme_formike.save()
@@ -225,16 +205,49 @@ def update_theme(request, theme_id):
 
     return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form, "theme_id": theme_id})
 
-def lahtesta(request):
+def mytoday(request):
 
     #request.session['menu_date'] = None
     #print("SESSIOONI lahtesta KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
 
     if 'menu_date' in request.session:
         del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
-
+                                        # uus kp tekib menuu_list
     return redirect('bistrooapp_admin:menuu_list')
 
+
+def move_back(request):
+    if 'menu_date' in request.session:  # kui kp on olemas sess mälus
+        menu_date = request.session.get("menu_date")  # võta kp
+        kp_obj = datetime.strptime(menu_date, "%Y-%m-%d")  # vorminda obj
+        kp_obj = kp_obj - timedelta(days=1)  # arvuta eilne kp
+        menu_date = kp_obj.strftime("%Y-%m-%d")  # vorminda str
+        request.session['menu_date'] = menu_date  # kirjuta sess mällu
+    else:
+        kp = datetime.today() - timedelta(days=1)  # arvuta eilne kp
+        request.session['menu_date'] = kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu
+    return redirect('bistrooapp_admin:menuu_list')
+
+
+def move_forward(request):
+    if 'menu_date' in request.session:  # kui kp on olemas sess mälus
+        menu_date = request.session.get("menu_date")  # võta kp
+        kp_obj = datetime.strptime(menu_date, "%Y-%m-%d")  # vorminda obj
+        kp_obj = kp_obj + timedelta(days=1)  # arvuta homne kp
+        menu_date = kp_obj.strftime("%Y-%m-%d")  # vorminda str
+        request.session['menu_date'] = menu_date  # kirjuta sess mällu
+    else:  # kui kp ei ole sess mälus
+        kp = datetime.today() + timedelta(days=1)  # arvuta homne kp
+        request.session['menu_date'] = kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu
+    return redirect('bistrooapp_admin:menuu_list')
+
+
+def delete_author(request, theme_id):
+    theme_instance = Theme.objects.get(id=theme_id)
+    print("PULL ", theme_instance, "ID ", theme_id)
+    theme_instance.author = None
+    theme_instance.save()
+    return redirect('bistrooapp_admin:menuu_list')
 
 """
 def add_theme_ei_kasuta(request):

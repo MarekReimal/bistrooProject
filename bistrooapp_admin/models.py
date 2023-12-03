@@ -31,7 +31,7 @@ class Theme(models.Model):
     menu_date = models.DateField(unique=True)
     theme = models.CharField(max_length=255, blank=True)
     recommenders = models.CharField(max_length=255, blank=True)
-    author = models.CharField(max_length=255, blank=True)
+    author = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
         ordering = ["-menu_date"] # sorteerib kahanevalt
         #unique_together = "menu_date" # https://www.letscodemore.com/blog/django-get-or-create/

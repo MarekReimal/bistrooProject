@@ -14,13 +14,29 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td class="head_text">Menüü kuupäev</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {# loob kuupäeva vormi #}
+                            <form action="" method="post" id="kuupaevaForm">
+                                    {% csrf_token %}
+                                    {{ datePicker.as_p }} {# vt view def menuu_list, sealt tuleb #}
+                                    {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
+                            </form>
 
-            {# loob kuupäeva vormi #}
-            <form action="" method="post" id="kuupaevaForm">
-                    {% csrf_token %}
-                    {{ formike }} {# vt view def menuu_list, sealt tuleb #}
-                    {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
-            </form>
+                            <a href="{% url "bistrooapp_admin:move_back" %}">Tagasi</a>
+                            <a href="{% url "bistrooapp_admin:today" %}">Täna</a>
+                            <a href="{% url "bistrooapp_admin:move_forward" %}">Edasi</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <p></p>
 
             {# Joonistab pealkirjade lingid vasakusse äärde #}
@@ -33,10 +49,8 @@
                     <tbody>
                         <tr>
                         <td>
-                            <li>
-                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa </a>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa pealkirjad</a>
                                 {# link pealkirjade sisestamiseks  #}
-                            </li>
                         </td>
                         </tr>
                     </tbody>
@@ -54,13 +68,14 @@
                     {% for category in categories %}
                         <tr>
                         <td>
-                            <li>
+
                                 <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}">Lisa {{ category.category_name }} </a>
                                 {# link annab kaasa toidu kategooria, et seda ei uuesti valima, toidu kategooriaks saab see kategooria  #}
-                            </li>
+
                         </td>
+                        </tr>
                     {% endfor %}
-                    </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -84,33 +99,44 @@
                                 {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
                             <td>
-                            {# URL ei tööta #}
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
                             </td>
                         {% else %}
                             <td>
-                            Teemapäev puudubbbbb
+                            Teemapäev puudub
                             </td>
                         {% endif %}
                         </tr>
 
                         <tr>
+                        {% if themes.0.recommenders %}
                             <td>
-                                {% if themes.0.recommenders %}
-                                	{{ themes.0.recommenders }} {#  #}
-                                    {% else %}
-                                    Soovitajad puuduvad
-                                {% endif %}
+                                {{ themes.0.recommenders }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
+                            <td>
+                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
+                            </td>
+                        {% else %}
+                            <td>
+                            Soovitajad puuduvad
+                            </td>
+                        {% endif %}
                         </tr>
+
                         <tr>
+                        {% if themes.0.author %}
                             <td>
-                                {% if themes.0.author %}
-                                	{{ themes.0.author }} {#  #}
-                                    {% else %}
-                                    Autorid puuduvad
-                                {% endif %}
+                                {{ themes.0.author }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
+                            <td>
+                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
+                                <a href="{% url "bistrooapp_admin:delete_author" theme_id=theme_id %}" class="text-danger">Kustuta</a>
+                            </td>
+                        {% else %}
+                            <td>
+                            Autorid puuduvad
+                            </td>
+                        {% endif %}
                         </tr>
                     </table>
 

@@ -13,14 +13,17 @@ class DateInput(forms.DateInput):
 
 
 class CurrentDate(forms.Form):
-    valitud_kp = forms.DateField(widget=DateInput, input_formats=['%d.%m.%Y'],
-                                 label="Menüü kuupäev")  # , initial=datetime.now()
+    valitud_kp = forms.DateField(widget=DateInput, input_formats=['%d.%m.%Y'], label="")
+                                  # label="Menüü kuupäev" , initial=datetime.now()
 
 
 class ThemeForm(forms.ModelForm):
     class Meta:
         model = Theme
         fields = ["menu_date", "theme", "recommenders", "author"]
+        widgets = {
+            'menu_date': forms.HiddenInput(),  # Hide the menu_date field
+        }
 
     """
     vormi kontroll, teeb sama töö mis models.py class Theme(models.Model): def clean
