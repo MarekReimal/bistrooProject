@@ -245,9 +245,18 @@ def move_forward(request):
 def delete_author(request, theme_id):
     theme_instance = Theme.objects.get(id=theme_id)
     print("PULL ", theme_instance, "ID ", theme_id)
-    theme_instance.author = None
+    theme_instance.author = ''
     theme_instance.save()
     return redirect('bistrooapp_admin:menuu_list')
+
+
+def delete_theme(request, theme_id):
+    theme_instance = Theme.objects.get(id=theme_id)
+    print("PULL ", theme_instance, "ID ", theme_id)
+    theme_instance.theme = ''
+    theme_instance.save()
+    return redirect('bistrooapp_admin:menuu_list')
+
 
 """
 def add_theme_ei_kasuta(request):

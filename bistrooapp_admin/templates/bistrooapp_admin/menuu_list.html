@@ -100,6 +100,7 @@
                             </td>
                             <td>
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
+                                <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" class="text-danger">Kustuta</a>
                             </td>
                         {% else %}
                             <td>
