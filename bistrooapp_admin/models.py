@@ -29,9 +29,9 @@ class Menuu(models.Model):
 
 class Theme(models.Model):
     menu_date = models.DateField(unique=True)
-    theme = models.CharField(max_length=255, blank=True)
-    recommenders = models.CharField(max_length=255, blank=True)
-    author = models.CharField(max_length=255, blank=True)
+    theme = models.CharField(max_length=255, blank=True, null=True)
+    recommenders = models.CharField(max_length=255, blank=True, null=True)
+    author = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
         ordering = ["-menu_date"] # sorteerib kahanevalt
         #unique_together = "menu_date" # https://www.letscodemore.com/blog/django-get-or-create/
@@ -42,7 +42,7 @@ class Theme(models.Model):
     def clean(self):  # ei lase ainult autorit sisestada
 
         if (self.theme is not None and self.recommenders is None) or (self.recommenders is not None and self.theme is None):
-            raise ValidationError("Üks kahest on puudu")
+            raise ValidationError("Teema ja Soovitajad peavad olema täidetud")
 
 
 """

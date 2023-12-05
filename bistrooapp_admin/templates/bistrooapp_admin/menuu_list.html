@@ -98,7 +98,7 @@
                             <td>
                                 {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td>
+                            <td colspan="2">
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
                                 <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" class="text-danger">Kustuta</a>
                             </td>
@@ -114,9 +114,9 @@
                             <td>
                                 {{ themes.0.recommenders }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td>
-                                <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
+                            <td colspan="2">
                             </td>
+
                         {% else %}
                             <td>
                             Soovitajad puuduvad

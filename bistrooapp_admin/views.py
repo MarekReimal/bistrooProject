@@ -245,16 +245,23 @@ def move_forward(request):
 def delete_author(request, theme_id):
     theme_instance = Theme.objects.get(id=theme_id)
     print("PULL ", theme_instance, "ID ", theme_id)
-    theme_instance.author = ''
-    theme_instance.save()
+    if theme_instance.theme:  # kui teema on olemas siis kustutab ainult autori
+        theme_instance.author = None
+        theme_instance.save()
+    elif theme_instance.theme is None:  # kui teemat ka ei ole siis kustutab terve obj
+        theme_instance.delete()
     return redirect('bistrooapp_admin:menuu_list')
 
 
 def delete_theme(request, theme_id):
     theme_instance = Theme.objects.get(id=theme_id)
     print("PULL ", theme_instance, "ID ", theme_id)
-    theme_instance.theme = ''
-    theme_instance.save()
+    if theme_instance.author is None:
+        theme_instance.delete()
+    elif theme_instance.author:
+        theme_instance.theme = None
+        theme_instance.recommenders = None
+        theme_instance.save()
     return redirect('bistrooapp_admin:menuu_list')
 
 
