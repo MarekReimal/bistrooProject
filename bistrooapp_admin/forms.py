@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-from .models import Theme
+from .models import Theme, Menuu
 from django.core.exceptions import ValidationError
 
 
@@ -44,3 +44,8 @@ class ThemeUpdateForm(forms.ModelForm):
     class Meta:
         model = Theme
         fields = ["theme", "recommenders", "author"]
+
+class SublineUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Menuu
+        fields = ["description", "price_full", "price_half"]

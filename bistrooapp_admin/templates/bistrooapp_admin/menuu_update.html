@@ -1,0 +1,12 @@
+{% extends "base_admin.html" %}
+{% block content %}
+
+    <h2>Muuda rida</h2>
+    <form method="post" action="{% url "bistrooapp_admin:update_subline" line_id=line_id %}">
+    {% csrf_token %}
+    {{ subline_up_form.as_p }}
+        <input type="submit" value="Muuda">
+    </form>
+    <p></p>
+    <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+{% endblock %}

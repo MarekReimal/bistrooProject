@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm, ThemeUpdateForm
+from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm
 
 
 # Create your views here.
@@ -65,6 +65,9 @@ def menuu_list(request):
     else:  # muul juhul on tänane kuupäev
         valitud_kp = datetime.today()
         request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu
+
+    # Set the expiry time for the 'menu_date' session variable to 1 hour
+    request.session.set_expiry(timedelta(hours=2))
 
     #if request.session.get("menu_date"):
     # print("SESSIOONI KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
@@ -149,9 +152,7 @@ def add_theme(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
     # on kaks juhtumit
-    # kasutaja tahab lisada ja andme obj selle kuupäevaga veel ei ole, siis sisestatakse uus rida
-    # kasutaja tahab lisada aga selle kuupäevaga rida on juba olemas, selleks kontroll kas kp on
-    # kui kp rida on, siis võtab obj id ja teeb nagu andmete update, kasutajale näidatakse vormi andmetega mis olid olemas
+
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
@@ -168,20 +169,32 @@ def add_theme(request):
 
     if request.method == "POST":
         menu_date = request.POST.get("menu_date")  # võta kp
-        if not Theme.objects.filter(menu_date=menu_date).exists():  # kui rida ei ole DB's
-            theme_formike = ThemeForm(request.POST)
-            if theme_formike.is_valid():
-                theme_formike.save()  # salvestab andmed POST'ist
-                return redirect("bistrooapp_admin:menuu_list")
-        else:  # kui rida on olemas DB's
-            # võtab olemas oleva rea id
-            theme_id = Theme.objects.get(menu_date=menu_date).id
-            theme_instance = get_object_or_404(Theme, id=theme_id)  # võta id-le vastav obj
-            theme_formike = ThemeForm(request.POST, instance=theme_instance)  # init form
-            if theme_formike.is_valid():
-                # kui andmed ok siis kirjutab mällu
-                theme_formike.save()
-                return redirect("bistrooapp_admin:menuu_list")
+        theme = request.POST.get("theme")
+        recommenders = request.POST.get("recommenders")
+        author = request.POST.get("author")
+
+        if theme or recommenders or author:  # kui kasutaja sisestas vormile midagi siis toimetab, muidu jätab salvestamata
+            # kasutaja tahab lisada ja andme obj selle kuupäevaga veel ei ole, siis sisestatakse uus rida
+            if not Theme.objects.filter(menu_date=menu_date).exists():  # kui rida ei ole DB's
+                theme_formike = ThemeForm(request.POST)
+                if theme_formike.is_valid():
+                    theme_formike.save()  # salvestab andmed POST'ist
+                    return redirect("bistrooapp_admin:menuu_list")
+            # kasutaja tahab lisada aga selle kuupäevaga rida on juba olemas
+            # kui kp rida on, siis võtab obj id ja teeb andmete update
+            else:  # kui rida on olemas DB's
+                # võtab olemas oleva rea id
+                theme_id = Theme.objects.get(menu_date=menu_date).id
+                theme_instance = get_object_or_404(Theme, id=theme_id)  # võta id-le vastav obj
+                theme_formike = ThemeForm(request.POST, instance=theme_instance)  # init form
+                if theme_formike.is_valid():
+                    # kui andmed ok siis kirjutab mällu
+                    theme_formike.save()
+                    return redirect("bistrooapp_admin:menuu_list")
+        else:
+
+            return redirect("bistrooapp_admin:menuu_list")
+
     return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
 
 def update_theme(request, theme_id):
@@ -200,8 +213,6 @@ def update_theme(request, theme_id):
             return redirect("bistrooapp_admin:menuu_list")
     else:
         theme_up_form = ThemeUpdateForm(instance=theme_instance)
-
-    print("UPDATE THEME THEME ID", theme_id)
 
     return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form, "theme_id": theme_id})
 
@@ -243,8 +254,7 @@ def move_forward(request):
 
 
 def delete_author(request, theme_id):
-    theme_instance = Theme.objects.get(id=theme_id)
-    print("PULL ", theme_instance, "ID ", theme_id)
+    theme_instance = Theme.objects.get(id=theme_id)  # võta vastava id-ga obj
     if theme_instance.theme:  # kui teema on olemas siis kustutab ainult autori
         theme_instance.author = None
         theme_instance.save()
@@ -254,16 +264,33 @@ def delete_author(request, theme_id):
 
 
 def delete_theme(request, theme_id):
-    theme_instance = Theme.objects.get(id=theme_id)
-    print("PULL ", theme_instance, "ID ", theme_id)
-    if theme_instance.author is None:
+    theme_instance = Theme.objects.get(id=theme_id)  # võta vastava id-ga obj
+    if theme_instance.author is None:  # kui autorit ka ei ole siis kustutab terve rea
         theme_instance.delete()
-    elif theme_instance.author:
+    elif theme_instance.author:  # kui autor on siis kustutab teema ja soovitajad
         theme_instance.theme = None
         theme_instance.recommenders = None
         theme_instance.save()
     return redirect('bistrooapp_admin:menuu_list')
 
+
+def update_subline(request, line_id):
+    # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
+    line_instance = get_object_or_404(Menuu, id=line_id)
+    print("MENUU UPDATE INSTANCE ", line_instance)
+    # kui andmeid sisestati siis
+    if request.method == "POST":
+        # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
+        subline_up_form = SublineUpdateForm(request.POST, instance=line_instance)
+        if subline_up_form.is_valid():
+            # kui andmed ok siis kirjutab mällu
+            subline_up_form.save()
+            return redirect("bistrooapp_admin:menuu_list")
+    else:
+        subline_up_form = SublineUpdateForm(instance=line_instance)
+
+    return render(request, "bistrooapp_admin/menuu_update.html",
+                  {"subline_up_form": subline_up_form, "line_id": line_id})
 
 """
 def add_theme_ei_kasuta(request):

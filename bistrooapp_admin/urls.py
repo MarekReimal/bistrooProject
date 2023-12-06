@@ -21,6 +21,7 @@ urlpatterns = [
     path("update_theme/<int:theme_id>", views.update_theme, name="update_theme"),
     path("delete_theme/<int:theme_id>", views.delete_theme, name="delete_theme"),
     path("delete_author/<int:theme_id>", views.delete_author, name="delete_author"),
+    path("update_subline/<int:line_id>", views.update_subline, name="update_subline"),
 
     path("today/", views.mytoday, name="today"), # kustutab sessioonist kp
     path("move_back/", views.move_back, name="move_back"),

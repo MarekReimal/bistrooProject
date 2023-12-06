@@ -25,7 +25,7 @@ class Menuu(models.Model):
         ordering = ["-menu_date", "category_name", "description"]  # sorteerib tabeli
 
     def __str__(self):  # et ei näitaks nimesid mitte objekt 1, objekt 2 jne
-        return f'{self.description}'  # näitab ühte veergu loetava nimega
+        return f'{self.menu_date, self.description}'  # näitab ühte veergu loetava nimega
 
 class Theme(models.Model):
     menu_date = models.DateField(unique=True)
@@ -42,7 +42,7 @@ class Theme(models.Model):
     def clean(self):  # ei lase ainult autorit sisestada
 
         if (self.theme is not None and self.recommenders is None) or (self.recommenders is not None and self.theme is None):
-            raise ValidationError("Teema ja Soovitajad peavad olema täidetud")
+            raise ValidationError("Teema ja Soovitajad peavad mõlemad olema täidetud")
 
 
 """

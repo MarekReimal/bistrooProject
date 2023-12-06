@@ -98,7 +98,7 @@
                             <td>
                                 {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td colspan="2">
+                            <td rowspan="2">
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}">Muuda</a>
                                 <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" class="text-danger">Kustuta</a>
                             </td>
@@ -106,6 +106,7 @@
                             <td>
                             Teemapäev puudub
                             </td>
+                            <td></td>
                         {% endif %}
                         </tr>
 
@@ -114,13 +115,13 @@
                             <td>
                                 {{ themes.0.recommenders }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td colspan="2">
-                            </td>
+
 
                         {% else %}
                             <td>
                             Soovitajad puuduvad
                             </td>
+                            <td></td>
                         {% endif %}
                         </tr>
 
@@ -159,6 +160,7 @@
                                         <tr>
                                             <td class="head_text">{{ category.category_name }}</td>
                                             <td class="head_text">Hind</td>
+                                            <td class="head_text"></td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -179,6 +181,9 @@
                                                         <td>{{ menuu_item.price_full }}
                                                             / {{ menuu_item.price_half }}</td>
                                                     {% endif %}
+                                                    <td>
+                                                        <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}">Muuda</a>
+                                                    </td>
                                                 </tr>
 
                                             {% endif %}
