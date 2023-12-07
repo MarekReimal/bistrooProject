@@ -277,7 +277,6 @@ def delete_theme(request, theme_id):
 def update_subline(request, line_id):
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
     line_instance = get_object_or_404(Menuu, id=line_id)
-    print("MENUU UPDATE INSTANCE ", line_instance)
     # kui andmeid sisestati siis
     if request.method == "POST":
         # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
@@ -286,11 +285,20 @@ def update_subline(request, line_id):
             # kui andmed ok siis kirjutab mällu
             subline_up_form.save()
             return redirect("bistrooapp_admin:menuu_list")
-    else:
+    else:  # kui ei ole post siis kuva vorm
         subline_up_form = SublineUpdateForm(instance=line_instance)
 
     return render(request, "bistrooapp_admin/menuu_update.html",
                   {"subline_up_form": subline_up_form, "line_id": line_id})
+
+def delete_subline(request, line_id):
+    # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
+    line_instance = get_object_or_404(Menuu, id=line_id)
+    description = line_instance.description
+    line_instance.delete()
+    messages.success(request, description + " kustutatud")
+    #return redirect("bistrooapp_admin:menuu_list")
+    return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
 """
 def add_theme_ei_kasuta(request):

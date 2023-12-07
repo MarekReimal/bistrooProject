@@ -6,6 +6,18 @@
     {% load my_template_tag %} {# laeb custom tag vt fail my_template_tag.py #}
     {# vt fail opetus.txt #}
 
+    <div id="success-message" class="mt-3"> {# Näitab teadet 3 sekundit vt js all #}
+            {% if messages %} {# kui teade on olemas siis näitab, vt CategoryDeleteView #}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+    </div>
+
     <div class="mt-2">
         <h3>Menüü koostamine</h3>
     </div>
@@ -183,6 +195,7 @@
                                                     {% endif %}
                                                     <td>
                                                         <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}">Muuda</a>
+                                                        <a href="{% url "bistrooapp_admin:delete_subline" line_id=menuu_item.id %}" class="text-danger">Kustuta</a>
                                                     </td>
                                                 </tr>
 
@@ -237,6 +250,14 @@
 
             });
         });
+        document.addEventListener("DOMContentLoaded", function () {
+            // Display the message
+            var messageElement = document.getElementById("success-message");
+            messageElement.style.display = "block";
+
+            // Set a timeout to hide the message after 10 seconds (10000 milliseconds)
+            setTimeout(function () {messageElement.style.display = "none";}, 2000); // 10000 milliseconds = 10 seconds
+            });
     </script>
 
 {% endblock %}
