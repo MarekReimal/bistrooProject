@@ -5,7 +5,162 @@ tr.head_text {
 }
 
 td.head_text {
-    background-color: #f2f2f2; /* Use the desired shade of gray */
+    background-color: #80BFFF; /* Use the desired shade of gray */
     font-weight: bold;
     font-size: medium;
+    color: #0a53be;
+}
+
+.oma-navbar {
+    background-color: #80BFFF; /* Replace with your desired color */
+    color: #0a53be;
+}
+
+.oma-link-color .nav-link {
+    color: #0a53be; /* Replace with your desired link color */
+    font-size: large;
+    font-weight: bold;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF; /* Button background color */
+    color: #fff; /* Text color */
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.gg-chevron-double-left-r {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(var(--ggs,1));
+    border: 3px solid;
+    border-radius: 5px;
+    width: 35px;
+    height: 32px;
+    vertical-align: middle;
+    color: #0a53be;
+}
+.gg-chevron-double-left-r::after,
+.gg-chevron-double-left-r::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+    transform: rotate(45deg);
+    top: 11px;
+    left: 9px
+}
+.gg-chevron-double-left-r::after {
+    left: 17px
+}
+.nav-linkkk {
+    display: inline-block;
+    margin-right: 3px; /* Adjust spacing between links */
+    margin-left: 3px;
+    text-decoration: none;
+    color: black; /* Set link color */
+}
+
+.tana {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(var(--ggs, 1));
+    border: 3px solid;
+    border-radius: 5px;
+    width: 60px;
+    height: 32px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 3px;
+    line-height: 19px; /* Centers text vertically */
+    text-decoration: none; /* Remove default underline */
+    color: #0a53be; /* Set link color */
+    margin-right: 3px; /* Adjust spacing between links */
+    margin-left: 3px;
+}
+.gg-chevron-double-right-r {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(var(--ggs,1));
+    border: 3px solid;
+    border-radius: 5px;
+    width: 35px;
+    height: 32px;
+    vertical-align: middle;
+    color: #0a53be;
+}
+.gg-chevron-double-right-r::after,
+.gg-chevron-double-right-r::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid;
+    border-top: 2px solid;
+    transform: rotate(45deg);
+    top: 11px;
+    right: 9px
+}
+.gg-chevron-double-right-r::after {
+    right: 17px
+}
+.datepicker-form {
+    /*box-sizing: border-box;*/
+    position: relative;
+    /*display: block;*/
+    transform: scale(var(--ggs, 1));
+    border: 3px solid;
+    border-radius: 5px;
+    width: 145px;
+    height: 20px;
+    /*vertical-align: middle;*/
+    /*text-align: center;*/
+    /*line-height: 19px; /* Centers text vertically */
+    /*text-decoration: none; /* Remove default underline */
+    color: #0a53be; /* Set link color */
+    padding: 15px; /* Add padding to form */
+}
+.toidud {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    transform: scale(var(--ggs, 1));
+    border: 3px solid;
+    border-radius: 5px;
+    /*width: 145px;*/
+    width: 145px;
+    min-height: 32px;
+    max-height: 200px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 3px;
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Show an ellipsis if the text overflows */
+    line-height: 19px; /* Centers text vertically */
+    text-decoration: none; /* Remove default underline */
+    color: #0a53be; /* Set link color */
+    margin-right: 3px; /* Adjust spacing between links */
+    margin-left: 3px;
+}
+.menuu-table {
+    border: 2px solid white; /* Specify border width and style */
+    border-collapse: collapse; /* Collapse borders to avoid double borders */
+}
+.menuu-table td {
+    padding: 4px; /* Adjust the padding within table cells */
+    text-align: center;
 }

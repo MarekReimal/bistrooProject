@@ -18,15 +18,13 @@
             {% endif %}
     </div>
 
-    <div class="mt-2">
-        <h3>Menüü koostamine</h3>
-    </div>
+    {# <div class="mt-2">        <h4>Menüü koostamine</h4>    </div> #}
 
     {# loob vasakusse äärde valikute osa #}
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-2">
-            <table class="table table-bordered">
+            <table class="table table-bordered menuu-table">
                 <thead>
                     <tr>
                         <td class="head_text">Menüü kuupäev</td>
@@ -42,9 +40,10 @@
                                     {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
                             </form>
 
-                            <a href="{% url "bistrooapp_admin:move_back" %}">Tagasi</a>
-                            <a href="{% url "bistrooapp_admin:today" %}">Täna</a>
-                            <a href="{% url "bistrooapp_admin:move_forward" %}">Edasi</a>
+
+                            <a href="{% url "bistrooapp_admin:move_back" %}" class="gg-chevron-double-left-r"></a>
+                            <a href="{% url "bistrooapp_admin:today" %}" class="tana">Täna</a>
+                            <a href="{% url "bistrooapp_admin:move_forward" %}" class="gg-chevron-double-right-r"></a>
                         </td>
                     </tr>
                 </tbody>
@@ -52,7 +51,7 @@
             <p></p>
 
             {# Joonistab pealkirjade lingid vasakusse äärde #}
-                <table class="table table-bordered">
+                <table class="table table-bordered menuu-table">
                     <thead>
                     <tr>
                         <td class="head_text">Pealkirjad</td>
@@ -61,7 +60,7 @@
                     <tbody>
                         <tr>
                         <td>
-                                <a href="{% url 'bistrooapp_admin:add_theme' %}">Lisa pealkirjad</a>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}" class="toidud">Lisa pealkirjad</a>
                                 {# link pealkirjade sisestamiseks  #}
                         </td>
                         </tr>
@@ -69,7 +68,7 @@
                 </table>
 
                 {# Joonistab töölingid vasakusse äärde #}
-                <table class="table table-bordered">
+                <table class="table table-bordered menuu-table">
                     <thead>
                     <tr>
                         <td class="head_text">Kategooriad</td>
@@ -81,7 +80,7 @@
                         <tr>
                         <td>
 
-                                <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}">Lisa {{ category.category_name }} </a>
+                                <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}" class="toidud">Lisa {{ category.category_name }} </a>
                                 {# link annab kaasa toidu kategooria, et seda ei uuesti valima, toidu kategooriaks saab see kategooria  #}
 
                         </td>

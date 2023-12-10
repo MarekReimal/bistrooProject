@@ -13,7 +13,7 @@ class DateInput(forms.DateInput):
 
 
 class CurrentDate(forms.Form):
-    valitud_kp = forms.DateField(widget=DateInput, input_formats=['%d.%m.%Y'], label="")
+    valitud_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}), input_formats=['%d.%m.%Y'], label="")
                                   # label="Menüü kuupäev" , initial=datetime.now()
 
 
