@@ -1,3 +1,5 @@
+/*https://masteringdjango.com/django-tutorials/mastering-django-forms/  vormindab */
+
 tr.head_text {
     background-color: #f2f2f2; /* Use the desired shade of gray */
     font-weight: bold;
@@ -33,6 +35,8 @@ td.head_text {
     cursor: pointer;
     text-align: center;
 }
+
+/*https://css.gg/chevron-double-right-r  joonistab nooled */
 
 .gg-chevron-double-left-r {
     box-sizing: border-box;
