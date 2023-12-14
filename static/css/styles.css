@@ -1,5 +1,23 @@
 /*https://masteringdjango.com/django-tutorials/mastering-django-forms/  vormindab */
 
+:root {
+    --menuu_alapealkirjad: #FFBF00;
+    --menuu_tabeli_aarised: #3B7A57;
+    --menuu_lahtrite_sisu: #f2f2f2; /* #0a53be Define a variable */
+
+    --menuu_lingi_tekst: #FFBF00;
+    --menuu_nupu_aaris: #3B7A57;
+
+    --hover_nupu_taust: #b02a37;
+
+    --nav_bar_linkide_tekst: #FFBF00;
+    --nav_bar_riba_taust: #0f5132;
+
+
+    --font-size: 16px; /* Define another variable */
+}
+
+
 tr.head_text {
     background-color: #f2f2f2; /* Use the desired shade of gray */
     font-weight: bold;
@@ -7,19 +25,21 @@ tr.head_text {
 }
 
 td.head_text {
-    background-color: #80BFFF; /* Use the desired shade of gray */
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    background-color: #664d03; /* Use the desired shade of gray */
     font-weight: bold;
     font-size: medium;
-    color: #0a53be;
+    color: var(--menuu_alapealkirjad);
 }
 
 .oma-navbar {
-    background-color: #80BFFF; /* Replace with your desired color */
-    color: #0a53be;
+    background-color: var(--nav_bar_riba_taust); /* Replace with your desired color */
+    /*color: #0f5132;*/
 }
 
 .oma-link-color .nav-link {
-    color: #0a53be; /* Replace with your desired link color */
+    /*nav bar linkide tekst*/
+    color: var(--nav_bar_linkide_tekst); /* Replace with your desired link color */
     font-size: large;
     font-weight: bold;
 }
@@ -43,12 +63,12 @@ td.head_text {
     position: relative;
     display: inline-block;
     transform: scale(var(--ggs,1));
-    border: 3px solid;
+    border: 3px solid var(--menuu_nupu_aaris);
     border-radius: 5px;
     width: 35px;
     height: 32px;
     vertical-align: middle;
-    color: #0a53be;
+    color: var(--nupp_tana_tekst);
 }
 .gg-chevron-double-left-r::after,
 .gg-chevron-double-left-r::before {
@@ -72,7 +92,7 @@ td.head_text {
     margin-right: 3px; /* Adjust spacing between links */
     margin-left: 3px;
     text-decoration: none;
-    color: black; /* Set link color */
+    /*color: black; /* Set link color */
 }
 
 .tana {
@@ -80,7 +100,7 @@ td.head_text {
     position: relative;
     display: inline-block;
     transform: scale(var(--ggs, 1));
-    border: 3px solid;
+    border: 3px solid var(--menuu_nupu_aaris);
     border-radius: 5px;
     width: 60px;
     height: 32px;
@@ -89,7 +109,7 @@ td.head_text {
     padding: 3px;
     line-height: 19px; /* Centers text vertically */
     text-decoration: none; /* Remove default underline */
-    color: #0a53be; /* Set link color */
+    color: var(--menuu_lingi_tekst); /* Set link color */
     margin-right: 3px; /* Adjust spacing between links */
     margin-left: 3px;
 }
@@ -98,12 +118,12 @@ td.head_text {
     position: relative;
     display: inline-block;
     transform: scale(var(--ggs,1));
-    border: 3px solid;
+    border: 3px solid var(--menuu_nupu_aaris);
     border-radius: 5px;
     width: 35px;
     height: 32px;
     vertical-align: middle;
-    color: #0a53be;
+    color: var(--nupp_tana_tekst);
 }
 .gg-chevron-double-right-r::after,
 .gg-chevron-double-right-r::before {
@@ -127,7 +147,7 @@ td.head_text {
     position: relative;
     /*display: block;*/
     transform: scale(var(--ggs, 1));
-    border: 3px solid;
+    border: 3px solid var(--menuu_nupu_aaris);
     border-radius: 5px;
     width: 145px;
     height: 20px;
@@ -135,7 +155,7 @@ td.head_text {
     /*text-align: center;*/
     /*line-height: 19px; /* Centers text vertically */
     /*text-decoration: none; /* Remove default underline */
-    color: #0a53be; /* Set link color */
+    color: var(--menuu_lingi_tekst); /* Set link color */
     padding: 15px; /* Add padding to form */
 }
 .toidud {
@@ -144,27 +164,36 @@ td.head_text {
     display: inline-block;
     transform: scale(var(--ggs, 1));
     border: 3px solid;
+    border-color: var(--menuu_nupu_aaris);
     border-radius: 5px;
     /*width: 145px;*/
     width: 145px;
     min-height: 32px;
     max-height: 200px;
     vertical-align: middle;
-    text-align: center;
+    text-align: left;
+    font-weight: bold;
+    font-size: medium;
     padding: 3px;
     overflow: hidden; /* Hide overflowed text */
     text-overflow: ellipsis; /* Show an ellipsis if the text overflows */
     line-height: 19px; /* Centers text vertically */
     text-decoration: none; /* Remove default underline */
-    color: #0a53be; /* Set link color */
+    color: var(--menuu_lingi_tekst); /*  Set link color */
     margin-right: 3px; /* Adjust spacing between links */
     margin-left: 3px;
 }
+
+.toidud:hover{
+    background-color: var(--hover_nupu_taust);
+}
+
 .menuu-table {
-    border: 2px solid white; /* Specify border width and style */
+    border: 2px; /* Specify border width and style */
     border-collapse: collapse; /* Collapse borders to avoid double borders */
 }
 .menuu-table td {
     padding: 4px; /* Adjust the padding within table cells */
     text-align: center;
+    background-color: var(--menuu_lahtrite_sisu);
 }
