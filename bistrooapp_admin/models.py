@@ -19,7 +19,7 @@ class Menuu(models.Model):
     category_name = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     price_full = models.DecimalField(max_digits=4, decimal_places=2, null=False, blank=False)
-    price_half = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    price_half = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True, default=0.00)
 
     class Meta:  # on Country alam klass
         ordering = ["-menu_date", "category_name", "description"]  # sorteerib tabeli

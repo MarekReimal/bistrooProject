@@ -2,34 +2,36 @@
 
 :root {
     --menuu_alapealkirjad: #FFBF00;
-    --menuu_tabeli_aarised: #3B7A57;
-    --menuu_lahtrite_sisu: #f2f2f2; /* #0a53be Define a variable */
+    --menuu_tabeli_aarised: white;
+    --menuu_lahtrite_sisu: white; /* #0a53be Define a variable */
 
     --menuu_lingi_tekst: #FFBF00;
     --menuu_nupu_aaris: #3B7A57;
 
-    --hover_nupu_taust: #b02a37;
+    --hover_nupu_taust: #0f5132;
 
     --nav_bar_linkide_tekst: #FFBF00;
     --nav_bar_riba_taust: #0f5132;
 
+    --tabeli_alapealkirjad: #D0F7DA;
+    color: #0a3622;
 
     --font-size: 16px; /* Define another variable */
 }
 
 
 tr.head_text {
-    background-color: #f2f2f2; /* Use the desired shade of gray */
+    background-color: #D0F7DA; /* Use the desired shade of gray */
     font-weight: bold;
     font-size: large;
 }
 
 td.head_text {
     /* kujundab tabeli pealkirju Supid, Praed jne */
-    background-color: #664d03; /* Use the desired shade of gray */
+    background-color: var(--tabeli_alapealkirjad); /* Use the desired shade of gray */
     font-weight: bold;
     font-size: medium;
-    color: var(--menuu_alapealkirjad);
+    /*color: var(--menuu_alapealkirjad);*/
 }
 
 .oma-navbar {
@@ -68,7 +70,7 @@ td.head_text {
     width: 35px;
     height: 32px;
     vertical-align: middle;
-    color: var(--nupp_tana_tekst);
+    color: var(--menuu_lingi_tekst);
 }
 .gg-chevron-double-left-r::after,
 .gg-chevron-double-left-r::before {
@@ -78,8 +80,8 @@ td.head_text {
     position: absolute;
     width: 6px;
     height: 6px;
-    border-left: 2px solid;
-    border-bottom: 2px solid;
+    border-left: 3px solid;
+    border-bottom: 3px solid;
     transform: rotate(45deg);
     top: 11px;
     left: 9px
@@ -106,6 +108,8 @@ td.head_text {
     height: 32px;
     vertical-align: middle;
     text-align: center;
+    font-weight: bold;
+    font-size: medium;
     padding: 3px;
     line-height: 19px; /* Centers text vertically */
     text-decoration: none; /* Remove default underline */
@@ -123,7 +127,7 @@ td.head_text {
     width: 35px;
     height: 32px;
     vertical-align: middle;
-    color: var(--nupp_tana_tekst);
+    color: var(--menuu_lingi_tekst);
 }
 .gg-chevron-double-right-r::after,
 .gg-chevron-double-right-r::before {
@@ -133,11 +137,11 @@ td.head_text {
     position: absolute;
     width: 6px;
     height: 6px;
-    border-right: 2px solid;
-    border-top: 2px solid;
+    border-right: 3px solid;
+    border-top: 3px solid;
     transform: rotate(45deg);
     top: 11px;
-    right: 9px
+    right: 9px;
 }
 .gg-chevron-double-right-r::after {
     right: 17px
@@ -151,6 +155,8 @@ td.head_text {
     border-radius: 5px;
     width: 145px;
     height: 20px;
+    font-weight: bold;
+    font-size: medium;
     /*vertical-align: middle;*/
     /*text-align: center;*/
     /*line-height: 19px; /* Centers text vertically */
@@ -171,7 +177,7 @@ td.head_text {
     min-height: 32px;
     max-height: 200px;
     vertical-align: middle;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     font-size: medium;
     padding: 3px;
@@ -183,17 +189,34 @@ td.head_text {
     margin-right: 3px; /* Adjust spacing between links */
     margin-left: 3px;
 }
-
 .toidud:hover{
     background-color: var(--hover_nupu_taust);
 }
-
+.tana:hover{
+    background-color: var(--hover_nupu_taust);
+}
+.gg-chevron-double-left-r:hover{
+    background-color: var(--hover_nupu_taust);
+}
+*.gg-chevron-double-right-r:hover{
+    background-color: var(--hover_nupu_taust);
+}
+.datepicker-form:hover{
+    background-color: var(--hover_nupu_taust);
+}
 .menuu-table {
-    border: 2px; /* Specify border width and style */
+    border: 2px var(--menuu_tabeli_aarised); /* Specify border width and style */
     border-collapse: collapse; /* Collapse borders to avoid double borders */
 }
 .menuu-table td {
     padding: 4px; /* Adjust the padding within table cells */
     text-align: center;
     background-color: var(--menuu_lahtrite_sisu);
+}
+.muuda-icon {
+    width: 22px;
+    height: 22px;
+}
+.muuda-icon:hover{
+    background-color: var(--tabeli_alapealkirjad);
 }
