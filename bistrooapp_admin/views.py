@@ -14,10 +14,6 @@ from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm
 
 # Create your views here.
 
-class CategoryHomeView(TemplateView): # näitab ava lehte
-    template_name = "bistrooapp_admin/index.html" # movieapp/templates/index.html
-
-
 class CategoryListView(ListView):
     template_name = "bistrooapp_admin/category.html"
     model = Category
@@ -37,7 +33,7 @@ class CategoryDeleteView(DeleteView):
         category.delete()  # kustutab elemendi
 
         # Set a success message
-        messages.error(request, f"Kustutati kategooria \"{category.category_name}\".")
+        messages.error(request, f"\"{category.category_name}\" kustutatud.")
 
         return HttpResponseRedirect(reverse("bistrooapp_admin:category"))
 
@@ -138,9 +134,11 @@ def save_subline(request):
 
         #  võtab modelist vastava kategooria obj, vajalik et oleks DB obj, cat sisaldab str ja see ei sobi
         category = Category.objects.get(category_name=cat)
-
+        if not price_half:
+            price_half = None
         # Save the data to the Menuu model
-        menuu = Menuu(menu_date=menu_date, category_name=category, description=description, price_full=price_full, price_half=price_half)
+        menuu = Menuu(menu_date=menu_date, category_name=category, description=description, price_full=price_full,
+                      price_half=price_half)
         menuu.save()
 
         # salvestab vormiga saadetud kp sessiooni mällu, nii saab seda kuupäeva kasutada menuu_list
@@ -255,22 +253,27 @@ def move_forward(request):
 
 def delete_author(request, theme_id):
     theme_instance = Theme.objects.get(id=theme_id)  # võta vastava id-ga obj
+    author = theme_instance.author
     if theme_instance.theme:  # kui teema on olemas siis kustutab ainult autori
         theme_instance.author = None
         theme_instance.save()
     elif theme_instance.theme is None:  # kui teemat ka ei ole siis kustutab terve obj
         theme_instance.delete()
+
+    messages.success(request, author + " kustutatud")
     return redirect('bistrooapp_admin:menuu_list')
 
 
 def delete_theme(request, theme_id):
     theme_instance = Theme.objects.get(id=theme_id)  # võta vastava id-ga obj
+    theme = theme_instance.theme
     if theme_instance.author is None:  # kui autorit ka ei ole siis kustutab terve rea
         theme_instance.delete()
     elif theme_instance.author:  # kui autor on siis kustutab teema ja soovitajad
         theme_instance.theme = None
         theme_instance.recommenders = None
         theme_instance.save()
+    messages.success(request, theme + " kustutatud")
     return redirect('bistrooapp_admin:menuu_list')
 
 

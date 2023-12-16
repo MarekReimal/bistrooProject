@@ -6,7 +6,7 @@ from . import views
 app_name = "bistrooapp_admin"
 
 urlpatterns = [
-    path("", views.CategoryHomeView.as_view(), name="index"),  # kategooriad
+    path("", views.menuu_list, name="menuu_list"),  # kategooriad
     path("category/", views.CategoryListView.as_view(), name="category"),
     path("category_create/", views.CategoryCreateView.as_view(), name="category_create"),
     path("category_delete/<int:pk>", views.CategoryDeleteView.as_view(), name="category_delete"),
