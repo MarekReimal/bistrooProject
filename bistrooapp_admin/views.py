@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm
+from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm
 
 
 # Create your views here.
@@ -51,6 +51,7 @@ def menuu_list(request):
     # Loob muutujad andmete saatmiseks html-le mõlemast mudelist
     categories = Category.objects.all()
 
+    # töötleb menüü kuupäeva
     if request.method == "POST":
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
         valitud_kp = request.POST.get("valitud_kp")
@@ -71,13 +72,14 @@ def menuu_list(request):
     # teeb päringu DB, võtab menüü valitud kuupäeva järgi
     q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
     q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
-    print("Q_RESULT_MENUU ", q_result_menuu)  # testimiseks
-    print("Q_RESULT_THEME ", q_result_theme)  # testimiseks
+    # print("Q_RESULT_MENUU ", q_result_menuu)  # testimiseks
+    # print("Q_RESULT_THEME ", q_result_theme)  # testimiseks
 
     theme_id = None
     if q_result_theme.exists():  # võta pealkirja id, vajalik CRUD linkidele
         theme_id = q_result_theme.first().id
 
+    # kuupäeva vormindamine vastavalt sellele kust pärineb
     if isinstance(valitud_kp, str):  # kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
         # Convert the string date to a datetime object
@@ -104,53 +106,38 @@ def menuu_list(request):
 
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 
+def add_subline(request, category):
 
-def add_subline(request, category): #
-    # töötleb menuu_create.html
-    # vaade toidu sisestamiseks
-    valitud_kp = request.session.get('menu_date')
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
 
-    # funkts parameetri category kaudu võetakse vastu category väärtus, saadetakse formile key categoryus, vt menuu_create.html
-    return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category, 'valitud_kpius': valitud_kp})
+    #  võtab modelist vastava kategooria obj, vajalik et oleks DB obj, cat sisaldab str ja see ei sobi
+    categoryus = Category.objects.get(category_name=category)
 
+    if request.method == "POST":
+        subline_form = SublineForm(request.POST)
+        if subline_form.is_valid():
+            subline_form.save()
+            return redirect("bistrooapp_admin:menuu_list")
+    else:  # kuva vorm kui ei ole post, eelväärtusta kuupäev ja kategooria peidetud väljadel
+        subline_form = SublineForm(initial={"menu_date": valitud_kp, "category_name": categoryus})
 
-def save_subline(request):
-    # tegeleb vormilt toitude salvestamisega mudelisse
-    # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
-    # ehk siis see on abi funktsioon andmete salvestamiseks
+    # väärtused kaasa templatele
+    context = {
+        "subline_form": subline_form,
+        "categoryus": categoryus
+        }
 
-    if request.method == 'POST':
-        menu_date = request.session.get('menu_date')  #request.POST.get("menu_date")
-        cat = request.POST.get('category_name')
-        description = request.POST.get('description')
-        price_full = request.POST.get('price_full')
-        price_half = request.POST.get('price_half')
+    # mis on return render(request
+# https://stackoverflow.com/questions/58563294/how-does-return-renderrequest-path-path-works-in-django
+# https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Introduction
+    return render(request, "bistrooapp_admin/menuu_add.html", context)
 
-        #print("MINU KUUPÄEV ", menu_date)  # testimiseks
-        #print("MINU KATEGOORIA ", cat)
-        #print("MINU KIRJELDUS ", description)
-        #print("MINU HIND TÄIS ", price_full)
-        #print("MINU HIND POOL ", price_half)
-
-        #  võtab modelist vastava kategooria obj, vajalik et oleks DB obj, cat sisaldab str ja see ei sobi
-        category = Category.objects.get(category_name=cat)
-        if not price_half:
-            price_half = None
-        # Save the data to the Menuu model
-        menuu = Menuu(menu_date=menu_date, category_name=category, description=description, price_full=price_full,
-                      price_half=price_half)
-        menuu.save()
-
-        # salvestab vormiga saadetud kp sessiooni mällu, nii saab seda kuupäeva kasutada menuu_list
-        request.session['menu_date']=menu_date
-
-    return redirect('bistrooapp_admin:menuu_list')
 
 def add_theme(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
     # on kaks juhtumit
-
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
@@ -304,6 +291,48 @@ def delete_subline(request, line_id):
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
 """
+
+def add_subline_ei_kasuta(request, category): # algne töö, form oli tehtud html mitte django form
+    # töötleb menuu_create.html
+    # vaade toidu sisestamiseks
+    valitud_kp = request.session.get('menu_date')
+
+    # funkts parameetri category kaudu võetakse vastu category väärtus, saadetakse formile key categoryus, vt menuu_create.html
+    return render(request, 'bistrooapp_admin/menuu_create.html', {'categoryus': category, 'valitud_kpius': valitud_kp})
+
+def save_subline(request):
+    # tegeleb vormilt toitude salvestamisega mudelisse
+    # see funkts salvestab ainult formilt saadud andmed ja suunab tagasi vaatele menuu_list
+    # ehk siis see on abi funktsioon andmete salvestamiseks
+
+    if request.method == 'POST':
+        menu_date = request.session.get('menu_date')  #request.POST.get("menu_date")
+        cat = request.POST.get('category_name')
+        description = request.POST.get('description')
+        price_full = request.POST.get('price_full')
+        price_half = request.POST.get('price_half')
+
+        #print("MINU KUUPÄEV ", menu_date)  # testimiseks
+        #print("MINU KATEGOORIA ", cat)
+        #print("MINU KIRJELDUS ", description)
+        #print("MINU HIND TÄIS ", price_full)
+        #print("MINU HIND POOL ", price_half)
+
+        #  võtab modelist vastava kategooria obj, vajalik et oleks DB obj, cat sisaldab str ja see ei sobi
+        category = Category.objects.get(category_name=cat)
+        if not price_half:
+            price_half = None
+        # Save the data to the Menuu model
+        menuu = Menuu(menu_date=menu_date, category_name=category, description=description, price_full=price_full,
+                      price_half=price_half)
+        menuu.save()
+
+        # salvestab vormiga saadetud kp sessiooni mällu, nii saab seda kuupäeva kasutada menuu_list
+        request.session['menu_date']=menu_date
+
+    return redirect('bistrooapp_admin:menuu_list')
+
+
 def add_theme_ei_kasuta(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html

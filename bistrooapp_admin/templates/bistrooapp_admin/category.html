@@ -33,9 +33,9 @@
                                 <tbody>
                                 {% for category in categories %}
                                     <tr>
-                                        <td>{{ category.category_name }}</td>
-                                        <td>{{ category.category_sort_id }}</td>
-                                        <td>
+                                        <td class="menuu_read">{{ category.category_name }}</td>
+                                        <td class="menuu_read">{{ category.category_sort_id }}</td>
+                                        <td class="menuu_read">
                                             <a href="{% url "bistrooapp_admin:category_update" pk=category.id %}" title="Muuda">
                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                             </a>
@@ -52,7 +52,7 @@
                             </table>
                         </div>
                         <p></p>
-                        <a href="{% url "bistrooapp_admin:category_create" %}" class="toidud">Lisa kategooria</a>
+                        <a href="{% url "bistrooapp_admin:category_create" %}" class="menuu_nupud">Lisa kategooria</a>
                     </div>
             </div>
             <div class="col-md-4"></div>

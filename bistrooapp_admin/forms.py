@@ -21,8 +21,9 @@ class ThemeForm(forms.ModelForm):
     class Meta:
         model = Theme
         fields = ["menu_date", "theme", "recommenders", "author"]
+        labels = {"theme": "Teema", "recommenders": "Soovitajad", "author": "Autor"}
         widgets = {
-            'menu_date': forms.HiddenInput(),  # Hide the menu_date field
+            "menu_date": forms.HiddenInput()  # Hide the menu_date field
         }
 
     """
@@ -44,8 +45,19 @@ class ThemeUpdateForm(forms.ModelForm):
     class Meta:
         model = Theme
         fields = ["theme", "recommenders", "author"]
+        labels = {"theme": "Teema", "recommenders": "Soovitajad", "author": "Autor"}
+
+
+class SublineForm(forms.ModelForm):
+    class Meta:
+        model = Menuu
+        fields = ["menu_date", "category_name", "description", "price_full", "price_half"]
+        labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}
+        widgets = {"menu_date": forms.HiddenInput, "category_name": forms.HiddenInput}
+
 
 class SublineUpdateForm(forms.ModelForm):
     class Meta:
         model = Menuu
         fields = ["description", "price_full", "price_half"]
+        labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}

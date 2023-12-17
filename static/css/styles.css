@@ -19,11 +19,17 @@
     --font-size: 16px; /* Define another variable */
 }
 
-
+/*
 tr.head_text {
-    background-color: #D0F7DA; /* Use the desired shade of gray */
+    background-color: #D0F7DA; /* Use the desired shade of gray
     font-weight: bold;
     font-size: large;
+}*/
+
+td.menuu_read{
+    /* vormindab toitude lahtreid */
+    padding: 5px;
+    text-align: center;
 }
 
 td.head_text {
@@ -32,6 +38,7 @@ td.head_text {
     font-weight: bold;
     font-size: medium;
     text-align: center;
+    padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
 }
 
@@ -165,7 +172,7 @@ td.head_text {
     color: var(--menuu_lingi_tekst); /* Set link color */
     padding: 15px; /* Add padding to form */
 }
-.toidud {
+.menuu_nupud {
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -190,7 +197,7 @@ td.head_text {
     margin-right: 3px; /* Adjust spacing between links */
     margin-left: 3px;
 }
-.toidud:hover{
+.menuu_nupud:hover{
     background-color: var(--hover_nupu_taust);
 }
 .tana:hover{
@@ -220,4 +227,18 @@ td.head_text {
 }
 .muuda-icon:hover{
     background-color: var(--tabeli_alapealkirjad);
+}
+
+.forms_gen{
+    
+}
+.forms_gen td{
+    padding: 10px;
+}
+.forms_gen input[type="text"],
+.forms_gen input[type="number"]{
+    width: 400px;
+    border: 3px solid;
+    border-radius: 5px;
+    
 }

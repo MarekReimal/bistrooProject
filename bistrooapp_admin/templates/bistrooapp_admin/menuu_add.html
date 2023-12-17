@@ -1,28 +1,23 @@
 {% extends "base_admin.html" %}
 
 {% block content %}
-    {# vaatel on kategooria lisamine #}
     <div class="row mt-4">
         <div class="col-2"></div>
         <div class="col-10">
-            <h3>Lisa kategooria</h3>
-
-            <form method="post" class="forms_gen">
+            <h2>Lisa {{ categoryus | lower }}</h2>
+            <form method="post" action="{% url "bistrooapp_admin:add_subline" category=categoryus %}" novalidate class="forms_gen">
                 {% csrf_token %}
                 <table>
-                    {{ form.as_table }} {# vormindab vaate #}
+                    {{ subline_form.as_table }}
                     <tr>
-                        <td style="padding: 0px; padding-top: 30px">
+                        <td style="padding: 30px 0px 0px;">
                             <input type="submit" value="Lisa" class="menuu_nupud">
                         </td>
                     </tr>
-
                 </table>
             </form>
-
-
             <p></p>
-            <p><a href="{% url "bistrooapp_admin:category" %}" class="menuu_nupud">Tagasi</a></p>
+            <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Tagasi</a></p>
         </div>
     </div>
 {% endblock %}

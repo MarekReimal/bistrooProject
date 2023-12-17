@@ -16,7 +16,7 @@ urlpatterns = [
 
     #path('menu_categories/', views.menu_categories, name='menu_categories'),
     path("add_subline/<str:category>/", views.add_subline, name="add_subline"),
-    path("save_subline/", views.save_subline, name="save_subline"),
+    #path("save_subline/", views.save_subline, name="save_subline"),
     path("add_theme/", views.add_theme, name="add_theme"),
     path("update_theme/<int:theme_id>", views.update_theme, name="update_theme"),
     path("delete_theme/<int:theme_id>", views.delete_theme, name="delete_theme"),

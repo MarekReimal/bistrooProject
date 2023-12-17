@@ -1,29 +1,32 @@
 {% extends "base_admin.html" %}
 
 {% block content %}
-    <h2>Lisa {{ categoryus }}</h2>
 
-    <form method="POST" action="{% url 'bistrooapp_admin:save_subline' %}">
-        {% csrf_token %}
+    <h2>Lisa {{  categoryus  }}</h2>
+
+    <form method="POST" action="{%  url 'bistrooapp_admin:save_subline'  %}">
+        {# csrf_token #}
         <input type="hidden" name="menu_date" id="menu_date" value="{{ valitud_kpius }}" required>
         <br>
         <input type="hidden" name="category_name" value="{{ categoryus }}">
         {# kategooria väli on peidetud, kuid väärtus antakse kaasa,  #}
         {# categoryus väärtus tuleb view add_subline #}
 
-        <label for="description">Description:</label>
+        <label for="description">Nimetus:</label>
         <input type="text" name="description" id="description" required>
         <br>
-        <label for="price_full">Price (Full):</label>
+        <label for="price_full">Hind suurele:</label>
         <input type="number" name="price_full" id="price_full" step="0.01" required>
         <br>
-        <label for="price_half">Price (Half):</label>
+        <label for="price_half">Hind väiksele:</label>
         <input type="number" name="price_half" id="price_half" step="0.01">
         <br>
         <input type="submit" value="Add">
     </form>
     <p></p>
-    <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+    <p><a href="{# url "bistrooapp_admin:menuu_list" #}">Menüü koostamine</a></p>
+
+{% endblock %}
 
 <!--
     <script>
@@ -40,4 +43,3 @@
 </script>
     -->
 
-{% endblock %}

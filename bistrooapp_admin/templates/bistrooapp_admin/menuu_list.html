@@ -51,7 +51,7 @@
                     <tbody>
                         <tr>
                         <td>
-                                <a href="{% url 'bistrooapp_admin:add_theme' %}" class="toidud">Pealkirjad</a>
+                                <a href="{% url 'bistrooapp_admin:add_theme' %}" class="menuu_nupud">Pealkirjad</a>
                                 {# link pealkirjade sisestamiseks  #}
                         </td>
                         </tr>
@@ -70,10 +70,8 @@
                     {% for category in categories %}
                         <tr>
                         <td>
-
-                                <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}" class="toidud">{{ category.category_name }} </a>
-                                {# link annab kaasa toidu kategooria, et seda ei uuesti valima, toidu kategooriaks saab see kategooria  #}
-
+                            <a href="{% url 'bistrooapp_admin:add_subline' category=category.category_name %}" class="menuu_nupud">{{ category.category_name }} </a>
+                            {# link annab kaasa toidu kategooria, et seda ei peaks uuesti valima, toidu kategooriaks saab see kategooria  #}
                         </td>
                         </tr>
                     {% endfor %}
@@ -110,10 +108,10 @@
 
                         <tr>
                         {% if themes.0.theme %}
-                            <td>
+                            <td class="menuu_read">
                                 {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td rowspan="2" style="width: 200px">
+                            <td rowspan="2" style="width: 200px" class="menuu_read">
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>
@@ -123,34 +121,34 @@
                                 </a>
                             </td>
                         {% else %}
-                            <td>
+                            <td class="menuu_read">
                             Teemapäev puudub
                             </td>
-                            <td style="width: 200px"></td>
+                            <td style="width: 200px" class="menuu_read"></td>
                         {% endif %}
                         </tr>
 
                         <tr>
                         {% if themes.0.recommenders %}
-                            <td>
+                            <td class="menuu_read">
                                 {{ themes.0.recommenders }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
 
 
                         {% else %}
-                            <td>
+                            <td class="menuu_read">
                             Soovitajad puuduvad
                             </td>
-                            <td style="width: 200px"></td>
+                            <td style="width: 200px" class="menuu_read"></td>
                         {% endif %}
                         </tr>
 
                         <tr>
                         {% if themes.0.author %}
-                            <td>
+                            <td class="menuu_read">
                                 {{ themes.0.author }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td>
+                            <td class="menuu_read">
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>
@@ -160,17 +158,17 @@
                                 </a>
                             </td>
                         {% else %}
-                            <td>
+                            <td class="menuu_read">
                             Autorid puuduvad
                             </td>
-                            <td></td>
+                            <td class="menuu_read"></td>
                         {% endif %}
                         </tr>
                     </table>
 
                     </div>
+                    {# joonistab menüü #}
                     <table class="table table-bordered">
-
                         {# abimuutuja isBreak on tehtud if lausetes kasutamiseks #}
                         {% setval "False" as isBreak %}
                         {% for category in categories %} {# loendab kategooriaid #}
@@ -195,21 +193,21 @@
 
                                                 <tr>
                                                     {# toidu nimetus #}
-                                                    <td style="text-align: center">{{ menuu_item.description }}</td>
+                                                    <td class="menuu_read">{{ menuu_item.description }}</td>
 
                                                     {# hinna töötlus #}
                                                     {% if menuu_item.price_full and menuu_item.price_half == None %}
-                                                        <td style="width: 220px; text-align: center">{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
+                                                        <td style="width: 200px" class="menuu_read">{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
                                                     {% elif menuu_item.price_full == 0 and menuu_item.price_half == 0 or menuu_item.price_full == 0 and menuu_item.price_half == None %}
-                                                        <td style="width: 220px; text-align: center">Prae hinnas</td>
+                                                        <td style="width: 200px" class="menuu_read">Prae hinnas</td>
                                                         {# kui mõlemad hinnad 0 siis on prae hinnas #}
                                                     {% else %}
                                                         {# näitab mõlemat hinda#}
-                                                        <td style="width: 220px; text-align: center">{{ menuu_item.price_full }}
+                                                        <td style="width: 200px" class="menuu_read">{{ menuu_item.price_full }}
                                                             / {{ menuu_item.price_half }}</td>
                                                     {% endif %}
                                                     {# linkide töötlus #}
-                                                    <td style="width: 200px; text-align: center">
+                                                    <td style="width: 200px" class="menuu_read">
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                                             </a>
