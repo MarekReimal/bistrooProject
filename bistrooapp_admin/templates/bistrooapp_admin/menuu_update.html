@@ -4,7 +4,8 @@
         <div class="col-2"></div>
         <div class="col-10">
             <h2>Muuda rida</h2>
-            <form method="post" action="{% url "bistrooapp_admin:update_subline" line_id=line_id %}" class="forms_gen">
+            <form method="post" action="{% url "bistrooapp_admin:update_subline" line_id=line_id %}"
+                  class="forms_gen" novalidate>
                 {% csrf_token %}
                 <table>
                 {{ subline_up_form.as_table }}

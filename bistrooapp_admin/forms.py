@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-from .models import Theme, Menuu
+from .models import Theme, Menuu, Category
 from django.core.exceptions import ValidationError
 
 
@@ -15,6 +15,22 @@ class DateInput(forms.DateInput):
 class CurrentDate(forms.Form):
     valitud_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}), input_formats=['%d.%m.%Y'], label="")
                                   # label="Menüü kuupäev" , initial=datetime.now()
+
+
+class DublicateDate(forms.Form):
+    dublikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}), input_formats=['%d.%m.%Y'])
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["category_name", "category_sort_id"]
+        labels = {"category_name": "Toidu kategooria", "category_sort_id": "Järjestus nr"}
+        error_messages = {"category_name":{"required": "Väli on nõutud"},
+                          "category_sort_id":{"required": "Väli on nõutud", "min_value": "Väärtus peab olema 0 või 0-st suurem number"}}
+
+
+
 
 
 class ThemeForm(forms.ModelForm):
@@ -48,16 +64,21 @@ class ThemeUpdateForm(forms.ModelForm):
         labels = {"theme": "Teema", "recommenders": "Soovitajad", "author": "Autor"}
 
 
+
 class SublineForm(forms.ModelForm):
     class Meta:
         model = Menuu
         fields = ["menu_date", "category_name", "description", "price_full", "price_half"]
         labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}
         widgets = {"menu_date": forms.HiddenInput, "category_name": forms.HiddenInput}
-
+        error_messages = {"description": {"required": "Väli on nõutud"},
+                          "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number"}}
+# https://stackoverflow.com/questions/3436712/create-custom-error-messages-with-model-forms
 
 class SublineUpdateForm(forms.ModelForm):
     class Meta:
         model = Menuu
         fields = ["description", "price_full", "price_half"]
         labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}
+        error_messages = {"description": {"required": "Väli on nõutud"},
+                          "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number"}}

@@ -7,7 +7,7 @@
         <div class="col-10">
             <h3>Lisa kategooria</h3>
 
-            <form method="post" class="forms_gen">
+            <form method="post" class="forms_gen" novalidate>
                 {% csrf_token %}
                 <table>
                     {{ form.as_table }} {# vormindab vaate #}

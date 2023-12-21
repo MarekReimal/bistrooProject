@@ -78,6 +78,26 @@
 
                     </tbody>
                 </table>
+                {# joonistab dublikaadi vormi vasakusse äärde #}
+                <table class="table table-bordered menuu-table">
+                   <!-- <thead>
+                        <tr>
+                            <td class="head_text">Menüü kuupäev</td>
+                        </tr>
+                    </thead>-->
+                    <tbody>
+                        <tr>
+                            <td>
+                                {# loob kuupäeva vormi #}
+                                <form action="" method="post" id="dublikaadivorm">
+                                    {% csrf_token %}
+                                    {{ dublicate_date.as_p }} {# vt view def menuu_list, sealt tuleb #}
+                                    <input type="submit" value="pukk">
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
 
@@ -243,7 +263,7 @@
 {# script teeb submit, kui kuupäev valitakse #}
     <script>
         $(document).ready(function () {
-            // Get the date picker input element
+            // Get the date picker input element, võtab vormi ühe välja
             var datePicker = $('#id_valitud_kp');
 
             // Check if a date is stored in localStorage
@@ -264,7 +284,7 @@
                 // Store the picked date in localStorage
                 //sessionStorage.setItem('pickedDate', pickedDate);
 
-                var form = $('#kuupaevaForm'); // võtab formi
+                var form = $('#kuupaevaForm'); // võtab vormi
                 form.submit() // teeb submit kui kuupäev muudetakse
 
 

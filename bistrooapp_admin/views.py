@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm
+from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm, CategoryForm, DublicateDate
 
 
 # Create your views here.
@@ -23,8 +23,10 @@ class CategoryListView(ListView):
 class CategoryCreateView(CreateView):
     template_name = "bistrooapp_admin/category_create.html"
     model = Category
-    fields = "__all__"  # kõik väljad näha loomise vaatel
+    #fields = "__all__"  # kõik väljad näha loomise vaatel
     success_url = reverse_lazy("bistrooapp_admin:category")
+    form_class = CategoryForm
+
 
 
 class CategoryDeleteView(DeleteView):
@@ -41,8 +43,9 @@ class CategoryDeleteView(DeleteView):
 class CategoryUpdateView(UpdateView):
     template_name = "bistrooapp_admin/category_form_update.html"
     model = Category
-    fields = "__all__"
+    #fields = "__all__"
     success_url = reverse_lazy("bistrooapp_admin:category")
+    form_class = CategoryForm
 
 
 def menuu_list(request):
@@ -53,9 +56,14 @@ def menuu_list(request):
 
     # töötleb menüü kuupäeva
     if request.method == "POST":
+
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
-        valitud_kp = request.POST.get("valitud_kp")
-        request.session['menu_date'] = valitud_kp # kirjutab kuupäeva mällu
+        if request.POST.get("valitud_kp"): # kui postis on kuupäev siis
+            valitud_kp = request.POST.get("valitud_kp")  # on kujul 2023-12-06
+        else:
+            valitud_kp = datetime.today()  # on kujul 2023-12-21 23:36:50.338385
+            request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu kujul 2023-12-21
+
     elif request.session.get("menu_date"):  # kui kuupäev olemas mälus siis vali see
         valitud_kp = request.session.get('menu_date')
         # del request.session['menu_date']  # kustutab kuupäeva sessiooni mälust
@@ -93,6 +101,7 @@ def menuu_list(request):
 
     # loob obj form.py loodud kuupäeva vormile, vt form.py
     datePicker = CurrentDate(initial={"valitud_kp": default_date})  # määrab vaikimisi värtuse
+    dublicate_date = DublicateDate(initial={"dublikaadi_kp": datetime.today()})
 
     # Create a context dictionary with the data, andmed saadetakse html lehele
     context = {
@@ -101,7 +110,8 @@ def menuu_list(request):
         'themes': q_result_theme,
         'datePicker': datePicker, # form'i nimetus määratud, form loodud forms.py
         'formatted_date':  formatted_date,
-        'theme_id': theme_id
+        'theme_id': theme_id,
+        "dublicate_date": dublicate_date
     }
 
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
@@ -288,6 +298,11 @@ def delete_subline(request, line_id):
     line_instance.delete()
     messages.success(request, description + " kustutatud")
     #return redirect("bistrooapp_admin:menuu_list")
+    return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
+
+def dublicate_menu(request):
+
+
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
 """

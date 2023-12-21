@@ -6,7 +6,7 @@
         <div class="col-2"></div>
         <div class="col-10">
             <h3>Muuda {{ category.category_name | lower }}</h3>
-            <form method="post" class="forms_gen">
+            <form method="post" class="forms_gen" novalidate>
                 {% csrf_token %}
                 <table>
                     {{ form.as_table }} {# vormindab vaate #}
