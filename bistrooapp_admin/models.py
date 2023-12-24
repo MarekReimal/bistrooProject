@@ -45,7 +45,7 @@ class Theme(models.Model):
     def clean(self):  # ei lase ainult autorit sisestada
 
         if (self.theme is not None and self.recommenders is None) or (self.recommenders is not None and self.theme is None):
-            raise ValidationError("Teema ja Soovitajad peavad mõlemad olema täidetud")
+            raise ValidationError( ("Teema ja Soovitajad peavad mõlemad olema täidetud"))
 
 
 """

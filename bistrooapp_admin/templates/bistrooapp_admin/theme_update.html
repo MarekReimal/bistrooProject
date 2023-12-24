@@ -2,15 +2,25 @@
 
 {% block content %}
 	{# vaatel saab muuta-update menüü pealkirju #}
-    <div>
+    <div class="row mt-4">
+        <div class="col-2"></div>
+        <div class="col-10">
     <h3>Muuda pealkiri</h3>
-        <form method="post" action={% url "bistrooapp_admin:update_theme" theme_id=theme_id %}>
+        <form method="post" class="forms_gen" action={% url "bistrooapp_admin:update_theme" theme_id=theme_id %}>
             {% csrf_token %}
-            {{ theme_up_form.as_p }}
-            <input type="submit" value="Muuda">
+
+            <table>
+                {{ theme_up_form.as_table}}
+            <tr>
+                <td style="padding: 30px 0px 0px;">
+                    <input type="submit" value="Muuda" class="menuu_nupud">
+                </td>
+            </tr>
+            </table>
         </form>
     <p></p>
-    <p><a href="{% url "bistrooapp_admin:menuu_list" %}">Menüü koostamine</a></p>
+    <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Tagasi</a></p>
+    </div>
     </div>
 
 {% endblock %}

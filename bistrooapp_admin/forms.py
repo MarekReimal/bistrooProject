@@ -18,7 +18,8 @@ class CurrentDate(forms.Form):
 
 
 class DublicateDate(forms.Form):
-    dublikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}), input_formats=['%d.%m.%Y'])
+    dublikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}),
+                                    input_formats=['%d.%m.%Y'], label="Koopia kuupäev", required=True)
 
 
 class CategoryForm(forms.ModelForm):
@@ -70,7 +71,8 @@ class SublineForm(forms.ModelForm):
         model = Menuu
         fields = ["menu_date", "category_name", "description", "price_full", "price_half"]
         labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}
-        widgets = {"menu_date": forms.HiddenInput, "category_name": forms.HiddenInput}
+        widgets = {"menu_date": forms.HiddenInput, "category_name": forms.HiddenInput,
+                   "description": forms.Textarea(attrs={"rows": 6})}
         error_messages = {"description": {"required": "Väli on nõutud"},
                           "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number"}}
 # https://stackoverflow.com/questions/3436712/create-custom-error-messages-with-model-forms

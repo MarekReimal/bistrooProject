@@ -30,8 +30,6 @@
                                         {{ datePicker.as_p }} {# vt view def menuu_list, sealt tuleb #}
                                         {# input type="date" name="valitud_kp" required id="id_valitud_kp" #}
                                 </form>
-
-
                                 <a href="{% url "bistrooapp_admin:move_back" %}" class="gg-chevron-double-left-r"></a>
                                 <a href="{% url "bistrooapp_admin:today" %}" class="tana">Täna</a>
                                 <a href="{% url "bistrooapp_admin:move_forward" %}" class="gg-chevron-double-right-r"></a>
@@ -89,10 +87,10 @@
                         <tr>
                             <td>
                                 {# loob kuupäeva vormi #}
-                                <form action="" method="post" id="dublikaadivorm">
+                                <form action="{% url "bistrooapp_admin:dublicate_menu" %}" method="post" id="dublikaadivorm">
                                     {% csrf_token %}
                                     {{ dublicate_date.as_p }} {# vt view def menuu_list, sealt tuleb #}
-                                    <input type="submit" value="pukk">
+                                    <input type="submit" value="Tee koopia" class="menuu_nupud">
                                 </form>
                             </td>
                         </tr>
@@ -286,8 +284,6 @@
 
                 var form = $('#kuupaevaForm'); // võtab vormi
                 form.submit() // teeb submit kui kuupäev muudetakse
-
-
             });
         });
         document.addEventListener("DOMContentLoaded", function () {
@@ -296,7 +292,7 @@
             messageElement.style.display = "block";
 
             // Set a timeout to hide the message after 10 seconds (10000 milliseconds)
-            setTimeout(function () {messageElement.style.display = "none";}, 2000); // 10000 milliseconds = 10 seconds
+            setTimeout(function () {messageElement.style.display = "none";}, 1000); // 10000 milliseconds = 10 seconds
             });
     </script>
 

@@ -26,5 +26,7 @@ urlpatterns = [
 
     path("today/", views.mytoday, name="today"), # kustutab sessioonist kp
     path("move_back/", views.move_back, name="move_back"),
-    path("move_forward", views.move_forward, name="move_forward")
+    path("move_forward/", views.move_forward, name="move_forward"),
+
+    path("dublicate_menu", views.dublicate_menu, name="dublicate_menu")
 ]

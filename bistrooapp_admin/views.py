@@ -56,11 +56,14 @@ def menuu_list(request):
 
     # töötleb menüü kuupäeva
     if request.method == "POST":
-
+        print("PRINDI REQUEST", request.POST.get("form"))
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
         if request.POST.get("valitud_kp"): # kui postis on kuupäev siis
             valitud_kp = request.POST.get("valitud_kp")  # on kujul 2023-12-06
-        else:
+            request.session['menu_date'] = valitud_kp
+            print("KUI ON VALITUD KP")
+        else:  # kui kuupäeva ei ole siis on täna
+            print("EI OLE VALITUD KP")
             valitud_kp = datetime.today()  # on kujul 2023-12-21 23:36:50.338385
             request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu kujul 2023-12-21
 
@@ -301,7 +304,50 @@ def delete_subline(request, line_id):
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
 def dublicate_menu(request):
+    # võtab kasutaja antud kuupäeva
+    if request.method == "POST":
+        dublikaadi_kp = request.POST.get("dublikaadi_kp")  # on kujul 2023-12-06
 
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
+
+    # teeb päringu DB, võtab menüü valitud kuupäeva järgi
+    q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
+    q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
+
+    # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
+    q_result_menuu_dub = Menuu.objects.filter(menu_date=dublikaadi_kp)
+    q_result_theme_dub = Theme.objects.filter(menu_date=dublikaadi_kp)
+    if q_result_theme_dub:  # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
+        theme_instance_dub = Theme.objects.get(menu_date=dublikaadi_kp)  # võta vastava id-ga obj
+        theme_instance_dub.delete()  # kustutab rea et ei teeks topelt
+    if q_result_menuu_dub:  # kui on ridu
+        for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
+            obj.delete()  # kustutab rea
+
+    # kui menüül on teemad siis teeb koopia uue kuupäevaga
+    if q_result_theme:
+        # võtab väärtused olemas olevast menüüst
+        theme_instance = Theme.objects.get(menu_date=valitud_kp)  # võta vastava id-ga obj
+        new_theme_instance = Theme.objects.create(
+            menu_date=dublikaadi_kp,
+            theme=theme_instance.theme,
+            recommenders=theme_instance.recommenders,
+            author=theme_instance.author
+        )
+        new_theme_instance.save()
+
+    # kui menüül on toidud siis teeb koopia uue kuupäevaga
+    if q_result_menuu:
+        for menu_instance in q_result_menuu:
+            new_menu_instance = Menuu.objects.create(
+                menu_date=dublikaadi_kp,
+                category_name=menu_instance.category_name,
+                description=menu_instance.description,
+                price_full=menu_instance.price_full,
+                price_half=menu_instance.price_half
+            )
+            new_menu_instance.save()
 
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
