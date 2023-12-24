@@ -1,8 +1,20 @@
+from datetime import datetime
+
 from django.shortcuts import render
-from django.views.generic import TemplateView
+
+from bistrooapp_admin.models import Menuu, Theme
 
 
 # Create your views here.
 
-class HomeView(TemplateView): # näitab ava lehte
-    template_name = "bistrooapp_public/index.html" # movieapp/templates/index.html
+def show_menu(request):
+    menu_date = datetime.today()
+    # teeb päringu DB, võtab menüü valitud kuupäeva järgi
+    q_result_menuu = Menuu.objects.filter(menu_date=menu_date)
+    q_result_theme = Theme.objects.filter(menu_date=menu_date)
+
+    context = {
+        'menuu_items': q_result_menuu,
+        'themes': q_result_theme,
+    }
+    return render(request, 'bistrooapp_public/index.html', context)

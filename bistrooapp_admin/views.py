@@ -56,14 +56,11 @@ def menuu_list(request):
 
     # töötleb menüü kuupäeva
     if request.method == "POST":
-        print("PRINDI REQUEST", request.POST.get("form"))
         # kui kaustaja valib kuupäeva, siis tehakse JS POST, korjab valitud kuupäeva
         if request.POST.get("valitud_kp"): # kui postis on kuupäev siis
             valitud_kp = request.POST.get("valitud_kp")  # on kujul 2023-12-06
             request.session['menu_date'] = valitud_kp
-            print("KUI ON VALITUD KP")
         else:  # kui kuupäeva ei ole siis on täna
-            print("EI OLE VALITUD KP")
             valitud_kp = datetime.today()  # on kujul 2023-12-21 23:36:50.338385
             request.session['menu_date'] = valitud_kp.strftime("%Y-%m-%d")  # kirjutab kuupäeva mällu kujul 2023-12-21
 
@@ -321,9 +318,9 @@ def dublicate_menu(request):
     if q_result_theme_dub:  # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
         theme_instance_dub = Theme.objects.get(menu_date=dublikaadi_kp)  # võta vastava id-ga obj
         theme_instance_dub.delete()  # kustutab rea et ei teeks topelt
-    if q_result_menuu_dub:  # kui on ridu
-        for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
-            obj.delete()  # kustutab rea
+    # if q_result_menuu_dub:  # kui on ridu
+    #     for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
+    #         obj.delete()  # kustutab rea
 
     # kui menüül on teemad siis teeb koopia uue kuupäevaga
     if q_result_theme:

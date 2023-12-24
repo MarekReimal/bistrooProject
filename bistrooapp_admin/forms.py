@@ -74,8 +74,9 @@ class SublineForm(forms.ModelForm):
         widgets = {"menu_date": forms.HiddenInput, "category_name": forms.HiddenInput,
                    "description": forms.Textarea(attrs={"rows": 6})}
         error_messages = {"description": {"required": "Väli on nõutud"},
-                          "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number"}}
+                          "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number (0->Prae hinnas)"}}
 # https://stackoverflow.com/questions/3436712/create-custom-error-messages-with-model-forms
+# https://stackoverflow.com/questions/6536373/how-can-i-set-the-size-of-rows-columns-in-textfield-in-django-models
 
 class SublineUpdateForm(forms.ModelForm):
     class Meta:

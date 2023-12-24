@@ -25,7 +25,7 @@ class Menuu(models.Model):
                                      validators=[MinValueValidator(0,"Väärtus peab olema 0 või 0-st suurem number")])
 
     class Meta:  # on Country alam klass
-        ordering = ["-menu_date", "category_name", "description"]  # sorteerib tabeli
+        ordering = ["-menu_date", "category_name", "id"]  # sorteerib tabeli
 
     def __str__(self):  # et ei näitaks nimesid mitte objekt 1, objekt 2 jne
         return f'{self.menu_date, self.description}'  # näitab ühte veergu loetava nimega
