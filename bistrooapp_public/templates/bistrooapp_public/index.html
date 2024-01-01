@@ -1,6 +1,47 @@
 {% extends "base_public.html" %}
 
 {% block content %}
-<h3>Kooli menüü, näitab söökla ekraanil</h3>
+    <div>
+    <div class="text-center">
+        <h4>{{ formatted_date }}</h4>
+        {% if themes %}
+            {% if themes.0.theme %}
+                <p>{{ themes.0.theme }}</p>
+            {% endif %}
+            {% if themes.0.recommenders %}
+                <p>{{ themes.0.recommenders }}</p>
+            {% endif %}
+            {% if themes.0.author %}
+                <p>{{ themes.0.author }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+        {% regroup menuu_items by category_name__category_name as menu_list %}
+        <div>
+            {% for category in menu_list %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>{{ category.grouper }}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for subline in category.list %}
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-9">{{ subline.description }}</div>
+                                    <div class="col-2">{{ subline.price_full }}</div>
+                                    <div class="col-1">{{ subline.price_half }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

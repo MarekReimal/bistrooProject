@@ -8,5 +8,5 @@ app_name = "bistrooapp_public"
 
 
 urlpatterns = [
-    path("", views.HomeView.as_view(), name="index"),  # avaleht
+    path("", views.show_menu, name="index"),  # avaleht
 ]

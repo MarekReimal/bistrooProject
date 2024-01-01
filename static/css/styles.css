@@ -244,10 +244,47 @@ td.head_text {
     color: #b02a37;
 }
 /* Style for the label of the form field */
-label[for="id_dublikaadi_kp"] {
+label[for="id_duplikaadi_kp"] {
     /* Your styles here */
     font-weight: bold;
     color: var(--menuu_lingi_tekst);
     /* Add more styles as needed */
 }
+/*.containerx {
+    display: flex;
+    flex-direction: row;*/
+    /*height: 100vh; /* Adjust as needed */
+    /*overflow: visible; /* Hides content overflow */
+/*}*/
 
+
+.sidebar {
+    width: 190px; /* Adjust width */
+    position: fixed; /* Fixed position */
+    top: 70px; /* Adjust top position */
+    left: 0; /* Adjust left position */
+    bottom: 0; /* Adjust bottom position */
+    /*background-color: #f0f0f0; /* Sidebar background color */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: auto;
+}
+
+.main-content  {
+    flex: 1; /* Takes remaining width */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: auto;
+    padding-left: 200px; /* Adjust to match sidebar width */
+    /* Additional styles for scrollable content */
+}
+@media (max-width: 1000px) {
+    .sidebar{
+        width: 123px;
+        top: 220px;
+    }
+    .menuu_nupud{
+        width: 90px;
+    }
+    .datepicker-form{
+        width: 90px;
+    }
+}

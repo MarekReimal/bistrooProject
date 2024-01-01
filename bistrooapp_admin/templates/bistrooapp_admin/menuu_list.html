@@ -14,7 +14,7 @@
     {# loob vasakusse äärde valikute osa #}
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 sidebar">
                 <table class="table table-bordered menuu-table">
                    <!-- <thead>
                         <tr>
@@ -87,9 +87,9 @@
                         <tr>
                             <td>
                                 {# loob kuupäeva vormi #}
-                                <form action="{% url "bistrooapp_admin:dublicate_menu" %}" method="post" id="dublikaadivorm">
+                                <form action="{% url "bistrooapp_admin:duplicate_menu" %}" method="post" id="duplikaadivorm">
                                     {% csrf_token %}
-                                    {{ dublicate_date.as_p }} {# vt view def menuu_list, sealt tuleb #}
+                                    {{ duplicate_date.as_p }} {# vt view def menuu_list, sealt tuleb #}
                                     <input type="submit" value="Tee koopia" class="menuu_nupud">
                                 </form>
                             </td>
@@ -100,8 +100,10 @@
 
 
             {# joonistab paremasse osasse menüü tabeli #}
-            <div class="col-md-9">
+            <div class="col-md-9 main-content">
 
+            {# näitab teadet rea kustutamise kohta #}
+            <!--
             <div id="success-message"> {# Näitab teadet 3 sekundit vt js all #}
             {% if messages %} {# kui teade on olemas siis näitab, vt CategoryDeleteView #}
                 <ul class="messages">
@@ -113,6 +115,7 @@
                 </ul>
             {% endif %}
             </div>
+            -->
 
 
                 {% if menuu_items or themes %} {# kui valitud kuupäeval on menüü DB's siis näita menüüd, else teade "Menüü puudub" #}
@@ -286,14 +289,27 @@
                 form.submit() // teeb submit kui kuupäev muudetakse
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
+        //document.addEventListener("DOMContentLoaded", function () {
             // Display the message
-            var messageElement = document.getElementById("success-message");
-            messageElement.style.display = "block";
+          //  var messageElement = document.getElementById("success-message");
+           // messageElement.style.display = "block";
 
             // Set a timeout to hide the message after 10 seconds (10000 milliseconds)
-            setTimeout(function () {messageElement.style.display = "none";}, 1000); // 10000 milliseconds = 10 seconds
-            });
+            //setTimeout(function () {messageElement.style.display = "none";}, 1000); // 10000 milliseconds = 10 seconds
+            //});
+        // Save the scroll position in sessionStorage before the page reloads
+            window.onbeforeunload = function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+            }
+
+            // Retrieve the saved scroll position from sessionStorage and scroll to it
+            window.onload = function() {
+                var scrollPosition = sessionStorage.getItem('scrollPosition');
+                if (scrollPosition !== null) {
+                    window.scrollTo(0, parseInt(scrollPosition));
+                    sessionStorage.removeItem('scrollPosition'); // Clear the saved scroll position
+                }
+            }
     </script>
 
 {% endblock %}

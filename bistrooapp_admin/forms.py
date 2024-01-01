@@ -17,8 +17,8 @@ class CurrentDate(forms.Form):
                                   # label="Menüü kuupäev" , initial=datetime.now()
 
 
-class DublicateDate(forms.Form):
-    dublikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}),
+class DuplicateDate(forms.Form):
+    duplikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}),
                                     input_formats=['%d.%m.%Y'], label="Koopia kuupäev", required=True)
 
 

@@ -9,7 +9,7 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm, CategoryForm, DublicateDate
+from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm, CategoryForm, DuplicateDate
 
 
 # Create your views here.
@@ -101,7 +101,13 @@ def menuu_list(request):
 
     # loob obj form.py loodud kuupäeva vormile, vt form.py
     datePicker = CurrentDate(initial={"valitud_kp": default_date})  # määrab vaikimisi värtuse
-    dublicate_date = DublicateDate(initial={"dublikaadi_kp": datetime.today()})
+
+    # loob vormi koopia kuupäeva jaoks
+    if request.session.get('menu_date_duplicate'):  # kui sessi mälus on kuupäev siis
+        dup_date = request.session.get('menu_date_duplicate')
+        duplicate_date = DuplicateDate(initial={"duplikaadi_kp": dup_date})
+    else:
+        duplicate_date = DuplicateDate(initial={"duplikaadi_kp": datetime.today()})
 
     # Create a context dictionary with the data, andmed saadetakse html lehele
     context = {
@@ -111,7 +117,7 @@ def menuu_list(request):
         'datePicker': datePicker, # form'i nimetus määratud, form loodud forms.py
         'formatted_date':  formatted_date,
         'theme_id': theme_id,
-        "dublicate_date": dublicate_date
+        "duplicate_date": duplicate_date
     }
 
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
@@ -300,10 +306,12 @@ def delete_subline(request, line_id):
     #return redirect("bistrooapp_admin:menuu_list")
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
-def dublicate_menu(request):
+
+def duplicate_menu(request):
     # võtab kasutaja antud kuupäeva
     if request.method == "POST":
-        dublikaadi_kp = request.POST.get("dublikaadi_kp")  # on kujul 2023-12-06
+        duplikaadi_kp = request.POST.get("duplikaadi_kp")  # on kujul 2023-12-06
+        request.session['menu_date_duplicate'] = duplikaadi_kp  # kirjuta sess mällu
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
@@ -313,21 +321,21 @@ def dublicate_menu(request):
     q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
 
     # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
-    q_result_menuu_dub = Menuu.objects.filter(menu_date=dublikaadi_kp)
-    q_result_theme_dub = Theme.objects.filter(menu_date=dublikaadi_kp)
+    q_result_menuu_dub = Menuu.objects.filter(menu_date=duplikaadi_kp)
+    q_result_theme_dub = Theme.objects.filter(menu_date=duplikaadi_kp)
     if q_result_theme_dub:  # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
-        theme_instance_dub = Theme.objects.get(menu_date=dublikaadi_kp)  # võta vastava id-ga obj
+        theme_instance_dub = Theme.objects.get(menu_date=duplikaadi_kp)  # võta vastava id-ga obj
         theme_instance_dub.delete()  # kustutab rea et ei teeks topelt
-    # if q_result_menuu_dub:  # kui on ridu
-    #     for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
-    #         obj.delete()  # kustutab rea
+    if q_result_menuu_dub:  # kui on ridu siis kustutab
+        for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
+            obj.delete()  # kustutab rea
 
     # kui menüül on teemad siis teeb koopia uue kuupäevaga
     if q_result_theme:
         # võtab väärtused olemas olevast menüüst
         theme_instance = Theme.objects.get(menu_date=valitud_kp)  # võta vastava id-ga obj
         new_theme_instance = Theme.objects.create(
-            menu_date=dublikaadi_kp,
+            menu_date=duplikaadi_kp,
             theme=theme_instance.theme,
             recommenders=theme_instance.recommenders,
             author=theme_instance.author
@@ -338,7 +346,7 @@ def dublicate_menu(request):
     if q_result_menuu:
         for menu_instance in q_result_menuu:
             new_menu_instance = Menuu.objects.create(
-                menu_date=dublikaadi_kp,
+                menu_date=duplikaadi_kp,
                 category_name=menu_instance.category_name,
                 description=menu_instance.description,
                 price_full=menu_instance.price_full,

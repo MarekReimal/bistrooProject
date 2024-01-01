@@ -28,5 +28,5 @@ urlpatterns = [
     path("move_back/", views.move_back, name="move_back"),
     path("move_forward/", views.move_forward, name="move_forward"),
 
-    path("dublicate_menu", views.dublicate_menu, name="dublicate_menu")
+    path("duplicate_menu", views.duplicate_menu, name="duplicate_menu")
 ]
