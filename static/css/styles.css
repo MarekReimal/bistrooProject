@@ -288,3 +288,37 @@ label[for="id_duplikaadi_kp"] {
         width: 90px;
     }
 }
+/* Vormindab menüü tabeli public vaadet */
+.public_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.public_table td {
+
+    /*border-left: 2px solid #000000; /* Add a left border to all cells */
+    padding: 8px;
+    text-align: left;
+}
+
+.public_table .description {
+    border: none;
+    width: 80%; /* Description column */
+}
+
+.public_table .price_f {
+    border: none;
+    width: 10%; /* Price columns */
+    text-align: right;
+}
+.public_table .price_h {
+    border: none;
+    width: 10%; /* Price columns */
+    text-align: left;
+}
+
+/* Remove the left border from the first cell in each row */
+.public_table tr td:first-child {
+
+
+}
