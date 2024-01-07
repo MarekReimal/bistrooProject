@@ -217,7 +217,7 @@
                                                     <td class="menuu_read">{{ menuu_item.description }}</td>
 
                                                     {# hinna töötlus #}
-                                                    {% if menuu_item.price_full and menuu_item.price_half == None %}
+                                                    {% if menuu_item.price_full and menuu_item.price_half == None or menuu_item.price_half == 0 %}
                                                         <td style="width: 200px" class="menuu_read">{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
                                                     {% elif menuu_item.price_full == 0 and menuu_item.price_half == 0 or menuu_item.price_full == 0 and menuu_item.price_half == None %}
                                                         <td style="width: 200px" class="menuu_read">Prae hinna sees</td>
