@@ -19,21 +19,21 @@
         {% regroup menuu_items by category_name__category_name as menu_list %}
         <div>
             {% for category in menu_list %}
-                <table class="public_table">
+                <table class="table table-sm table-bordered">
                     <thead>
                     <tr>
-                        <td class="description">{{ category.grouper }}</td>
+                        <td class="pub_head_text">{{ category.grouper }}</td>
                     </tr>
                     </thead>
                     <tbody>
                     {% for subline in category.list %}
                         <tr>
-
-
-                                    <td class="description">{{ subline.description }}</td>
-                                    <td class="price_f">{{ subline.price_full }}</td>
-
-
+                            <td>
+                                <div class="row">
+                                    <div class="col-10">{{ subline.description }}</div>
+                                    <div class="col-2">{{ subline.price_full }}</div>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

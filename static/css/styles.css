@@ -39,6 +39,14 @@ td.head_text {
     padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
 }
+td.pub_head_text {
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    background-color: var(--tabeli_alapealkirjad); /* Use the desired shade of gray */
+    font: 20px "Comic Sans MS";
+    font-variant-caps: petite-caps;
+    padding: 2px;
+    /*color: var(--menuu_alapealkirjad);*/
+}
 
 .oma-navbar {
     background-color: var(--nav_bar_riba_taust); /* Replace with your desired color */
