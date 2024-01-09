@@ -42,7 +42,7 @@ td.head_text {
 td.pub_head_text {
     /* kujundab tabeli pealkirju Supid, Praed jne */
     background-color: var(--tabeli_alapealkirjad); /* Use the desired shade of gray */
-    font: 20px "Comic Sans MS";
+    font-size: 20px;
     font-variant-caps: petite-caps;
     padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
