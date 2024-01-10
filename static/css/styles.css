@@ -39,15 +39,30 @@ td.head_text {
     padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
 }
+
+@font-face {
+  font-family: 'Patrick Hand';
+  src: url('https://fonts.gstatic.com/s/patrickhand/v23/LDI1apSQOAYtSuYWp8ZhfYe8UMLLq7s.woff2') format('woff2');
+}
+
 td.pub_head_text {
     /* kujundab tabeli pealkirju Supid, Praed jne */
-    background-color: var(--tabeli_alapealkirjad); /* Use the desired shade of gray */
-    font-size: 20px;
-    font-variant-caps: petite-caps;
+    background-color: lightgray; /* Use the desired shade of gray */
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    font-size: 18px;
+    color: cornflowerblue;
     padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
 }
 
+td.pub_row_text {
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    background-blend-mode: revert; /* Use the desired shade of gray */
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    font-size: 18px;
+    padding: 2px;
+    /*color: var(--menuu_alapealkirjad);*/
+}
 .oma-navbar {
     background-color: var(--nav_bar_riba_taust); /* Replace with your desired color */
     /*color: #0f5132;*/
