@@ -63,6 +63,12 @@ td.pub_row_text {
     padding: 2px;
     /*color: var(--menuu_alapealkirjad);*/
 }
+
+.pub_background{
+    background-image: url("/static/icons/Outline_pattern_11.jpg");
+    background-size: 600px;
+
+}
 .oma-navbar {
     background-color: var(--nav_bar_riba_taust); /* Replace with your desired color */
     /*color: #0f5132;*/
