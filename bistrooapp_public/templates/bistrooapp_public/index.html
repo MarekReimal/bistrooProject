@@ -1,21 +1,43 @@
 {% extends "base_public.html" %}
 
 {% block content %}
-    <div>
-    <div class="text-center">
-        <h4>{{ formatted_date }}</h4>
-        {% if themes %}
-            {% if themes.0.theme %}
-                <p>{{ themes.0.theme }}</p>
-            {% endif %}
-            {% if themes.0.recommenders %}
-                <p>{{ themes.0.recommenders }}</p>
-            {% endif %}
-            {% if themes.0.author %}
-                <p>{{ themes.0.author }}</p>
-            {% endif %}
-        {% endif %}
-    </div>
+    <div> {# joonistab pealkirjad #}
+        <div class="row" style="margin: 10px">
+            <div class="col-2"></div>
+            <div class="col-8 text-center pealkirjad">
+                <table>
+                    <tr>
+                        <td>{{ formatted_date }}</td>
+                    </tr>
+                    {% if themes %}
+                        <tr>
+                            <td>
+                                {% if themes.0.theme %}
+                                    {{ themes.0.theme | upper }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if themes.0.recommenders %}
+                                    {{ themes.0.recommenders | upper }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if themes.0.author %}
+                                    {{ themes.0.author | upper }}
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        {# joonistab menüü tabeli  #}
         {% regroup menuu_items by category_name__category_name as menu_list %}
         <div>
             {% for category in menu_list %}
@@ -28,10 +50,10 @@
                     <tbody>
                     {% for subline in category.list %}
                         <tr>
-                            <td>
+                            <td style="background: lightyellow">
                                 <div class="row">
-                                    <div class="col-10">{{ subline.description }}</div>
-                                    <div class="col-2">{{ subline.price_full }}</div>
+                                    <div class="col-10 pub_row_text">{{ subline.description | upper }}</div>
+                                    <div class="col-2 pub_row_text">{{ subline.price_full | upper }}</div>
                                 </div>
                             </td>
                         </tr>
