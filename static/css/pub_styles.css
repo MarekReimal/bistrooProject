@@ -1,0 +1,70 @@
+@font-face {
+  font-family: 'Patrick Hand';
+  src: url('https://fonts.gstatic.com/s/patrickhand/v23/LDI1apSQOAYtSuYWp8ZhfYe8UMLLq7s.woff2') format('woff2');
+}
+
+td.pub_head_text {
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    background-color: #badce3; /* Use the desired shade of gray */
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #b02a37;
+    padding: 1px;
+    padding-left: 20px;
+    /*color: var(--menuu_alapealkirjad);*/
+}
+td.pub_head_text_koolilouna {
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    background-color: #badce3; /* Use the desired shade of gray */
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    font-size: 18px;
+    font-weight: bolder;
+    color: red;
+    padding: 1px;
+    padding-left: 20px;
+    /*color: var(--menuu_alapealkirjad);*/
+}
+.pealkirjad{
+    /* vormindab public pealkirju "teema soovitaja autor" */
+    color: #b02a37;
+    background-color: #badce3;
+    font-size: 18px;
+    font-weight: bolder;
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+}
+.pub_row_text {
+    /* kujundab tabeli pealkirju Supid, Praed jne */
+    font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
+    font-size: 18px;
+    font-weight: bolder;
+    padding: 1px;
+    padding-left: 20px;
+    /*color: var(--menuu_alapealkirjad);*/
+}
+.pub_background{
+    /*lisab tausta menüü vaatele*/
+    /*https://all-free-download.com/free-vector/download/food-icons-pattern-outline-colorful-repeating-design_6827151.html*/
+    background-image: url("/static/icons/Outline_pattern_11.jpg");
+    background-size: 400px;
+    opacity: 100%;
+}
+body{
+    position: relative;
+    min-height: 100vh;
+}
+body::before{
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/icons/Outline_pattern_11.jpg");
+    background-size: 400px;
+    opacity: 20%; /* Adjust the opacity as needed */
+    z-index: -1;  /*tõstab tabeli kihi kõige ette   */
+}

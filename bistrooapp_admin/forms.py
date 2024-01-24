@@ -22,6 +22,9 @@ class DuplicateDate(forms.Form):
                                     input_formats=['%d.%m.%Y'], label="Koopia kuupäev", required=True)
 
 
+class MenuuSearchForm(forms.Form):
+    search_phrase = forms.CharField(label="Otsingu fraas")
+
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -29,9 +32,6 @@ class CategoryForm(forms.ModelForm):
         labels = {"category_name": "Toidu kategooria", "category_sort_id": "Järjestus nr"}
         error_messages = {"category_name":{"required": "Väli on nõutud"},
                           "category_sort_id":{"required": "Väli on nõutud", "min_value": "Väärtus peab olema 0 või 0-st suurem number"}}
-
-
-
 
 
 class ThemeForm(forms.ModelForm):

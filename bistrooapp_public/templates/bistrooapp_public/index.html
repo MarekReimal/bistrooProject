@@ -5,11 +5,12 @@
         <div class="row" style="margin: 10px">
             <div class="col-2"></div>
             <div class="col-8 text-center pealkirjad">
-                <table>
-                    <tr>
-                        <td>{{ formatted_date }}</td>
-                    </tr>
-                    {% if themes %}
+            <table>
+                <tr>
+                    <td>{{ formatted_date }}</td>
+                </tr>
+                {% if is_menuu %} {# kui menüüd ei ole siis teade #}
+                    {% if themes %} {# kui teemad on siis näitab #}
                         <tr>
                             <td>
                                 {% if themes.0.theme %}
@@ -31,38 +32,46 @@
                                 {% endif %}
                             </td>
                         </tr>
-
                     {% endif %}
-                </table>
-            </div>
-            <div class="col-2"></div>
-        </div>
-        {# joonistab menüü tabeli  #}
-        {% regroup menuu_items by category_name__category_name as menu_list %}
-        <div>
-            {% for category in menu_list %}
-                <table class="table table-sm table-bordered">
-                    <thead>
+                {% elif is_menuu == False %}
                     <tr>
-                        <td class="pub_head_text">{{ category.grouper | upper }}</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for subline in category.list %}
-                        <tr>
-                            <td style="background: lightyellow">
-                                <div class="row">
-                                    <div class="col-10 pub_row_text">{{ subline.description | upper }}</div>
-                                    <div class="col-2 pub_row_text">{{ subline.price_full | upper }}</div>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-
-            {% endfor %}
+                        <td>
+                            {{ "Menüüd pole veel sisestatud" | upper }}
+                        </td>
+                    <tr>
+                {% endif %}
+            </table>
         </div>
+        <div class="col-2"></div>
+    </div>
+
+    {# joonistab menüü tabeli  #}
+    {% regroup menuu_items by category_name__category_name as menu_list %}
+    <div>
+        {% for category in menu_list %}
+            <table class="table table-sm table-bordered">
+                <thead>
+                <tr>
+                    <td class="{% if forloop.counter == 1 %}pub_head_text_koolilouna{% else %}pub_head_text{% endif %}">{{ category.grouper | upper }}</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subline in category.list %}
+                    <tr>
+                        <td style="background: lightyellow">
+                            <div class="row">
+                                <div class="col-10 pub_row_text">{{ subline.description | upper }}</div>
+                                <div class="col-2 pub_row_text">{{ subline.price_full }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% endfor %}
+    </div>
+
     </div>
 
 {% endblock %}

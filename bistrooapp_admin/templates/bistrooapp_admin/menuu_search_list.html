@@ -1,0 +1,56 @@
+{% extends "base_admin.html" %}
+{% block content %}
+    <div class="row mt-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h2>Otsingu tulemus</h2>
+
+            <div class="pagination">
+    <span class="step-links">
+        {% if search_result_menuu.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ search_result_menuu.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ search_result_menuu.number }} of {{ search_result_menuu.paginator.num_pages }}.
+        </span>
+
+        {% if search_result_menuu.has_next %}
+            <a href="?page={{ search_result_menuu.next_page_number }}">next</a>
+            <a href="?page={{ search_result_menuu.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Kuupäev</td>
+                    <td>Kategooria</td>
+                    <td>Nimetus</td>
+                    <td>Hind suur</td>
+                    <td>Hind väike</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for result in search_result_menuu %}
+                    <tr>
+                        <td>{{ result.menu_date | date:"d.m.y" }}</td>
+                        <td>{{ result.category_name }}</td>
+                        <td>{{ result.description }}</td>
+                        <td>{{ result.price_full }}</td>
+                        {% if result.price_half %}
+                            <td>{{ result.price_half }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock %}

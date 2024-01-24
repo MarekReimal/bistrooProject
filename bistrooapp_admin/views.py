@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
@@ -9,7 +10,8 @@ from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .forms import CurrentDate, ThemeForm, ThemeUpdateForm, SublineUpdateForm, SublineForm, CategoryForm, DuplicateDate
+from .forms import (CurrentDate, ThemeForm, ThemeUpdateForm,
+                    SublineUpdateForm, SublineForm, CategoryForm, DuplicateDate, MenuuSearchForm)
 
 
 # Create your views here.
@@ -355,6 +357,52 @@ def duplicate_menu(request):
             new_menu_instance.save()
 
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
+
+def menuu_search(request):
+        menuu_search_form = MenuuSearchForm
+        return render(request, "bistrooapp_admin/menuu_search.html",
+                      {"menuu_search_form": menuu_search_form})
+
+def menuu_search_list(request):
+    page = request.GET.get('page', 1)
+    print("LEHT LEHT nr ", page)
+
+
+    search_result_menuu = None
+
+    # kui andmeid sisestati siis
+    if request.method == "POST":
+        # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
+        search_phrase = request.POST.get("search_phrase")
+        search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)
+
+        # Pagination
+        page = request.GET.get('page', 1)
+        print("LEHT LEHT nr ", page)
+        paginator = Paginator(search_result_menuu, 10)  # Show 10 results per page
+        try:
+            search_result_menuu = paginator.page(page)
+        except PageNotAnInteger:
+            search_result_menuu = paginator.page(1)
+        except EmptyPage:
+            search_result_menuu = paginator.page(paginator.num_pages)
+
+        return render(request, "bistrooapp_admin/menuu_search_list.html",
+                      {"search_result_menuu": search_result_menuu})
+    else:  # kui ei ole post siis kuva vorm
+        # Pagination
+        page = request.GET.get('page', 1)
+        print("LEHT LEHT nr ", page)
+        paginator = Paginator(search_result_menuu, 10)  # Show 10 results per page
+        try:
+            search_result_menuu = paginator.page(page)
+        except PageNotAnInteger:
+            search_result_menuu = paginator.page(1)
+        except EmptyPage:
+            search_result_menuu = paginator.page(paginator.num_pages)
+
+        return render(request, "bistrooapp_admin/menuu_search.html",
+                      {"search_result_menuu": search_result_menuu})
 
 """
 
