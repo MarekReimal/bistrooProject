@@ -364,45 +364,31 @@ def menuu_search(request):
                       {"menuu_search_form": menuu_search_form})
 
 def menuu_search_list(request):
-    page = request.GET.get('page', 1)
-    print("LEHT LEHT nr ", page)
-
-
-    search_result_menuu = None
 
     # kui andmeid sisestati siis
     if request.method == "POST":
-        # loob vormi obj andmetega mis on POST ja seob uue obj olemasoleva obj-ga
+        # võtab otsingu fraasi
         search_phrase = request.POST.get("search_phrase")
-        search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)
+        request.session['search_phrase'] = search_phrase  # kirjutab otsingu fraasi mällu
+        search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)  # filtreerib otsingu järgi
+    else:  # kui ei ole post
+        search_phrase = request.session.get('search_phrase')  # võta mälust viimane otsingu fraas
+        search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)  # filtreeri
 
-        # Pagination
-        page = request.GET.get('page', 1)
-        print("LEHT LEHT nr ", page)
-        paginator = Paginator(search_result_menuu, 10)  # Show 10 results per page
-        try:
-            search_result_menuu = paginator.page(page)
-        except PageNotAnInteger:
-            search_result_menuu = paginator.page(1)
-        except EmptyPage:
-            search_result_menuu = paginator.page(paginator.num_pages)
+    list_count = search_result_menuu.count()  # loendab mitu kirjet leiti
 
-        return render(request, "bistrooapp_admin/menuu_search_list.html",
-                      {"search_result_menuu": search_result_menuu})
-    else:  # kui ei ole post siis kuva vorm
-        # Pagination
-        page = request.GET.get('page', 1)
-        print("LEHT LEHT nr ", page)
-        paginator = Paginator(search_result_menuu, 10)  # Show 10 results per page
-        try:
-            search_result_menuu = paginator.page(page)
-        except PageNotAnInteger:
-            search_result_menuu = paginator.page(1)
-        except EmptyPage:
-            search_result_menuu = paginator.page(paginator.num_pages)
+    # Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(search_result_menuu, 10)  # Show 10 results per page
+    try:
+        search_result_menuu = paginator.page(page)
+    except PageNotAnInteger:
+        search_result_menuu = paginator.page(1)
+    except EmptyPage:
+        search_result_menuu = paginator.page(paginator.num_pages)
 
-        return render(request, "bistrooapp_admin/menuu_search.html",
-                      {"search_result_menuu": search_result_menuu})
+    return render(request, "bistrooapp_admin/menuu_search_list.html",
+                      {"search_result_menuu": search_result_menuu, "list_count": list_count})
 
 """
 

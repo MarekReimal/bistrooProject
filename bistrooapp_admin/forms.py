@@ -21,9 +21,8 @@ class DuplicateDate(forms.Form):
     duplikaadi_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}),
                                     input_formats=['%d.%m.%Y'], label="Koopia kuupäev", required=True)
 
-
 class MenuuSearchForm(forms.Form):
-    search_phrase = forms.CharField(label="Otsingu fraas")
+    search_phrase = forms.CharField(label="Otsingu fraas", required=False)
 
 class CategoryForm(forms.ModelForm):
     class Meta:

@@ -8,6 +8,15 @@
 {# liigub view funkts: def save_subline(request): if request.method == 'POST':  #}
 {# funkts suunab listi lehele: return redirect('bistrooapp_admin:menuu_list') #}
 
+Online koolitus, kui pakub huvi https://www.udemy.com/course/python-django-the-practical-guide/
+
+Kui tekib error
+https://stackoverflow.com/questions/1542878/what-to-do-when-django-query-returns-none-it-gives-me-error
+
+Läbi mitme mudeli päring
+https://stackoverflow.com/questions/3397170/
+
+
 kategooriate kaupa blokkidesse jagatud vaadet saab teha kolmel moel
 google otsing:  django html break for loop
 1. if' ga katkesta sisemine for loop ja liigu edasi välimise categooria loobiga vt all https://dev.to/anuragrana/for-loops-in-django-2jdi
@@ -15,6 +24,7 @@ google otsing:  django html break for loop
 https://pythoncircle.com/post/42/creating-custom-template-tags-in-django/
 3. tee view's phyton koodiga list milles on dict {} ja  kasuta regroup
 
+vt ka https://stackoverflow.com/questions/629551/how-to-query-as-group-by-in-django
 -----------------------------------------------------------------------
 1.
 Break in Django for loop:

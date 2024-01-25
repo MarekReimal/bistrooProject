@@ -136,7 +136,7 @@
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                 </a>
@@ -173,7 +173,7 @@
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_author" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                 </a>
@@ -203,6 +203,7 @@
                                     {% if category.category_name == menuu_item.category_name.category_name %}
                                         <thead>
                                         <tr>
+                                            <td class="head_text">Peida</td>
                                             <td class="head_text">{{ category.category_name }}</td>
                                             <td class="head_text">Hind</td>
                                             <td class="head_text">Toiming</td>
@@ -213,6 +214,9 @@
                                             {% if menuu_item.category_name.category_name == category.category_name %}
 
                                                 <tr>
+                                                <td> {# lisab checkbox #}
+                                                    <input type="checkbox" name="selectedItems" value="{{ menuu_item.id }}" onclick="handleCheckboxSelection()">
+                                                </td>
                                                     {# toidu nimetus #}
                                                     <td class="menuu_read">{{ menuu_item.description }}</td>
 
@@ -232,7 +236,7 @@
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                                             </a>
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <a href="{% url "bistrooapp_admin:delete_subline" line_id=menuu_item.id %}" title="Kustuta">
                                                                 <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                                             </a>
@@ -309,6 +313,26 @@
                     window.scrollTo(0, parseInt(scrollPosition));
                     sessionStorage.removeItem('scrollPosition'); // Clear the saved scroll position
                 }
+            }
+
+            function handleCheckboxSelection() {
+                // kui checkbox valitakse siis teeb submit
+
+                // Get all checkboxes with name "selectedItems"
+                var checkboxes = document.getElementsByName('selectedItems');
+
+                // Initialize an array to store selected item IDs
+                var selectedItems = [];
+
+                // Loop through checkboxes and add selected item IDs to the array
+                checkboxes.forEach(function(checkbox) {
+                    if (checkbox.checked) {
+                        selectedItems.push(checkbox.value);
+                    }
+                });
+
+                // Log or perform further actions with selected item IDs
+                console.log('Selected Item IDs:', selectedItems);
             }
     </script>
 
