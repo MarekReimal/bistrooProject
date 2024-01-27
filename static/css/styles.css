@@ -25,9 +25,13 @@ tr.head_text {
 }*/
 
 td.menuu_read{
-    /* vormindab toitude lahtreid */
-    padding: 5px;
+    /*vormindab toitude lahtreid*/
+    padding: 3px;
     text-align: left;
+}
+
+.selected-row{
+    background-color: #5c636a !important;
 }
 
 td.head_text {

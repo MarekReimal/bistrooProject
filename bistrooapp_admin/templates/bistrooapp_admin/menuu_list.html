@@ -214,8 +214,8 @@
                                             {% if menuu_item.category_name.category_name == category.category_name %}
 
                                                 <tr>
-                                                <td> {# lisab checkbox #}
-                                                    <input type="checkbox" name="selectedItems" value="{{ menuu_item.id }}" onclick="handleCheckboxSelection()">
+                                                <td style="text-align: center" class="menuu_read"> {# lisab checkbox #}
+                                                    <input type="checkbox" name="selectedItems" value="{{ menuu_item.id }}" onclick="handleCheckboxSelection(this)">
                                                 </td>
                                                     {# toidu nimetus #}
                                                     <td class="menuu_read">{{ menuu_item.description }}</td>
@@ -232,7 +232,7 @@
                                                             / {{ menuu_item.price_half }}</td>
                                                     {% endif %}
                                                     {# linkide töötlus #}
-                                                    <td style="width: 200px" class="menuu_read">
+                                                    <td style="width: 200px; text-align: center" class="menuu_read">
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                                             </a>
@@ -315,24 +315,38 @@
                 }
             }
 
-            function handleCheckboxSelection() {
+            function handleCheckboxSelection(checkbox) {
                 // kui checkbox valitakse siis teeb submit
 
+                var instanceId = checkbox.value;
+                // Apply a special style to the selected row
+        var row = checkbox.closest('tr');
+        var cells = row.getElementsByTagName('td');
+
+            if (checkbox.checked) {
+                for (var i = 0; i < cells.length; i++) {
+                    cells[i].classList.add('selected-row');
+                }
+            } else {
+                for (var i = 0; i < cells.length; i++) {
+                    cells[i].classList.remove('selected-row');
+                }
+            }
                 // Get all checkboxes with name "selectedItems"
-                var checkboxes = document.getElementsByName('selectedItems');
+                //var checkboxes = document.getElementsByName('selectedItems');
 
                 // Initialize an array to store selected item IDs
-                var selectedItems = [];
+                //var selectedItems = [];
 
                 // Loop through checkboxes and add selected item IDs to the array
-                checkboxes.forEach(function(checkbox) {
-                    if (checkbox.checked) {
-                        selectedItems.push(checkbox.value);
-                    }
-                });
+                //checkboxes.forEach(function(checkbox) {
+                  //  if (checkbox.checked) {
+                    //    selectedItems.push(checkbox.value);
+                    //}
+                //});
 
                 // Log or perform further actions with selected item IDs
-                console.log('Selected Item IDs:', selectedItems);
+                console.log('Selected Item IDs:', instanceId);
             }
     </script>
 

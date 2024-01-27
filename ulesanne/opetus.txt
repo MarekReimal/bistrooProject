@@ -9,7 +9,8 @@
 {# funkts suunab listi lehele: return redirect('bistrooapp_admin:menuu_list') #}
 
 Online koolitus, kui pakub huvi https://www.udemy.com/course/python-django-the-practical-guide/
-
+TABELI VÄRSKENDAMINE AJAX
+https://forum.djangoproject.com/t/ajax-javascipt-with-django-update-data-on-page-please-help/22185
 Kui tekib error
 https://stackoverflow.com/questions/1542878/what-to-do-when-django-query-returns-none-it-gives-me-error
 
