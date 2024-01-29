@@ -316,37 +316,30 @@
             }
 
             function handleCheckboxSelection(checkbox) {
-                // kui checkbox valitakse siis teeb submit
+                // kui checkbox valitakse siis muutub rea stiil ja teeb kande DB
 
-                var instanceId = checkbox.value;
                 // Apply a special style to the selected row
-        var row = checkbox.closest('tr');
-        var cells = row.getElementsByTagName('td');
-
-            if (checkbox.checked) {
-                for (var i = 0; i < cells.length; i++) {
-                    cells[i].classList.add('selected-row');
+                var row = checkbox.closest('tr');  // võta rida kus on checkbox
+                var cells = row.getElementsByTagName('td');  // võta rea lahtrid
+                //  kui checkbox on märgitud siis lisab lahtritele stiili klassi
+                if (checkbox.checked) {
+                    for (var i = 0; i < cells.length; i++) {
+                        cells[i].classList.add('selected-row');
+                    }
+                } else {  // kui lahter ei ole märgitud siis eemaldab stiili
+                    for (var i = 0; i < cells.length; i++) {
+                        cells[i].classList.remove('selected-row');
+                    }
                 }
-            } else {
-                for (var i = 0; i < cells.length; i++) {
-                    cells[i].classList.remove('selected-row');
-                }
-            }
-                // Get all checkboxes with name "selectedItems"
-                //var checkboxes = document.getElementsByName('selectedItems');
-
-                // Initialize an array to store selected item IDs
-                //var selectedItems = [];
-
-                // Loop through checkboxes and add selected item IDs to the array
-                //checkboxes.forEach(function(checkbox) {
-                  //  if (checkbox.checked) {
-                    //    selectedItems.push(checkbox.value);
-                    //}
-                //});
-
+                var checkboxId = checkbox.value;  // võta boxi value väärtus so item.id
+                $.ajax({
+                    url: '{% url "bistrooapp_admin:hide_row" %}',
+                    data: {
+                          'checkboxId': checkboxId
+                    },
+                    dataType: 'json'})
                 // Log or perform further actions with selected item IDs
-                console.log('Selected Item IDs:', instanceId);
+                console.log('Selected Item IDs:', checkboxId);
             }
     </script>
 

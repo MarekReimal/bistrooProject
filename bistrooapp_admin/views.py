@@ -390,6 +390,10 @@ def menuu_search_list(request):
     return render(request, "bistrooapp_admin/menuu_search_list.html",
                       {"search_result_menuu": search_result_menuu, "list_count": list_count})
 
+def hide_row(request):
+    checkboxId = request.GET.get('checkboxId', None)
+    print("checkboxId SEE ON ", checkboxId)
+    return HttpResponse("Row hidden successfully")
 """
 
 def add_subline_ei_kasuta(request, category): # algne töö, form oli tehtud html mitte django form
