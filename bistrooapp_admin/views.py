@@ -121,7 +121,7 @@ def menuu_list(request):
         'theme_id': theme_id,
         "duplicate_date": duplicate_date
     }
-
+    # chekboxide väärtused peavad säilima pärast värskendamist
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 
 def add_subline(request, category):
@@ -391,9 +391,20 @@ def menuu_search_list(request):
                       {"search_result_menuu": search_result_menuu, "list_count": list_count})
 
 def hide_row(request):
-    checkboxId = request.GET.get('checkboxId', None)
-    print("checkboxId SEE ON ", checkboxId)
-    return HttpResponse("Row hidden successfully")
+    # metod kirjutab modelisse rea peida/näita
+    checkboxId = request.GET.get('checkboxId', None)  # võta rea id
+    # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
+    line_instance = get_object_or_404(Menuu, id=checkboxId)
+    # kontroll mis väärtus on modelis
+    if line_instance.is_hided:  # kui on True siis muudab Falseks
+        line_instance.is_hided = False
+    else:  # kui on False siis muudab Trueks
+        line_instance.is_hided = True
+    line_instance.save()  # salvestab väärtuse
+
+    return HttpResponse()
+
+
 """
 
 def add_subline_ei_kasuta(request, category): # algne töö, form oli tehtud html mitte django form

@@ -5,18 +5,18 @@
 
 td.pub_head_text {
     /* kujundab tabeli pealkirju Supid, Praed jne */
-    background-color: #badce3; /* Use the desired shade of gray */
+    background-color: #c3efec; /* Use the desired shade of gray */
     font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
     font-size: 18px;
     font-weight: bolder;
-    color: #b02a37;
+    color: black;
     padding: 1px;
     padding-left: 20px;
     /*color: var(--menuu_alapealkirjad);*/
 }
 td.pub_head_text_koolilouna {
     /* kujundab tabeli pealkirju Supid, Praed jne */
-    background-color: #badce3; /* Use the desired shade of gray */
+    background-color: #c3efec; /* Use the desired shade of gray */
     font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;
     font-size: 18px;
     font-weight: bolder;
@@ -27,8 +27,8 @@ td.pub_head_text_koolilouna {
 }
 .pealkirjad{
     /* vormindab public pealkirju "teema soovitaja autor" */
-    color: #b02a37;
-    background-color: #badce3;
+    color: black;
+    background-color: #c3efec;
     font-size: 18px;
     font-weight: bolder;
     font-family: 'Patrick Hand', "Comic Sans MS", sans-serif, cursive;

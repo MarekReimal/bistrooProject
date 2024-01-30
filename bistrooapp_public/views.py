@@ -10,8 +10,8 @@ from bistrooapp_admin.models import Menuu, Theme
 def show_menu(request):
     menu_date = datetime.today()
     # teeb päringu DB, võtab menüü valitud kuupäeva järgi
-    q_result_menuu = Menuu.objects.filter(menu_date=menu_date).values("category_name__category_name",
-                                                                      "description", "price_full", "price_half")
+    q_result_menuu = (Menuu.objects.filter(menu_date=menu_date).
+                      values("category_name__category_name", "description", "price_full", "price_half", "is_hided"))
     q_result_theme = Theme.objects.filter(menu_date=menu_date)
     formatted_date = menu_date.strftime("%d.%m")  # väärtus template jaoks
 
@@ -33,7 +33,6 @@ def show_menu(request):
         elif ((str(item["price_full"]) == "0.00" and str(item["price_half"]) == "0.00") or
                 (str(item["price_full"]) == "0.00" and str(item["price_half"]) == "None")):
             item["price_full"] = "Prae hinna sees"
-
 
     context = {
         "formatted_date": formatted_date,

@@ -23,6 +23,7 @@ class Menuu(models.Model):
                                      validators=[MinValueValidator(0,"Väärtus peab olema 0 või 0-st suurem number")])
     price_half = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True,
                                      validators=[MinValueValidator(0,"Väärtus peab olema 0 või 0-st suurem number")])
+    is_hided = models.BooleanField(default=False)
 
     class Meta:  # on Country alam klass
         ordering = ["-menu_date", "category_name", "id"]  # sorteerib tabeli

@@ -275,3 +275,11 @@ def my_view(request):
         return HttpResponseRedirect('https://example.com')  # Redirect to an external URL
 Ultimately, redirect and HttpResponseRedirect achieve similar outcomes. The choice between them often
 comes down to personal preference, code readability, and specific needs within your application.
+
+<style> {# https://www.w3docs.com/snippets/css/how-to-create-a-blurry-text-in-css.html #}
+      #blur {
+        font-size: 40px;
+        color: transparent;
+        text-shadow: 0 0 8px #000;
+      }
+    </style>

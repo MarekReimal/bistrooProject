@@ -58,7 +58,7 @@
                 <tbody>
                 {% for subline in category.list %}
                     <tr>
-                        <td style="background: lightyellow">
+                        <td style="{% if subline.is_hided == 0 %}background: #fafae9;{% else %}background: #fafae9; color: transparent; text-shadow: 0 0 8px #000; {% endif %}">
                             <div class="row">
                                 <div class="col-10 pub_row_text">{{ subline.description | upper }}</div>
                                 <div class="col-2 pub_row_text">{{ subline.price_full }}</div>
