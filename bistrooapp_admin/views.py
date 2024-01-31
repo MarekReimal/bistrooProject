@@ -79,6 +79,13 @@ def menuu_list(request):
     #if request.session.get("menu_date"):
     # print("SESSIOONI KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
 
+    # menüü kuupäeva vanuse kontroll
+    # kui on kuupäev on minevikus siis
+    if datetime.strptime(valitud_kp, "%Y-%m-%d") <= datetime.today():
+        is_archive = True
+    else:
+        is_archive = False
+
     # teeb päringu DB, võtab menüü valitud kuupäeva järgi
     q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
     q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
@@ -90,7 +97,8 @@ def menuu_list(request):
         theme_id = q_result_theme.first().id
 
     # kuupäeva vormindamine vastavalt sellele kust pärineb
-    if isinstance(valitud_kp, str):  # kui on POST siis on str type
+    # kontroll kas valitud_kp on string või datetime object
+    if isinstance(valitud_kp, str):  # isinstance- kontrollib type ehk kas on str kui on POST siis on str type
         # kuupäeva vormindamine, vajalik teate väljastamiseks 18.11 Menüü puudub
         # Convert the string date to a datetime object
         kp_obj = datetime.strptime(valitud_kp, "%Y-%m-%d")
@@ -119,9 +127,9 @@ def menuu_list(request):
         'datePicker': datePicker, # form'i nimetus määratud, form loodud forms.py
         'formatted_date':  formatted_date,
         'theme_id': theme_id,
-        "duplicate_date": duplicate_date
+        "duplicate_date": duplicate_date,
+        "is_archive": is_archive
     }
-    # chekboxide väärtused peavad säilima pärast värskendamist
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 
 def add_subline(request, category):

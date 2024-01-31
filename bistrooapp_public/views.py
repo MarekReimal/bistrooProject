@@ -29,7 +29,7 @@ def show_menu(request):
         # Kui täis ja pool hind on olemas siis näitab mõlemat
         if str(item["price_full"]) > "0.00" and (str(item["price_half"]) > "0.00" and str(item["price_half"]) != "None"):
             item["price_full"] = str(item["price_full"]) + " / " + str(item["price_half"])
-        # Kui täishind on 0 ja poolhind 0 ja none siis näitab prae hinna sees
+        # Kui täishind on 0 ja poolhind 0 või none siis näitab prae hinna sees
         elif ((str(item["price_full"]) == "0.00" and str(item["price_half"]) == "0.00") or
                 (str(item["price_full"]) == "0.00" and str(item["price_half"]) == "None")):
             item["price_full"] = "Prae hinna sees"

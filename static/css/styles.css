@@ -30,6 +30,14 @@ td.menuu_read{
     text-align: left;
 }
 
+input[type="checkbox"] {
+        /* Set the desired width and height */
+        width: 17px;
+        height: 17px;
+        /* Other styling properties */
+        /*margin-right: 5px;  /* Add some spacing to the right */
+    }
+
 .selected-row{
     background-color: #5c636a !important;
 }

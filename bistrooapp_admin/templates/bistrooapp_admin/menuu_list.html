@@ -213,29 +213,29 @@
                                         {% for menuu_item in menuu_items %}
                                             {% if menuu_item.category_name.category_name == category.category_name %}
 
-                                                <tr>
-                                                <td style="text-align: center" class="menuu_read"> {# lisab checkbox #}
-                                                    <input type="checkbox" name="selectedItems" value="{{ menuu_item.id }}" onclick="handleCheckboxSelection(this)">
+                                                <tr> {# ifiga siin muudetakse classi kui checkbox on valitud #}
+                                                <td style="text-align: center" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}"> {# lisab checkbox #}
+                                                    <input type="checkbox" name="selectedItems" value="{{ menuu_item.id }}" onclick="handleCheckboxSelection(this)" {% if menuu_item.is_hided %}checked{% endif %}>
                                                 </td>
                                                     {# toidu nimetus #}
-                                                    <td class="menuu_read">{{ menuu_item.description }}</td>
+                                                    <td class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">{{ menuu_item.description }}</td>
 
                                                     {# hinna töötlus #}
-                                                    {% if menuu_item.price_full and menuu_item.price_half == None or menuu_item.price_half == 0 %}
-                                                        <td style="width: 200px" class="menuu_read">{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
-                                                    {% elif menuu_item.price_full == 0 and menuu_item.price_half == 0 or menuu_item.price_full == 0 and menuu_item.price_half == None %}
-                                                        <td style="width: 200px" class="menuu_read">Prae hinna sees</td>
-                                                        {# kui mõlemad hinnad 0 siis on prae hinnas #}
+                                                    {% if menuu_item.price_full == 0 and menuu_item.price_half == 0 or menuu_item.price_full == 0 and menuu_item.price_half == None %}
+                                                        <td style="width: 200px" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">Prae hinna sees</td>{# kui mõlemad hinnad 0 siis on prae hinnas #}
+                                                    {% elif menuu_item.price_full and menuu_item.price_half == None or menuu_item.price_half == 0 %}
+                                                        <td style="width: 200px" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">{{ menuu_item.price_full }}</td> {# näita ainult täishind #}
                                                     {% else %}
                                                         {# näitab mõlemat hinda#}
-                                                        <td style="width: 200px" class="menuu_read">{{ menuu_item.price_full }}
+                                                        <td style="width: 200px" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">{{ menuu_item.price_full }}
                                                             / {{ menuu_item.price_half }}</td>
                                                     {% endif %}
                                                     {# linkide töötlus #}
-                                                    <td style="width: 200px; text-align: center" class="menuu_read">
+                                                    <td style="width: 200px; text-align: center" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">
+                                                            {% if not is_archive %}
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
-                                                            </a>
+                                                            </a> {% endif %}
                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <a href="{% url "bistrooapp_admin:delete_subline" line_id=menuu_item.id %}" title="Kustuta">
                                                                 <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
