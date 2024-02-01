@@ -79,13 +79,6 @@ def menuu_list(request):
     #if request.session.get("menu_date"):
     # print("SESSIOONI KUUPÄEV ", request.session.get("menu_date"))  # testimiseks
 
-    # menüü kuupäeva vanuse kontroll
-    # kui on kuupäev on minevikus siis
-    if datetime.strptime(valitud_kp, "%Y-%m-%d") <= datetime.today():
-        is_archive = True
-    else:
-        is_archive = False
-
     # teeb päringu DB, võtab menüü valitud kuupäeva järgi
     q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
     q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
@@ -108,6 +101,15 @@ def menuu_list(request):
     else:
         formatted_date = valitud_kp.strftime("%d.%m")
         default_date = valitud_kp.strftime("%Y-%m-%d") # "%Y-%m-%d"
+        kp_obj = datetime.strptime(default_date, "%Y-%m-%d")
+
+    # menüü vanuse kontroll
+    # kas menüü kuupäev on minevikus või täna homme
+    current_date_str = datetime.today().strftime("%Y-%m-%d")  # loob tänase kp str sobivas formaadis
+    if kp_obj >= datetime.strptime(current_date_str, "%Y-%m-%d"):
+        is_current = True
+    else:
+        is_current = False
 
     # loob obj form.py loodud kuupäeva vormile, vt form.py
     datePicker = CurrentDate(initial={"valitud_kp": default_date})  # määrab vaikimisi värtuse
@@ -128,7 +130,7 @@ def menuu_list(request):
         'formatted_date':  formatted_date,
         'theme_id': theme_id,
         "duplicate_date": duplicate_date,
-        "is_archive": is_archive
+        "is_current": is_current
     }
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 

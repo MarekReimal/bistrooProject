@@ -132,10 +132,11 @@
                             <td class="menuu_read">
                                 {{ themes.0.theme }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td rowspan="2" style="width: 200px" class="menuu_read">
+                            <td rowspan="2" style="width: 200px; text-align: center" class="menuu_read">
+                                {% if is_current %} {# eilset menüüd ei saa muuta #}
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
-                                </a>
+                                </a>{% endif %}
                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
@@ -169,10 +170,11 @@
                             <td class="menuu_read">
                                 {{ themes.0.author }} {# võib kasutada | upper, et vormindada suured tähed  #}
                             </td>
-                            <td class="menuu_read">
+                            <td style="text-align: center" class="menuu_read">
+                                {% if is_current %}  {# eilset menüüd ei saa muuta #}
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
-                                </a>
+                                </a>{% endif %}
                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_author" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
@@ -232,7 +234,7 @@
                                                     {% endif %}
                                                     {# linkide töötlus #}
                                                     <td style="width: 200px; text-align: center" class="{% if menuu_item.is_hided %}menuu_read selected-row {% else %} menuu_read{% endif %}">
-                                                            {% if not is_archive %}
+                                                            {% if is_current %} {# eilset menüüd ei saa muuta #}
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                                             </a> {% endif %}
