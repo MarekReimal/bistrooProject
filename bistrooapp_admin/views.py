@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -50,6 +51,11 @@ class CategoryUpdateView(UpdateView):
     form_class = CategoryForm
 
 
+def is_user(user):  # meetod teeb päringu db, kontroll kas kasutaja kuulub ligipääsu õigustega gruppi
+    return user.groups.filter(name='kasutajad').exists()  # kui kasutaja kuulub gruppi kasutajad siis pääseb sisse logides
+
+
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def menuu_list(request):
     # tegeleb töölaua kuvamisega
 
@@ -134,6 +140,8 @@ def menuu_list(request):
     }
     return render(request, 'bistrooapp_admin/menuu_list.html', context)
 
+
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def add_subline(request, category):
 
     # võtab jooksva kuupäeva sessiooni mälust
@@ -162,6 +170,7 @@ def add_subline(request, category):
     return render(request, "bistrooapp_admin/menuu_add.html", context)
 
 
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def add_theme(request):
     # vaade pealkirjade sisestamiseks
     # vaade theme_create.html
@@ -210,6 +219,8 @@ def add_theme(request):
 
     return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
 
+
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def update_theme(request, theme_id):
     # 1. meetod võtab modelist obj ja kuvab vormi selle obj andmetega
     # 2. kui kasutaja sisestab vormi, siis POST ja vormilt andmed salvestatakse
@@ -292,6 +303,7 @@ def delete_theme(request, theme_id):
     return redirect('bistrooapp_admin:menuu_list')
 
 
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def update_subline(request, line_id):
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
     line_instance = get_object_or_404(Menuu, id=line_id)
@@ -368,12 +380,16 @@ def duplicate_menu(request):
 
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
-def menuu_search(request):
+
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
+def menuu_search(request):  # vaade menüüdest otsimse vormile
         menuu_search_form = MenuuSearchForm
         return render(request, "bistrooapp_admin/menuu_search.html",
                       {"menuu_search_form": menuu_search_form})
 
-def menuu_search_list(request):
+
+@user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
+def menuu_search_list(request):  # vaade kuvab otsingu tulemused menüüdest
 
     # kui andmeid sisestati siis
     if request.method == "POST":

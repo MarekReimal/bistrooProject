@@ -68,3 +68,44 @@ body::before{
     opacity: 20%; /* Adjust the opacity as needed */
     z-index: -1;  /*tõstab tabeli kihi kõige ette   */
 }
+
+/* klassid sisselogimise vormile */
+.forms_gen{
+
+}
+.forms_gen td{
+    padding: 10px;
+}
+.forms_gen input[type="text"],
+.forms_gen input[type="number"],
+.forms_gen input[type="password"],
+.forms_gen textarea{
+    width: 400px;
+    border: 3px solid;
+    border-radius: 5px;
+}
+
+.menuu_nupud {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    border: 3px solid;
+    border-color: var(--menuu_nupu_aaris);
+    border-radius: 5px;
+    /*width: 145px;*/
+    width: 145px;
+    min-height: 32px;
+    max-height: 200px;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    padding: 3px;
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Show an ellipsis if the text overflows */
+    line-height: 19px; /* Centers text vertically */
+    text-decoration: none; /* Remove default underline */
+    color: var(--menuu_lingi_tekst); /*  Set link color */
+    margin-right: 3px; /* Adjust spacing between links */
+    margin-left: 3px;
+}

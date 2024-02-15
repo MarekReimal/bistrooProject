@@ -10,7 +10,10 @@
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="{% url "bistrooapp_public:index" %} " target="_blank">Menüü</a></li> {# avab eraldi tabis #}
                         <li class="nav-item"><a class="nav-link" href="{% url "bistrooapp_admin:menuu_search" %}">Otsing</a></li>
                         <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li> {# admin link on staatiline #}
-
+                        <form action="{% url 'logout' %}" method="post"> {# välja logimine lisatud nupuna turva kaalutlustel et oleks Post #}
+                            {% csrf_token %}
+                            <button class="logout-button" type="submit" >Logi välja</button>
+                        </form>
                     </ul>
                 </div>
             </div>

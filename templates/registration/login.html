@@ -1,0 +1,48 @@
+{% extends "base_public.html" %}
+
+{# LOGIMINE #}
+{% block content %}
+
+    <div class="row mt-5">
+        <div class="col-2"></div>
+        <div class="col-10">
+            <h3>Sisselogimine</h3>
+            {% if form.errors %}
+                <p style="color: #842029; font-size: large">Sinu kasutajanimi ja parool ei sobi. Palun proovi uuesti.</p>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <p style="color: #842029; font-size: large" >Sinu kontol puudub ligipääs, palun logi sisse kontoga millel on ligipääs</p>
+                {% else %}
+                    <p style="color: #842029; font-size: large" >Vaatamiseks palun logi sisse.</p>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}" class="forms_gen">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td style="font-size: large; font-weight: bold">{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: large; font-weight: bold">{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0px; padding-top: 30px">
+                            <input type="submit" value="login" class="menuu_nupud">
+                            <input type="hidden" name="next" value="{{ next }}">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+    {# Assumes you setup the password_reset view in your URLconf <p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+
+
+{% endblock %}

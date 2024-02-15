@@ -64,6 +64,17 @@ td.head_text {
     font-weight: bold;
 }
 
+.logout-button {
+    background-color: transparent;
+    border: none;
+    text-decoration: none; /* Add underline effect */
+    padding-left: 8px; /* Remove padding to make the button compact */
+    color: var(--nav_bar_linkide_tekst); /* Replace with your desired link color */
+    font-size: large;
+    font-weight: bold;
+    height: 42px;
+    }
+
 .button-link {
     display: inline-block;
     padding: 10px 20px;

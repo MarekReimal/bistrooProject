@@ -20,9 +20,9 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("bistrooapp_admin/", include("bistrooapp_admin.urls")), # rida ütleb et movieapp lingid on failis "movieapp.urls"
-    path("bistrooapp_public/", include("bistrooapp_public.urls")), # rida ütleb et movieapp lingid on failis "movieapp.urls"
-    path("", RedirectView.as_view(url="bistrooapp_public")), # suunab faili kus on lingid booksapp.urls.py
+    path("bistrooapp_admin/", include("bistrooapp_admin.urls")),  # rida ütleb et movieapp lingid on failis "movieapp.urls"
+    path("bistrooapp_public/", include("bistrooapp_public.urls")),  # rida ütleb et movieapp lingid on failis "movieapp.urls"
+    path("", RedirectView.as_view(url="bistrooapp_public")),  # suunab faili kus on lingid booksapp.urls.py
                                                     # kui on http://127.0.0.1:8000 siis see rida
                                                     # lisab "movieapp" ehk http://127.0.0.1:8000/movieapp/
                                         # kui vaatad api urls.py, seal on avaleht "", mis tähendab et kui on
@@ -31,6 +31,6 @@ urlpatterns = [
     # kui tahad bistrooapp_admin index.html siis vaja käsitsi kirjutada url http://127.0.0.1:8000/bistrooapp_admin/
 
 
-    #path("accounts/", include("django.contrib.auth.urls")), # link sisselogimise lehele
-
+    #path("accounts/", include("django.contrib.auth.urls")),  # link sisselogimise lehele
+    path("accounts/", include("django.contrib.auth.urls")),  # link sisselogimise lehele
 ]

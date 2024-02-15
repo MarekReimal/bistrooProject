@@ -128,3 +128,5 @@ STATICFILES_DIRS = ["STATIC/"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATE_INPUT_FORMATS = '%d.%m.%Y'
+
+LOGOUT_REDIRECT_URL = '/bistrooapp_admin/'
