@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
@@ -17,19 +19,24 @@ from .forms import (CurrentDate, ThemeForm, ThemeUpdateForm,
 
 # Create your views here.
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = "bistrooapp_admin/category.html"
     model = Category
     context_object_name = "categories"
 
+    def test_func(self):
+        return self.request.user.groups.filter(name='kasutajad').exists()
 
-class CategoryCreateView(CreateView):
+
+class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = "bistrooapp_admin/category_create.html"
     model = Category
     #fields = "__all__"  # kõik väljad näha loomise vaatel
     success_url = reverse_lazy("bistrooapp_admin:category")
     form_class = CategoryForm
 
+    def test_func(self):
+        return self.request.user.groups.filter(name='kasutajad').exists()
 
 
 class CategoryDeleteView(DeleteView):
@@ -43,12 +50,15 @@ class CategoryDeleteView(DeleteView):
         return HttpResponseRedirect(reverse("bistrooapp_admin:category"))
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = "bistrooapp_admin/category_form_update.html"
     model = Category
     #fields = "__all__"
     success_url = reverse_lazy("bistrooapp_admin:category")
     form_class = CategoryForm
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='kasutajad').exists()
 
 
 def is_user(user):  # meetod teeb päringu db, kontroll kas kasutaja kuulub ligipääsu õigustega gruppi
@@ -383,9 +393,9 @@ def duplicate_menu(request):
 
 @user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def menuu_search(request):  # vaade menüüdest otsimse vormile
-        menuu_search_form = MenuuSearchForm
-        return render(request, "bistrooapp_admin/menuu_search.html",
-                      {"menuu_search_form": menuu_search_form})
+    menuu_search_form = MenuuSearchForm()
+    return render(request, "bistrooapp_admin/menuu_search.html",
+                  {"menuu_search_form": menuu_search_form})
 
 
 @user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
@@ -393,10 +403,16 @@ def menuu_search_list(request):  # vaade kuvab otsingu tulemused menüüdest
 
     # kui andmeid sisestati siis
     if request.method == "POST":
-        # võtab otsingu fraasi
-        search_phrase = request.POST.get("search_phrase")
-        request.session['search_phrase'] = search_phrase  # kirjutab otsingu fraasi mällu
-        search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)  # filtreerib otsingu järgi
+        menuu_search_form = MenuuSearchForm(request.POST)
+        if menuu_search_form.is_valid():
+            search_phrase = menuu_search_form.cleaned_data["search_phrase"]
+            request.session['search_phrase'] = search_phrase
+            search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)  # filtreerib otsingu järgi
+
+        else:
+            return render(request, "bistrooapp_admin/menuu_search.html",
+                          {"menuu_search_form": menuu_search_form})
+
     else:  # kui ei ole post
         search_phrase = request.session.get('search_phrase')  # võta mälust viimane otsingu fraas
         search_result_menuu = Menuu.objects.filter(description__contains=search_phrase)  # filtreeri
@@ -414,7 +430,7 @@ def menuu_search_list(request):  # vaade kuvab otsingu tulemused menüüdest
         search_result_menuu = paginator.page(paginator.num_pages)
 
     return render(request, "bistrooapp_admin/menuu_search_list.html",
-                      {"search_result_menuu": search_result_menuu, "list_count": list_count})
+                      {"search_result_menuu": search_result_menuu, "list_count": list_count, "search_phrase":search_phrase})
 
 def hide_row(request):
     # metod kirjutab modelisse rea peida/näita
@@ -429,6 +445,15 @@ def hide_row(request):
     line_instance.save()  # salvestab väärtuse
 
     return HttpResponse()
+
+
+def logout_view(request):
+    # meetod logib välja kasutaja. Template'el on viide js. js laetakse browserisse ja aja arvestus toimub seal
+    logout(request)
+    # loob teate mida kuvatakse sisselogimise lehel
+    messages.add_message(request, messages.WARNING, 'Oled välja logitud, jätkamiseks palun logi sisse')
+    # return render(request, 'bistrooapp_admin/logout.html')
+    return redirect("login")
 
 
 """

@@ -7,15 +7,26 @@
         <div class="col-2"></div>
         <div class="col-10">
             <h3>Sisselogimine</h3>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <p style="color: #842029; font-size: large">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             {% if form.errors %}
-                <p style="color: #842029; font-size: large">Sinu kasutajanimi ja parool ei sobi. Palun proovi uuesti.</p>
+                <p style="color: #842029; font-size: large">Sinu kasutajanimi ja parool ei sobi. Palun proovi
+                    uuesti.</p>
             {% endif %}
 
             {% if next %}
                 {% if user.is_authenticated %}
-                    <p style="color: #842029; font-size: large" >Sinu kontol puudub ligipääs, palun logi sisse kontoga millel on ligipääs</p>
+                    <p style="color: #842029; font-size: large">Sinu kontol puudub ligipääs, palun logi sisse kontoga
+                        millel on ligipääs</p>
                 {% else %}
-                    <p style="color: #842029; font-size: large" >Vaatamiseks palun logi sisse.</p>
+                    <p style="color: #842029; font-size: large">Jätkamiseks palun logi sisse.</p>
                 {% endif %}
             {% endif %}
 
@@ -33,7 +44,9 @@
                     <tr>
                         <td style="padding: 0px; padding-top: 30px">
                             <input type="submit" value="login" class="menuu_nupud">
-                            <input type="hidden" name="next" value="{{ next }}">
+
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+
                         </td>
                     </tr>
                 </table>

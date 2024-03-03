@@ -1,9 +1,8 @@
 {% extends "base_admin.html" %}
-
+{% load static %} {# vaja et laeks ikooni static kataloogist #}
 {# Leht näitab kategooriate listi #}
 
 {% block content %}
-    {% load static %} {# vaja et laeks ikooni static kataloogist #}
     <div class="container">
         <div class="row mt-4">
             <div class="col-md-2"></div>
@@ -77,4 +76,11 @@
         });
     </script>
 
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    const LOGOUT_URL = '{% url 'bistrooapp_admin:logout' %}'; // loob viite url jaoks, vt js/logout.js
+</script>
+<script src="{% static "js/logout.js" %}"></script>
 {% endblock %}

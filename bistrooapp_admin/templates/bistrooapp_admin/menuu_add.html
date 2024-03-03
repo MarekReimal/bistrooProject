@@ -1,5 +1,5 @@
 {% extends "base_admin.html" %}
-
+{% load static %} {# vaja et laeks static kataloogi #}
 {% block content %}
     <div class="row mt-4">
         <div class="col-2"></div>
@@ -20,4 +20,11 @@
             <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Tagasi</a></p>
         </div>
     </div>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    const LOGOUT_URL = '{% url 'bistrooapp_admin:logout' %}'; // loob viite url jaoks, vt js/logout.js
+</script>
+<script src="{% static "js/logout.js" %}"></script>
 {% endblock %}

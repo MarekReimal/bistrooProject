@@ -1,5 +1,5 @@
 {% extends "base_admin.html" %}
-
+{% load static %} {# vaja et laeks static kataloogi #}
 {% block content %}
     {# Vaatel saab muuta kategooriat #}
     <div class="row mt-4">
@@ -23,4 +23,11 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    const LOGOUT_URL = '{% url 'bistrooapp_admin:logout' %}'; // loob viite url jaoks, vt js/logout.js
+</script>
+<script src="{% static "js/logout.js" %}"></script>
 {% endblock %}

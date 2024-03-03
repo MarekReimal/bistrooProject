@@ -33,5 +33,7 @@ urlpatterns = [
     path("menuu_search/", views.menuu_search, name="menuu_search"),  # otsingu vormi vastus
     path("menuu_search_list/", views.menuu_search_list, name="menuu_search_list"),  # otsingu vaade
 
-    path("ajax/hide_row/", views.hide_row, name="hide_row")  # ajax päring
+    path("ajax/hide_row/", views.hide_row, name="hide_row"),  # ajax päring
+
+    path("logout/", views.logout_view, name="logout")  # välja logitud
 ]

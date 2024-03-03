@@ -22,7 +22,11 @@ class DuplicateDate(forms.Form):
                                     input_formats=['%d.%m.%Y'], label="Koopia kuupäev", required=True)
 
 class MenuuSearchForm(forms.Form):
-    search_phrase = forms.CharField(label="Otsingu fraas", required=False)
+    search_phrase = forms.CharField(label="Otsingu fraas",
+                                    required=True,
+                                    min_length=3,
+                                    error_messages={'required': "See väli on kohustuslik.",
+                                                    "min_length":"Otsingu fraas peab olema vähemalt 3 tähemärki pikk."})
 
 class CategoryForm(forms.ModelForm):
     class Meta:

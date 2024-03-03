@@ -1,13 +1,10 @@
 {% extends "base_admin.html" %}
-
+{% load static %} {# vaja et laeks static kataloogi ja ikoonid #}
 {# https://dev.to/anuragrana/for-loops-in-django-2jdi kuidas if kasutada #}
 {% block content %}
 
     {% load my_template_tag %} {# laeb custom tag vt fail my_template_tag.py #}
     {# vt fail opetus.txt #}
-    {% load static %} {# vaja et laeks ikooni static kataloogist #}
-
-
 
     {# <div class="mt-2">        <h4>Menüü koostamine</h4>    </div> #}
 
@@ -347,3 +344,9 @@
 
 {% endblock %}
 
+{% block extrajs %}
+<script type="text/javascript">
+    const LOGOUT_URL = '{% url 'bistrooapp_admin:logout' %}'; // loob viite url jaoks, vt js/logout.js
+</script>
+<script src="{% static "js/logout.js" %}"></script>
+{% endblock %}
