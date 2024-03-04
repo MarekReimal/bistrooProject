@@ -37,7 +37,7 @@
                     <tbody>
                     {% for result in search_result_menuu %}
                         <tr>
-                            <td>{{ result.menu_date | date:"d.m.y" }}</td>
+                            <td><a href="{% url "bistrooapp_admin:change_menuu_date" line_id=result.id %}">{{ result.menu_date | date:"d.m.y" }}</a></td>
                             <td>{{ result.category_name }}</td>
                             <td>{{ result.description }}</td>
                             <td>{{ result.price_full }}</td>

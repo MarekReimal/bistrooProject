@@ -35,5 +35,7 @@ urlpatterns = [
 
     path("ajax/hide_row/", views.hide_row, name="hide_row"),  # ajax päring
 
-    path("logout/", views.logout_view, name="logout")  # välja logitud
+    path("logout/", views.logout_view, name="logout"),  # välja logitud
+
+    path("change_menuu_date/<int:line_id>", views.changeMenuuDate, name="change_menuu_date")  # muuda mälus menüü kuupeäva
 ]

@@ -455,6 +455,15 @@ def logout_view(request):
     # return render(request, 'bistrooapp_admin/logout.html')
     return redirect("login")
 
+def changeMenuuDate(request, line_id):
+    # meetod muudab sessiooni mälus hoitava menüü kuupäeva ja suunab töölaua vaatele kus kuvatakse see menüü
+
+    # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
+    line_instance = get_object_or_404(Menuu, id=line_id)
+    kp_obj = line_instance.menu_date  # võta kuupäev
+    menu_date = kp_obj.strftime("%Y-%m-%d")  # vorminda str
+    request.session['menu_date'] = menu_date  # kirjuta sess mällu
+    return redirect("bistrooapp_admin:menuu_list")
 
 """
 

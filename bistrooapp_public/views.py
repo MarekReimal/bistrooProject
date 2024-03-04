@@ -24,8 +24,8 @@ def show_menu(request):
     # Hinna töötlus, kirjutab "Prae hinna sees"
     for item in q_result_menuu:
         # print(item["price_full"])
-        if item["price_full"] == 0:
-            print("OLI NULL")
+        # if item["price_full"] == 0:
+        #     print("OLI NULL")
         # Kui täis ja pool hind on olemas siis näitab mõlemat
         if str(item["price_full"]) > "0.00" and (str(item["price_half"]) > "0.00" and str(item["price_half"]) != "None"):
             item["price_full"] = str(item["price_full"]) + " / " + str(item["price_half"])

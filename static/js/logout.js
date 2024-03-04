@@ -1,7 +1,7 @@
 let logoutTimer;
 function startTimers() {
     // Logout after 30 minutes of inactivity
-    logoutTimer = setTimeout(logoutUser, 1800000); // 1800000=30 minutes in milliseconds
+    logoutTimer = setTimeout(logoutUser, 300000); // 1800000=30 minutes in milliseconds
 }
 
 function resetTimers() {
