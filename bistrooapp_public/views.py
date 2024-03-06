@@ -16,7 +16,7 @@ def show_menu(request):
     formatted_date = menu_date.strftime("%d.%m")  # väärtus template jaoks
 
     # kontroll kas tänase menüü andmed on, kasutab public vaatel teate näitamiseks
-    if q_result_menuu:
+    if q_result_menuu or q_result_theme:
         is_menuu = True
     else:
         is_menuu = False

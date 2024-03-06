@@ -28,7 +28,8 @@ urlpatterns = [
     path("move_back/", views.move_back, name="move_back"),
     path("move_forward/", views.move_forward, name="move_forward"),
 
-    path("duplicate_menu", views.duplicate_menu, name="duplicate_menu"),
+    path("duplicate_message/", views.dublicate_message, name="duplicate_message"),  # näita teadet menüü kopeerimisel
+    path("duplicate_menu/", views.duplicate_menu, name="duplicate_menu"),
 
     path("menuu_search/", views.menuu_search, name="menuu_search"),  # otsingu vormi vastus
     path("menuu_search_list/", views.menuu_search_list, name="menuu_search_list"),  # otsingu vaade

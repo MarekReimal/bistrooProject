@@ -1,0 +1,23 @@
+{% extends "base_admin.html" %}
+{% load static %} {# vaja et laeks static kataloogi #}
+{% block content %}
+     <div class="row mt-5">
+        <div class="col-2"></div>
+        <div class="col-10">
+            <h4 style="color: #b02a37">Menüüst {{ valitud_kp | date:"d.m" }} tehakse koopia kuupäevale {{ duplikaadi_kp | date:"d.m" }}</h4>
+
+            <div class="mt-5">
+                <p><a href="{% url "bistrooapp_admin:duplicate_menu" %}" class="menuu_nupud">Tee koopia</a></p>
+                <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Töölaud</a></p>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    const LOGOUT_URL = '{% url 'bistrooapp_admin:logout' %}'; // loob viite url jaoks, vt js/logout.js
+</script>
+<script src="{% static "js/logout.js" %}"></script>
+{% endblock %}

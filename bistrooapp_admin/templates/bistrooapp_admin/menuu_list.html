@@ -84,7 +84,7 @@
                         <tr>
                             <td>
                                 {# loob kuupäeva vormi #}
-                                <form action="{% url "bistrooapp_admin:duplicate_menu" %}" method="post" id="duplikaadivorm">
+                                <form action="{% url "bistrooapp_admin:duplicate_message" %}" method="post" id="duplikaadivorm">
                                     {% csrf_token %}
                                     {{ duplicate_date.as_p }} {# vt view def menuu_list, sealt tuleb #}
                                     <input type="submit" value="Tee koopia" class="menuu_nupud">
@@ -134,7 +134,7 @@
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>{% endif %}
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_theme" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                 </a>
@@ -172,7 +172,7 @@
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>{% endif %}
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;
                                 <a href="{% url "bistrooapp_admin:delete_author" theme_id=theme_id %}" title="Kustuta">
                                     <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                 </a>
@@ -235,7 +235,7 @@
                                                             <a href="{% url "bistrooapp_admin:update_subline" line_id=menuu_item.id %}" title="Muuda">
                                                                 <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                                             </a> {% endif %}
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        &nbsp;&nbsp;
                                                             <a href="{% url "bistrooapp_admin:delete_subline" line_id=menuu_item.id %}" title="Kustuta">
                                                                 <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta" class="muuda-icon">
                                                             </a>

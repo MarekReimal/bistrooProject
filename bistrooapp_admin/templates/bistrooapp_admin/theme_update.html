@@ -5,7 +5,7 @@
     <div class="row mt-4">
         <div class="col-2"></div>
         <div class="col-10">
-    <h3>Muuda pealkiri</h3>
+    <h4>Muuda {{ current_date | date:"d.m.Y" }} pealkiri</h4>
         <form method="post" class="forms_gen" action={% url "bistrooapp_admin:update_theme" theme_id=theme_id %}>
             {% csrf_token %}
 
@@ -19,7 +19,7 @@
             </table>
         </form>
     <p></p>
-    <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Tagasi</a></p>
+    <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Töölaud</a></p>
     </div>
     </div>
 

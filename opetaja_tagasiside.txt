@@ -1,0 +1,19 @@
+Aadress http://127.0.0.1:8000/bistrooapp_public/ peab suunama http://127.0.0.1:8000/  KORRAS
+TABi nimi Document avalikul vaatel? KORRAS
+Admin lehele logimine vaja kiirete näppude vooru? 10 sek?  KORRAS
+Kalendri kast vasakul servas (2 tk) on veider (poolenisti nähtav kuupäev ehk ei mahu kasti) EI TEA MIKS
+Kategooriad: Muutmise nupu järgi (pilt) on ikkagi tühik. See on vaja ikkagi ära saada. Joondatud veidralt kaks nuppu lahtris? KORRAS
+Kategooriad lisamine: Tekst ja number "vales" järjekorras. Joogid 100 sisestus praegu. KORRAS
+Kategooriad list peaks ikkagi number olema enne ja siis tekst					KORRAS
+Menüü rohelisel taustal järjekord jätab soovida ja sõnastus tekitab segadust. Menüü -> Avalik menüü KORRAS
+Pealkirjad jooksvale päevale oli pandud kuid avaliku vaatesse ei tekkinud. KORRAS
+Kustutamine peaks olema hoiatusega. EI MUUTNUD
+
+"Tee koopia" kaotas 05.03.2024 loodud menüü ära? Kuhu see läks? KORRAS
+"Tee koopia" peaks enne tegevust midagi ka selgitama. KORRAS
+"Admin" võiks eraldi aknasse lahti hüpata  KORRAS
+Menüü jooksev kuupäev võiks olla nähtav menüüs (rohelisel taustal vasakus servas)  vaja näidata kuupäeva kuhu toitu lisad KORRAS
+Otsingus olev nupp Tagasi pole tagasi vaid menuu_list. Veebilehitseja Back nupp on tagasi!  KORRAS
+Otsingu tulemuses muuta aasta neljakohaliseks numbriks 24 => 2024  KORRAS
+
+Admin lehel on disaini häda. 2 + 10 => 2 + 8 + 2. Või 12 ja joondada keskele 4 või 10 või 6  EI MUUTNUD

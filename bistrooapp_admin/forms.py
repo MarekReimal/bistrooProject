@@ -86,5 +86,6 @@ class SublineUpdateForm(forms.ModelForm):
         model = Menuu
         fields = ["description", "price_full", "price_half"]
         labels = {"description": "Nimetus", "price_full": "Hind suurele", "price_half": "Hind väiksele"}
+        widgets = {"description": forms.Textarea(attrs={"rows": 6})}
         error_messages = {"description": {"required": "Väli on nõutud"},
                           "price_full": {"required": "Väli on nõutud, 0 või 0-st suurem number"}}

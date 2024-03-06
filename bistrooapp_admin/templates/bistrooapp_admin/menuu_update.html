@@ -4,7 +4,7 @@
     <div class="row mt-4">
         <div class="col-2"></div>
         <div class="col-10">
-            <h2>Muuda rida</h2>
+            <h4>Muuda {{ current_date | date:"d.m.Y" }} rida</h4>
             <form method="post" action="{% url "bistrooapp_admin:update_subline" line_id=line_id %}"
                   class="forms_gen" novalidate>
                 {% csrf_token %}
@@ -18,7 +18,7 @@
                 </table>
             </form>
             <p></p>
-            <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Tagasi</a></p>
+            <p><a href="{% url "bistrooapp_admin:menuu_list" %}" class="menuu_nupud">Töölaud</a></p>
         </div>
     </div>
 {% endblock %}

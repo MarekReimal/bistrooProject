@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 from bistrooapp_admin.models import Category, Menuu, Theme
 from django.urls import reverse_lazy, reverse
@@ -42,10 +42,10 @@ class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 class CategoryDeleteView(DeleteView):
     def get(self, request, pk):
         category = Category.objects.get(pk=pk)  # võtab modelist vastava kategooria obj
+        category_name = category.category_name  # võtab mällu kateg. nime
         category.delete()  # kustutab elemendi
-
         # Set a success message
-        messages.error(request, f"\"{category.category_name}\" kustutatud.")
+        messages.error(request, f"\"{category_name}\" kustutatud.")
 
         return HttpResponseRedirect(reverse("bistrooapp_admin:category"))
 
@@ -112,10 +112,10 @@ def menuu_list(request):
         # Convert the string date to a datetime object
         kp_obj = datetime.strptime(valitud_kp, "%Y-%m-%d")
         # Format the date as desired (14.11.2023)
-        formatted_date = kp_obj.strftime("%d.%m")
+        formatted_date = kp_obj.strftime("%d.%m.%Y")
         default_date = kp_obj.strftime("%Y-%m-%d") #  "%Y-%m-%d"
     else:
-        formatted_date = valitud_kp.strftime("%d.%m")
+        formatted_date = valitud_kp.strftime("%d.%m.%Y")
         default_date = valitud_kp.strftime("%Y-%m-%d") # "%Y-%m-%d"
         kp_obj = datetime.strptime(default_date, "%Y-%m-%d")
 
@@ -168,10 +168,12 @@ def add_subline(request, category):
     else:  # kuva vorm kui ei ole post, eelväärtusta kuupäev ja kategooria peidetud väljadel
         subline_form = SublineForm(initial={"menu_date": valitud_kp, "category_name": categoryus})
 
+    current_date = datetime.strptime(valitud_kp, "%Y-%m-%d")  # vorminda obj, kp kuvamiseks templ.
     # väärtused kaasa templatele
     context = {
         "subline_form": subline_form,
-        "categoryus": categoryus
+        "categoryus": categoryus,
+        "current_date": current_date
         }
 
     # mis on return render(request
@@ -188,6 +190,7 @@ def add_theme(request):
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
+    current_date = datetime.strptime(valitud_kp, "%Y-%m-%d")  # vorminda obj, kp kuvamiseks templ.
 
     # valik kas kuvada tühi vorm või täidetud vorm
     if not Theme.objects.filter(menu_date=valitud_kp).exists():  # kas kp obj on olemas
@@ -227,13 +230,18 @@ def add_theme(request):
 
             return redirect("bistrooapp_admin:menuu_list")
 
-    return render(request, 'bistrooapp_admin/theme_add.html', {"theme_formike": theme_formike})
+    return render(request, 'bistrooapp_admin/theme_add.html',
+                  {"theme_formike": theme_formike, "current_date": current_date})
 
 
 @user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def update_theme(request, theme_id):
     # 1. meetod võtab modelist obj ja kuvab vormi selle obj andmetega
     # 2. kui kasutaja sisestab vormi, siis POST ja vormilt andmed salvestatakse
+
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
+    current_date = datetime.strptime(valitud_kp, "%Y-%m-%d")  # vorminda obj, kp kuvamiseks templ.
 
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
     theme_instance = get_object_or_404(Theme, id=theme_id)
@@ -248,7 +256,8 @@ def update_theme(request, theme_id):
     else:
         theme_up_form = ThemeUpdateForm(instance=theme_instance)
 
-    return render(request,"bistrooapp_admin/theme_update.html", {"theme_up_form": theme_up_form, "theme_id": theme_id})
+    return render(request,"bistrooapp_admin/theme_update.html",
+                  {"theme_up_form": theme_up_form, "theme_id": theme_id, "current_date": current_date})
 
 def mytoday(request):
 
@@ -315,6 +324,10 @@ def delete_theme(request, theme_id):
 
 @user_passes_test(is_user)  # dekoraator kaitseb vaate sisselogimisega
 def update_subline(request, line_id):
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
+    current_date = datetime.strptime(valitud_kp, "%Y-%m-%d")  # vorminda obj
+
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
     line_instance = get_object_or_404(Menuu, id=line_id)
     # kui andmeid sisestati siis
@@ -329,7 +342,7 @@ def update_subline(request, line_id):
         subline_up_form = SublineUpdateForm(instance=line_instance)
 
     return render(request, "bistrooapp_admin/menuu_update.html",
-                  {"subline_up_form": subline_up_form, "line_id": line_id})
+                  {"subline_up_form": subline_up_form, "line_id": line_id, "current_date": current_date})
 
 def delete_subline(request, line_id):
     # võtab modelist andmeobj, kui sellist andmeobj ei ole siis 404 teade
@@ -341,52 +354,73 @@ def delete_subline(request, line_id):
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 
 
-def duplicate_menu(request):
+def dublicate_message(request):
+    # meetod näitab teadet, et tehakse koopia ja kirjutab vormilt saadud kuupäeva sessiooni mällu
     # võtab kasutaja antud kuupäeva
     if request.method == "POST":
         duplikaadi_kp = request.POST.get("duplikaadi_kp")  # on kujul 2023-12-06
         request.session['menu_date_duplicate'] = duplikaadi_kp  # kirjuta sess mällu
+        duplikaadi_kp = datetime.strptime(duplikaadi_kp, "%Y-%m-%d")  # vorminda obj
 
     # võtab jooksva kuupäeva sessiooni mälust
     valitud_kp = request.session.get("menu_date")
+    valitud_kp = datetime.strptime(valitud_kp, "%Y-%m-%d")  # vorminda obj
 
-    # teeb päringu DB, võtab menüü valitud kuupäeva järgi
-    q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
-    q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
+    return render(request, "bistrooapp_admin/duplicate_message.html",
+                  {"duplikaadi_kp": duplikaadi_kp, "valitud_kp": valitud_kp})
 
-    # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
-    q_result_menuu_dub = Menuu.objects.filter(menu_date=duplikaadi_kp)
-    q_result_theme_dub = Theme.objects.filter(menu_date=duplikaadi_kp)
-    if q_result_theme_dub:  # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
-        theme_instance_dub = Theme.objects.get(menu_date=duplikaadi_kp)  # võta vastava id-ga obj
-        theme_instance_dub.delete()  # kustutab rea et ei teeks topelt
-    if q_result_menuu_dub:  # kui on ridu siis kustutab
-        for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
-            obj.delete()  # kustutab rea
 
-    # kui menüül on teemad siis teeb koopia uue kuupäevaga
-    if q_result_theme:
-        # võtab väärtused olemas olevast menüüst
-        theme_instance = Theme.objects.get(menu_date=valitud_kp)  # võta vastava id-ga obj
-        new_theme_instance = Theme.objects.create(
-            menu_date=duplikaadi_kp,
-            theme=theme_instance.theme,
-            recommenders=theme_instance.recommenders,
-            author=theme_instance.author
-        )
-        new_theme_instance.save()
+def duplicate_menu(request):
+    # meetod teeb menüüst koopia
+    # võtab kasutaja antud kuupäeva
+    #if request.method == "POST":
+    #    duplikaadi_kp = request.POST.get("duplikaadi_kp")  # on kujul 2023-12-06
+    #   request.session['menu_date_duplicate'] = duplikaadi_kp  # kirjuta sess mällu
 
-    # kui menüül on toidud siis teeb koopia uue kuupäevaga
-    if q_result_menuu:
-        for menu_instance in q_result_menuu:
-            new_menu_instance = Menuu.objects.create(
+    # võtab jooksva kuupäeva sessiooni mälust
+    duplikaadi_kp = request.session.get("menu_date_duplicate")
+    # võtab jooksva kuupäeva sessiooni mälust
+    valitud_kp = request.session.get("menu_date")
+
+    if not duplikaadi_kp == valitud_kp:  # teeb koopia ainult siis kui kuupäevad on
+                                                                # erinevad (muidu kustutas kui olid samad kuupäevad)
+        # teeb päringu DB, võtab menüü valitud kuupäeva järgi
+        q_result_menuu = Menuu.objects.filter(menu_date=valitud_kp)
+        q_result_theme = Theme.objects.filter(menu_date=valitud_kp)
+
+        # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
+        q_result_menuu_dub = Menuu.objects.filter(menu_date=duplikaadi_kp)
+        q_result_theme_dub = Theme.objects.filter(menu_date=duplikaadi_kp)
+        if q_result_theme_dub:  # kontroll kas sama kuupäevaga ridu on, et ei loodaks topelt
+            theme_instance_dub = Theme.objects.get(menu_date=duplikaadi_kp)  # võta vastava id-ga obj
+            theme_instance_dub.delete()  # kustutab rea et ei teeks topelt
+        if q_result_menuu_dub:  # kui on ridu siis kustutab
+            for obj in q_result_menuu_dub:  # loendab kõik read õige kuupäevaga
+                obj.delete()  # kustutab rea
+
+        # kui menüül on teemad siis teeb koopia uue kuupäevaga
+        if q_result_theme:
+            # võtab väärtused olemas olevast menüüst
+            theme_instance = Theme.objects.get(menu_date=valitud_kp)  # võta vastava id-ga obj
+            new_theme_instance = Theme.objects.create(
                 menu_date=duplikaadi_kp,
-                category_name=menu_instance.category_name,
-                description=menu_instance.description,
-                price_full=menu_instance.price_full,
-                price_half=menu_instance.price_half
+                theme=theme_instance.theme,
+                recommenders=theme_instance.recommenders,
+                author=theme_instance.author
             )
-            new_menu_instance.save()
+            new_theme_instance.save()
+
+        # kui menüül on toidud siis teeb koopia uue kuupäevaga
+        if q_result_menuu:
+            for menu_instance in q_result_menuu:
+                new_menu_instance = Menuu.objects.create(
+                    menu_date=duplikaadi_kp,
+                    category_name=menu_instance.category_name,
+                    description=menu_instance.description,
+                    price_full=menu_instance.price_full,
+                    price_half=menu_instance.price_half
+                )
+                new_menu_instance.save()
 
     return HttpResponseRedirect(reverse("bistrooapp_admin:menuu_list"))
 

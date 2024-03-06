@@ -283,3 +283,11 @@ comes down to personal preference, code readability, and specific needs within y
         text-shadow: 0 0 8px #000;
       }
     </style>
+
+ AUTO LOGOUT TEKITAMINE DJANGOS
+pip install django-auto-logout- ei ole katsetanud
+https://pypi.org/project/django-auto-logout/
+https://stackoverflow.com/questions/31670231/autologout-a-user-after-specific-time-in-django
+
+TOIMIV AUTO LOGOUT, kirjuta settings.py
+SESSION_COOKIE_AGE = 1800  # 30 MINUTIT

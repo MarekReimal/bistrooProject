@@ -7,7 +7,7 @@
         <div class="row mt-4">
             <div class="col-md-2"></div>
             <div class="col-md-6">
-
+                <h4>Kategooriad</h4>
                 <div>
                     <div id="success-message" class="mt-3"> {# Näitab teadet 3 sekundit vt js all #}
                         {% if messages %} {# kui teade on olemas siis näitab, vt CategoryDeleteView #}
@@ -25,23 +25,23 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <td class="head_text" style="width: 600px">Kategooria</td>
                                 <td class="head_text">Jnr</td>
+                                <td class="head_text" style="width: 600px">Kategooria</td>
                                 <td class="head_text" style="width: 200px">Toiming</td>
                             </tr>
                             </thead>
                             <tbody>
                             {% for category in categories %}
                                 <tr>
-                                    <td class="menuu_read">{{ category.category_name }}</td>
                                     <td class="menuu_read">{{ category.category_sort_id }}</td>
-                                    <td class="menuu_read">
+                                    <td class="menuu_read">{{ category.category_name }}</td>
+                                    <td style="text-align: center" class="menuu_read">
                                         <a href="{% url "bistrooapp_admin:category_update" pk=category.id %}"
                                            title="Muuda">
                                             <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}"
                                                  alt="Muuda" class="muuda-icon">
                                         </a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;
                                         <a href="{% url "bistrooapp_admin:category_delete" pk=category.id %}"
                                            title="Kustuta">
                                             <img src="{% static "icons/delete-svgrepo-com.svg" %}" alt="Kustuta"

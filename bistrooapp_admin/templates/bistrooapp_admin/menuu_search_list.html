@@ -4,7 +4,7 @@
     <div class="row mt-4">
         <div class="col-2"></div>
         <div class="col-8">
-            <h2>Otsingu "{{ search_phrase }}" tulemuseks on {{ list_count }} kirjet</h2>
+            <h4>Otsingu "{{ search_phrase }}" tulemuseks on {{ list_count }} kirjet</h4>
 
             <div class="row mt-4 pagination">
                 <span class="step-links">
@@ -37,7 +37,7 @@
                     <tbody>
                     {% for result in search_result_menuu %}
                         <tr>
-                            <td><a href="{% url "bistrooapp_admin:change_menuu_date" line_id=result.id %}">{{ result.menu_date | date:"d.m.y" }}</a></td>
+                            <td><a href="{% url "bistrooapp_admin:change_menuu_date" line_id=result.id %}">{{ result.menu_date | date:"d.m.Y" }}</a></td>
                             <td>{{ result.category_name }}</td>
                             <td>{{ result.description }}</td>
                             <td>{{ result.price_full }}</td>
