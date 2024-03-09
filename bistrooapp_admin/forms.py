@@ -11,7 +11,7 @@ class DateInput(forms.DateInput):
     input_type = 'date'
     format = '%d.%m.%Y'  # Define the desired date format
 
-
+# https://github.com/jquery/jquery-ui/tree/main/ui/i18n datepicker variante vist seal
 class CurrentDate(forms.Form):
     valitud_kp = forms.DateField(widget=DateInput(attrs={"class": "datepicker-form"}), input_formats=['%d.%m.%Y'], label="")
                                   # label="Menüü kuupäev" , initial=datetime.now()

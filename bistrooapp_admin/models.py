@@ -17,7 +17,8 @@ class Category(models.Model):
 
 class Menuu(models.Model):
     menu_date = models.DateField()
-    category_name = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_name = models.ForeignKey(Category, on_delete=models.CASCADE)  # vihje CASCADE -> PROTECT siis jäävad
+                                                                     # alles menüü read kus kategooria on kasutusel
     description = models.CharField(max_length=255)
     price_full = models.DecimalField(max_digits=4, decimal_places=2, null=False, blank=False,
                                      validators=[MinValueValidator(0,"Väärtus peab olema 0 või 0-st suurem number")])
