@@ -13,7 +13,7 @@ def show_menu(request):
     q_result_menuu = (Menuu.objects.filter(menu_date=menu_date).
                       values("category_name__category_name", "description", "price_full", "price_half", "is_hided"))
     q_result_theme = Theme.objects.filter(menu_date=menu_date)
-    formatted_date = menu_date.strftime("%d.%m")  # väärtus template jaoks
+    formatted_date = menu_date.strftime("%d.%m.%Y")  # väärtus template jaoks
 
     # kontroll kas tänase menüü andmed on, kasutab public vaatel teate näitamiseks
     if q_result_menuu or q_result_theme:

@@ -17,3 +17,8 @@ Otsingus olev nupp Tagasi pole tagasi vaid menuu_list. Veebilehitseja Back nupp 
 Otsingu tulemuses muuta aasta neljakohaliseks numbriks 24 => 2024  KORRAS
 
 Admin lehel on disaini häda. 2 + 10 => 2 + 8 + 2. Või 12 ja joondada keskele 4 või 10 või 6  EI MUUTNUD
+
+2. tagasiside
+ÄÖ!"¤%#& need oma äpi nimed :S
+Avalikus vaates peaks täispikk kuupäev olema (aasta puudu)
+Koopia tegemist tahaks määrata millisele päevale teha. (hetkel tänasele)

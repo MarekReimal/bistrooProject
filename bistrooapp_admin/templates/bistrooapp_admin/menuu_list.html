@@ -170,6 +170,7 @@
                             <td style="text-align: center" class="menuu_read">
                                 {% if is_current %}  {# eilset menüüd ei saa muuta #}
                                 <a href="{% url "bistrooapp_admin:update_theme" theme_id=theme_id %}" title="Muuda">
+                                    <!--<i class="fa-solid fa-pen-to-square"></i> näide ikooni lisamiseks https://fontawesome.com/icons otsingusse "edit", vali free- tasuta kasutamiseks-->
                                     <img src="{% static "icons/pencil-edit-office-svgrepo-com.svg" %}" alt="Muuda" class="muuda-icon">
                                 </a>{% endif %}
                                   &nbsp;&nbsp;
