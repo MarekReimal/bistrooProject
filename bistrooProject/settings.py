@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*3j^7wtm2a6pw%1ek@2zz97db@=3p7gjr9lbhfmmr-zixz*v%*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bistrooapp-dpatd2dyeshpg2c2.canadacentral-01.azurewebsites.net']
+ALLOWED_HOSTS = ['bistrooapp-dpatd2dyeshpg2c2.canadacentral-01.azurewebsites.net', '127.0.0.1']
 
 
 # Application definition
@@ -132,3 +132,4 @@ DATE_INPUT_FORMATS = '%d.%m.%Y'
 
 LOGOUT_REDIRECT_URL = '/bistrooapp_admin/'
 LOGIN_REDIRECT_URL = '/bistrooapp_admin/'
+CSRF_TRUSTED_ORIGINS = ['https://bistrooapp-dpatd2dyeshpg2c2.canadacentral-01.azurewebsites.net']
