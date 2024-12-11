@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+# whitenoise middleware teenindab static faile django jaoks
 
 ROOT_URLCONF = 'bistrooProject.urls'
 
@@ -121,7 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'  # tee mida näidatakse urlis
-STATICFILES_DIRS = ["static/"]  # otsi staatilisi faile siit arenduse ajal
+STATICFILES_DIRS = ['static', 'staticfiles']  # otsi staatilisi faile siit arenduse ajal, peab olema ka static_root
+                                                # kataloog, seda vaatab whitenoise
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # määra kaust kuhu kogutakse static failid tootmiskk jaoks
 
 # Default primary key field type
