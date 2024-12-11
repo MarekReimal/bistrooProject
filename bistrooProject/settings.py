@@ -123,8 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'  # tee mida näidatakse urlis
-STATICFILES_DIRS = ['static', 'staticfiles']  # otsi staatilisi faile siit arenduse ajal, peab olema ka static_root
-                                                # kataloog, seda vaatab whitenoise
+STATICFILES_DIRS = ['static']  # otsi staatilisi faile siit arenduse ajal
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # määra kaust kuhu kogutakse static failid tootmiskk jaoks
 
 # Default primary key field type
