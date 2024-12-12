@@ -291,3 +291,130 @@ https://stackoverflow.com/questions/31670231/autologout-a-user-after-specific-ti
 
 TOIMIV AUTO LOGOUT, kirjuta settings.py
 SESSION_COOKIE_AGE = 1800  # 30 MINUTIT
+
+-----------------------------------------------------------------
+
+GUNICORN SEADISTUSED
+https://dev.to/karthiknarayan/setting-up-django-for-production-using-gunicorn-on-linux-37ce
+OTSING HOW TO SET UP DJANGO ON APACHE WITH GUNICORN
+
+Setting Up Django for Production Using Gunicorn on Linux.
+
+Django is a popular web framework for building web applications in Python. While the built-in development server is handy for testing your Django application during development, it's not suitable for production use. For production, you should use a production-ready web server like Gunicorn and manage it using systemd.
+
+Prerequisites
+Python 3 installed on your server.
+A Django project ready for production deployment.
+Virtual environment.
+1: Install Gunicorn:-
+Inside your virtual environment, install Django and Gunicorn:
+
+pip install gunicorn
+2: Configure Gunicorn :-
+Create a Gunicorn configuration file for your Django project. In your project directory,
+create a file named gunicorn_config.py and add the following content, customizing it to your project:
+
+import multiprocessing
+
+bind = "127.0.0.1:8000"  # Replace with your desired IP and port
+workers = multiprocessing.cpu_count() * 2 + 1
+worker_class = "gthread"
+threads = 2
+timeout = 60
+
+2: Test Gunicorn :-
+Test Gunicorn to ensure it can serve your Django application. Run the following command from your project directory, replacing myproject with your Django project's name:
+
+gunicorn -c gunicorn_config.py myproject.wsgi
+If Gunicorn starts without errors, it's working correctly. You can stop it by pressing Ctrl + C.
+Boom! Gunicorn is now part of our family.
+
+3: Create a systemd Service :-
+Create a systemd service file to manage the Gunicorn process. Use a text editor to
+create a file named myproject_gunicorn.service in the /etc/systemd/system/ directory:
+
+sudo nano /etc/systemd/system/myproject_gunicorn.service
+Add the following content to the file, adjusting the paths and configuration as needed:
+
+[Unit]
+Description=Gunicorn daemon for myproject
+After=network.target
+
+[Service]
+User=your_username
+Group=your_group
+WorkingDirectory=/path/to/your/project
+ExecStart=/path/to/your/virtualenv/bin/gunicorn -c gunicorn_config.py myproject.wsgi
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+Replace your_username, your_group, /path/to/your/project, and /path/to/your/virtualenv with your actual information.
+
+Save and exit the text editor.
+
+4: Enable and Start the systemd Service :-
+Enable the systemd service and start Gunicorn:
+
+sudo systemctl enable myproject_gunicorn
+sudo systemctl start myproject_gunicorn
+Check the status of the Gunicorn service to make sure it's running without errors:
+
+sudo systemctl status myproject_gunicorn
+If everything is configured correctly, your Django application should now be running in production
+ using Gunicorn and managed by systemd. You can access it through the specified IP and port.
+  Make sure to configure your web server (e.g., Nginx or Apache) as a reverse proxy to forward
+  requests to Gunicorn for better security and performance in a production environment.
+
+STATIC FAILIDELE LIGIPÄÄSU EHITAMINE (kui vaja koos apachega siis googelda django doc how to use django with apache)
+https://learn.microsoft.com/en-us/azure/app-service/configure-language-python#customize-startup-command need põhi käsud
+https://docs.djangoproject.com/en/4.1/howto/static-files/deployment/  üldine static failide rakendamine
+https://docs.djangoproject.com/en/4.1/howto/static-files/  ka teema kohta
+
+Serve static files for Django apps
+If your Django web app includes static front-end files, first follow the instructions on managing static files in the Django documentation.
+
+For App Service, you then make the following modifications:
+
+Consider using environment variables (for local development) and App Settings (when deploying to the cloud) to dynamically set the Django STATIC_URL and STATIC_ROOT variables. For example:
+
+Python
+
+Copy
+STATIC_URL = os.environ.get("DJANGO_STATIC_URL", "/static/")
+STATIC_ROOT = os.environ.get("DJANGO_STATIC_ROOT", "./static/")
+DJANGO_STATIC_URL and DJANGO_STATIC_ROOT can be changed as necessary for your local and cloud environments. For example, if the build process for your static files places them in a folder named django-static, then you can set DJANGO_STATIC_URL to /django-static/ to avoid using the default.
+
+If you have a pre-build script that generates static files in a different folder, include that folder in the Django STATICFILES_DIRS variable so that Django's collectstatic process finds them. For example, if you run yarn build in your front-end folder, and yarn generates a build/static folder containing static files, then include that folder as follows:
+
+Python
+
+Copy
+FRONTEND_DIR = "path-to-frontend-folder"
+STATICFILES_DIRS = [os.path.join(FRONTEND_DIR, 'build', 'static')]
+Here, FRONTEND_DIR is used to build a path to where a build tool like yarn is run. You can again use an environment variable and App Setting as desired.
+
+Add whitenoise to your requirements.txt file. WhiteNoise (whitenoise.evans.io) is a Python package that makes it simple for a production Django app to serve its own static files. WhiteNoise specifically serves those files that are found in the folder specified by the Django STATIC_ROOT variable.
+
+In your settings.py file, add the following line for WhiteNoise:
+
+Python
+
+Copy
+STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+Also modify the MIDDLEWARE and INSTALLED_APPS lists to include WhiteNoise:
+
+Python
+
+Copy
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    # Add whitenoise middleware after the security middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # Other values follow
+]
+
+INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
+    # Other values follow
+]

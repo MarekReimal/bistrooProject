@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 # whitenoise middleware teenindab static faile django jaoks
+# https://whitenoise.readthedocs.io/en/stable/
 
 ROOT_URLCONF = 'bistrooProject.urls'
 
